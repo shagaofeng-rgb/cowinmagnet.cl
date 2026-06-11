@@ -5,19 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Locale, localeLabels, locales, localizedPath, siteConfig } from "@/data/site";
-import { productCategories } from "@/data/catalog";
-
-const mainLinks = [
-  ["Home", ""],
-  ["Products", "products"],
-  ["Industries", "industries"],
-  ["Solutions", "solutions"],
-  ["Markets", "markets"],
-  ["Technical Support", "technical-support"],
-  ["About Us", "about"],
-  ["Blog", "blog"],
-  ["Contact", "contact"]
-];
+import { industries, productCategories, solutions } from "@/data/catalog";
 
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
@@ -55,8 +43,13 @@ export function Header({ locale }: { locale: Locale }) {
   return (
     <header className="site-header" ref={headerRef}>
       <Link className="brand" href={base()}>
-        <Image src="/assets/logo.jpg" alt={siteConfig.brand} width={42} height={42} />
-        <span>LATAM</span>
+        <span className="brand-logo-wrap">
+          <Image src="/assets/logo.jpg" alt={siteConfig.brand} width={48} height={48} />
+        </span>
+        <span className="brand-copy">
+          <strong>Cowinmagnet.cl</strong>
+          <small>Chile & LATAM</small>
+        </span>
       </Link>
       <button className="menu-button" type="button" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>
         Menu
@@ -91,11 +84,62 @@ export function Header({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        {mainLinks.slice(2).map(([label, path]) => (
-          <Link key={path} className={pathname === base(path) ? "active" : ""} href={base(path)}>
-            {label}
-          </Link>
-        ))}
+        <div className={`nav-item has-mega ${mega === "applications" ? "mega-open" : ""}`} onMouseEnter={() => setMega("applications")} onMouseLeave={() => setMega(null)}>
+          <button className="nav-trigger" type="button" aria-expanded={mega === "applications"} onClick={() => setMega(mega === "applications" ? null : "applications")}>
+            Applications
+          </button>
+          <div className="mega-menu mega-compact" role="region" aria-label="Applications">
+            <div className="mega-feature">
+              <span className="eyebrow">Applications</span>
+              <h3>Industries, solutions and technical support</h3>
+              <p>One place for mining applications, conveyor protection, tramp iron removal and selection guidance.</p>
+              <Link className="mega-cta" href={base("industries")}>View applications</Link>
+            </div>
+            <div className="mega-columns">
+              <div>
+                <h4>Industries</h4>
+                {industries.slice(0, 5).map((item) => (
+                  <Link key={item.slug} href={base(`industries/${item.slug}`)}>{item.title}</Link>
+                ))}
+              </div>
+              <div>
+                <h4>Solutions</h4>
+                {solutions.slice(0, 5).map((item) => (
+                  <Link key={item.slug} href={base(`solutions/${item.slug}`)}>{item.title}</Link>
+                ))}
+                <Link href={base("technical-support")}>Technical Support</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Link className={pathname === base("markets") ? "active" : ""} href={base("markets")}>Markets</Link>
+        <Link className={pathname === base("blog") ? "active" : ""} href={base("blog")}>News</Link>
+        <div className={`nav-item has-mega ${mega === "company" ? "mega-open" : ""}`} onMouseEnter={() => setMega("company")} onMouseLeave={() => setMega(null)}>
+          <button className="nav-trigger" type="button" aria-expanded={mega === "company"} onClick={() => setMega(mega === "company" ? null : "company")}>
+            Company
+          </button>
+          <div className="mega-menu mega-company" role="region" aria-label="Company">
+            <div className="mega-feature">
+              <span className="eyebrow">Company</span>
+              <h3>Cowinmagnet Chile and South America</h3>
+              <p>Export partner and technical support for magnetic separation equipment projects.</p>
+            </div>
+            <div className="mega-columns">
+              <div>
+                <h4>About</h4>
+                <Link href={base("about")}>About Us</Link>
+                <Link href={base("downloads")}>Downloads</Link>
+                <Link href={base("search")}>Search</Link>
+              </div>
+              <div>
+                <h4>Contact</h4>
+                <Link href={base("contact")}>Contact</Link>
+                <Link href={base("request-a-quote")}>Request a Quote</Link>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="language-switcher">
           <button className="nav-trigger" type="button" aria-label="Language" onClick={() => setMega(mega === "lang" ? null : "lang")}>

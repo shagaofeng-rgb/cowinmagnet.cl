@@ -13,7 +13,7 @@ export default async function ProductsPage({ params }: { params: Promise<{ local
   return (
     <>
       <Breadcrumbs locale={locale} items={[{ label: copy.products }]} />
-      <HeroBanner eyebrow={copy.products} title={copy.productCenterTitle} summary={copy.productCenterSummary} image="/assets/generated/product-permanent-separator.png" />
+      <HeroBanner eyebrow={copy.products} title={copy.productCenterTitle} summary={copy.productCenterSummary} image="/assets/products/rcyd-type-permanent-magnet-self-dumping-iron-remover/rcyd-type-permanent-magnet-self-dumping-iron-remover-01.jpg" />
       <section className="band">
         <div className="page-grid">
           {productCategories.map((category) => {

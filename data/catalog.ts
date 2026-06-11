@@ -2,11 +2,11 @@ import { productCategories as mainProductCategoryNames, products as mainProducts
 import { Locale } from "./site";
 
 export const categoryImages = {
-  permanent: "/assets/generated/product-permanent-separator.png",
-  electro: "/assets/generated/product-electromagnetic-separator.png",
-  recycling: "/assets/generated/latam-mining-overband.png",
-  components: "/assets/generated/product-magnetic-components.png",
-  application: "/assets/generated/application-cement-aggregates.png"
+  permanent: "/assets/products/rcyd-type-permanent-magnet-self-dumping-iron-remover/rcyd-type-permanent-magnet-self-dumping-iron-remover-01.jpg",
+  electro: "/assets/products/wet-drum-magnetic-separator/wet-drum-magnetic-separator-01.jpg",
+  recycling: "/assets/products/permanent-overband-magnetic-separator/permanent-overband-magnetic-separator-01.jpg",
+  components: "/assets/products/cbs-drawer-type-magnetic-filter/cbs-drawer-type-magnetic-filter-01.jpg",
+  application: "/assets/products/high-frequency-screen/high-frequency-screen-01.jpg"
 } as const;
 
 type CategoryKey = keyof typeof categoryImages;

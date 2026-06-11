@@ -12,7 +12,7 @@ export default async function RequestQuotePage({ params }: { params: Promise<{ l
   return (
     <>
       <Breadcrumbs locale={locale} items={[{ label: copy.nav.quote }]} />
-      <HeroBanner eyebrow={copy.quotePage.eyebrow} title={copy.quotePage.title} summary={copy.quotePage.summary} image="/assets/generated/product-electromagnetic-separator.png" />
+      <HeroBanner eyebrow={copy.quotePage.eyebrow} title={copy.quotePage.title} summary={copy.quotePage.summary} image="/assets/products/rcde-type-oil-cooled-electromagnetic-iron-remover/rcde-type-oil-cooled-electromagnetic-iron-remover-01.jpg" />
       <section className="band"><QuoteForm locale={locale} /></section>
     </>
   );

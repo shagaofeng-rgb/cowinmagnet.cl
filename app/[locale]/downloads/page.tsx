@@ -31,7 +31,7 @@ export default async function DownloadsPage({ params }: { params: Promise<{ loca
   return (
     <>
       <Breadcrumbs locale={locale} items={[{ label: "Downloads" }]} />
-      <HeroBanner eyebrow="Downloads" title="Catalogos, hojas tecnicas y cuestionarios" summary="Archivos locales disponibles para preparar una solicitud tecnica antes de cotizar." image="/assets/generated/product-magnetic-components.png" />
+      <HeroBanner eyebrow="Downloads" title="Catalogos, hojas tecnicas y cuestionarios" summary="Archivos locales disponibles para preparar una solicitud tecnica antes de cotizar." image="/assets/products/cbs-drawer-type-magnetic-filter/cbs-drawer-type-magnetic-filter-01.jpg" />
       <section className="band">
         <div className="page-grid">
           {downloads.map((item) => (

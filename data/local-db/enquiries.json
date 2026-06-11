@@ -1,0 +1,20 @@
+[
+  {
+    "id": "INQ-1781004206535",
+    "status": "New",
+    "createdAt": "2026-06-09T11:23:26.535Z",
+    "projectDescription": "Local preview enquiry save test",
+    "industry": "Mining",
+    "company": "Cowinmagnet Local",
+    "name": "Preview Tester",
+    "sourcePage": "/es-cl/request-a-quote",
+    "whatsapp": "+56900000000",
+    "language": "Spanish",
+    "region": "Antofagasta",
+    "product": "Wet Drum Magnetic Separator",
+    "country": "Chile",
+    "capacity": "100 tph",
+    "material": "Copper ore",
+    "email": "preview@example.com"
+  }
+]

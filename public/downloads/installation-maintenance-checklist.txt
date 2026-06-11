@@ -1,0 +1,23 @@
+Cowinmagnet LATAM - Checklist de instalacion y mantenimiento
+
+Instalacion:
+- Confirmar punto de instalacion y direccion del flujo.
+- Confirmar ancho, velocidad y carga de la cinta.
+- Confirmar altura de suspension y espacio disponible.
+- Revisar estructura, acceso de limpieza y seguridad.
+- Confirmar voltaje, frecuencia, fases y gabinete de control.
+- Confirmar proteccion exterior, polvo, humedad, corrosion y altitud.
+
+Puesta en marcha:
+- Verificar fijaciones mecanicas.
+- Verificar conexion electrica y protecciones.
+- Verificar distancia al material.
+- Verificar limpieza manual o automatica.
+- Registrar condiciones iniciales de operacion.
+
+Mantenimiento:
+- Revisar acumulacion de hierro y material.
+- Revisar banda, rodillos, rodamientos y raspadores.
+- Revisar gabinete, cables y sensores.
+- Revisar temperatura, ruido y vibracion.
+- Mantener registro de inspeccion por fecha.

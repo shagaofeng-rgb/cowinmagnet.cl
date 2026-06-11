@@ -1,0 +1,26 @@
+field,description,required
+name,Nombre del contacto,yes
+company,Empresa,yes
+country,Pais,yes
+region,Ciudad o region,yes
+email,Correo,yes
+whatsapp,WhatsApp o telefono,yes
+language,Idioma preferido,no
+product,Producto requerido,no
+industry,Industria,no
+material,Material,no
+maxSize,Tamano maximo,no
+capacity,Capacidad,no
+beltWidth,Ancho de cinta,no
+beltSpeed,Velocidad de cinta,no
+layerThickness,Espesor de capa,no
+suspensionHeight,Altura de instalacion,no
+installation,Tipo de instalacion,no
+cleaning,Metodo de limpieza,no
+altitude,Altitud del sitio,no
+temperature,Temperatura ambiente,no
+voltage,Voltaje,no
+frequency,Frecuencia,no
+phases,Numero de fases,no
+projectDescription,Descripcion del proyecto,yes
+attachments,Archivos adjuntos,no

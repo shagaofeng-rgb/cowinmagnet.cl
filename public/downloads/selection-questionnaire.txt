@@ -1,0 +1,27 @@
+Cowinmagnet LATAM - Cuestionario de seleccion
+
+1. Empresa:
+2. Pais, ciudad o region:
+3. Persona de contacto:
+4. Email:
+5. WhatsApp:
+6. Producto requerido:
+7. Industria:
+8. Material:
+9. Tamano maximo del material:
+10. Capacidad:
+11. Ancho de cinta:
+12. Velocidad de cinta:
+13. Espesor de la capa:
+14. Altura de suspension:
+15. Instalacion transversal, en linea o sobre chute:
+16. Limpieza manual o automatica:
+17. Contaminante ferroso esperado:
+18. Altitud del sitio:
+19. Temperatura ambiente:
+20. Polvo, humedad, corrosion o trabajo exterior:
+21. Voltaje:
+22. Frecuencia:
+23. Numero de fases:
+24. Dimensiones disponibles:
+25. Observaciones del proyecto:

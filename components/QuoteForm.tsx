@@ -71,30 +71,29 @@ export function QuoteForm() {
       }}
     >
       <label>Nombre<input name="name" autoComplete="name" required /></label>
-      <label>Empresa<input name="company" autoComplete="organization" required /></label>
-      <label>Pais<select name="country" required><option value="">Seleccionar</option><option>Chile</option><option>Peru</option><option>Brazil</option><option>Argentina</option><option>Bolivia</option><option>Colombia</option><option>Ecuador</option></select></label>
-      <label>Ciudad o Region<input name="region" required /></label>
-      <label>Correo<input type="email" name="email" autoComplete="email" required /></label>
-      <label>WhatsApp<input name="whatsapp" autoComplete="tel" required /></label>
-      <label>Idioma preferido<select name="language"><option>Spanish</option><option>Portuguese</option><option>English</option></select></label>
-      <label>Producto requerido<input name="product" /></label>
-      <label>Industria<input name="industry" /></label>
-      <label>Material<input name="material" /></label>
-      <label>Tamano maximo<input name="maxSize" placeholder="mm" /></label>
-      <label>Capacidad<input name="capacity" placeholder="t/h" /></label>
-      <label>Ancho de cinta<input name="beltWidth" placeholder="mm" /></label>
-      <label>Velocidad de cinta<input name="beltSpeed" placeholder="m/s" /></label>
-      <label>Espesor de capa<input name="layerThickness" placeholder="mm" /></label>
-      <label>Altura de instalacion<input name="suspensionHeight" placeholder="mm" /></label>
-      <label>Instalacion<select name="installation"><option value="">Seleccionar</option><option>Transversal</option><option>En linea</option><option>Sobre chute</option><option>Por confirmar</option></select></label>
-      <label>Limpieza<select name="cleaning"><option value="">Seleccionar</option><option>Manual</option><option>Automatica</option><option>Autolimpiante</option><option>Por confirmar</option></select></label>
-      <label>Altitud<input name="altitude" placeholder="m s.n.m." /></label>
-      <label>Temperatura ambiente<input name="temperature" placeholder="C" /></label>
-      <label>Voltaje<input name="voltage" placeholder="V" /></label>
-      <label>Frecuencia<input name="frequency" placeholder="Hz" /></label>
-      <label>Fases<select name="phases"><option value="">Seleccionar</option><option>1 fase</option><option>3 fases</option><option>DC</option><option>Por confirmar</option></select></label>
-      <label className="full">Archivos adjuntos<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp" /></label>
-      <label className="full">Descripcion<textarea name="projectDescription" rows={5} required /></label>
+      <label>Pais<select name="country" required><option value="">Seleccionar</option><option>Chile</option><option>Peru</option><option>Brazil</option><option>Argentina</option><option>Bolivia</option><option>Colombia</option><option>Ecuador</option><option>Other LATAM</option></select></label>
+      <label>WhatsApp o telefono<input name="whatsapp" autoComplete="tel" placeholder="+56..." /></label>
+      <label>Correo<input type="email" name="email" autoComplete="email" placeholder="name@company.com" /></label>
+      <label>Producto o necesidad<input name="product" placeholder="Separador magnetico, detector, reciclaje..." required /></label>
+      <label>Material o industria<input name="material" placeholder="Cobre, hierro, aridos, reciclaje..." /></label>
+      <label className="full">Mensaje breve<textarea name="projectDescription" rows={4} placeholder="Cuente en 2-3 lineas que quiere separar, proteger o cotizar." required /></label>
+      <details className="optional-fields full">
+        <summary>Agregar datos tecnicos opcionales</summary>
+        <div className="optional-grid">
+          <label>Empresa<input name="company" autoComplete="organization" /></label>
+          <label>Ciudad o region<input name="region" /></label>
+          <label>Industria<input name="industry" /></label>
+          <label>Capacidad<input name="capacity" placeholder="t/h" /></label>
+          <label>Ancho de cinta<input name="beltWidth" placeholder="mm" /></label>
+          <label>Altura de instalacion<input name="suspensionHeight" placeholder="mm" /></label>
+          <label>Instalacion<select name="installation"><option value="">Seleccionar</option><option>Transversal</option><option>En linea</option><option>Sobre chute</option><option>Por confirmar</option></select></label>
+          <label>Limpieza<select name="cleaning"><option value="">Seleccionar</option><option>Manual</option><option>Automatica</option><option>Autolimpiante</option><option>Por confirmar</option></select></label>
+          <label>Voltaje<input name="voltage" placeholder="V" /></label>
+          <label>Idioma preferido<select name="language"><option>Spanish</option><option>Portuguese</option><option>English</option></select></label>
+          <label className="full">Archivos adjuntos<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp" /></label>
+        </div>
+      </details>
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" className="honeypot" aria-hidden="true" />
       <label className="consent full"><input type="checkbox" required /> Acepto que Cowinmagnet use estos datos para responder mi consulta.</label>
       <button className="button primary" type="submit" disabled={loading}>{loading ? "Enviando..." : "Enviar solicitud"}</button>
       <p className="form-status" role="status">{status}</p>

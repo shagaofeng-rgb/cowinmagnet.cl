@@ -15,10 +15,14 @@ function clientIp(request) {
 
 function validate(payload) {
   const errors = {};
+  const email = payload.email?.trim() || "";
+  const whatsapp = payload.whatsapp?.trim() || "";
   if (!payload.name?.trim()) errors.name = "Name is required.";
-  if (!payload.email?.trim() || !emailPattern.test(payload.email.trim())) errors.email = "Valid email is required.";
-  if (!payload.whatsapp?.trim() || !phonePattern.test(payload.whatsapp.trim())) errors.whatsapp = "Valid WhatsApp or phone is required.";
   if (!payload.country?.trim()) errors.country = "Country is required.";
+  if (!email && !whatsapp) errors.contact = "Email or WhatsApp is required.";
+  if (email && !emailPattern.test(email)) errors.email = "Valid email is required.";
+  if (whatsapp && !phonePattern.test(whatsapp)) errors.whatsapp = "Valid WhatsApp or phone is required.";
+  if (!payload.product?.trim()) errors.product = "Product or requirement is required.";
   if (!payload.projectDescription?.trim()) errors.projectDescription = "Project description is required.";
   if (payload.website?.trim()) errors.website = "Spam submission blocked.";
   return errors;
@@ -46,7 +50,7 @@ export async function POST(request) {
   const errors = validate(payload);
   if (Object.keys(errors).length) return Response.json({ success: false, error: "Validation failed", errors }, { status: 400 });
 
-  const key = `${ip}:${payload.email.trim().toLowerCase()}`;
+  const key = `${ip}:${(payload.email || payload.whatsapp || "unknown").trim().toLowerCase()}`;
   if (!checkRateLimit(key)) return Response.json({ success: false, error: "Too many submissions" }, { status: 429 });
 
   const saved = await saveEnquiry(payload);

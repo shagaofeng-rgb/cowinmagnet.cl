@@ -1,19 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Locale, localizedPath, siteConfig } from "@/data/site";
+import { Locale, localizedPath, siteConfig, uiText } from "@/data/site";
 
 export function Footer({ locale }: { locale: Locale }) {
   const base = (path = "") => localizedPath(locale, path);
+  const copy = uiText[locale] ?? uiText["es-cl"];
   return (
     <>
       <footer className="footer" id="footer">
         <div className="footer-cta">
           <div>
-            <span className="eyebrow">Quote Support</span>
-            <h2>Seleccione el equipo correcto con datos reales del proyecto.</h2>
+            <span className="eyebrow">{copy.footer.quoteSupport}</span>
+            <h2>{copy.footer.cta}</h2>
           </div>
           <div className="footer-cta-actions">
-            <Link className="button primary" href={base("request-a-quote")}>Solicitar cotizacion</Link>
+            <Link className="button primary" href={base("request-a-quote")}>{copy.footer.quote}</Link>
             <a className="button light" href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer nofollow">WhatsApp</a>
           </div>
         </div>
@@ -23,21 +24,21 @@ export function Footer({ locale }: { locale: Locale }) {
               <Image src="/assets/logo.jpg" alt="Cowinmagnet" width={44} height={44} />
               <span>COWIN MAGNET LATAM</span>
             </Link>
-            <p>Magnetic separation equipment solution provider and export partner for South America mining and industrial projects.</p>
+            <p>{copy.footer.description}</p>
           </div>
           <div className="footer-column">
-            <h3>Explore</h3>
+            <h3>{copy.footer.explore}</h3>
             <ul>
-              <li><Link href={base("products")}>Products</Link></li>
-              <li><Link href={base("industries")}>Industries</Link></li>
-              <li><Link href={base("solutions")}>Solutions</Link></li>
-              <li><Link href={base("markets")}>Markets</Link></li>
-              <li><Link href={base("technical-support")}>Technical Support</Link></li>
-              <li><Link href={base("blog")}>Blog</Link></li>
+              <li><Link href={base("products")}>{copy.nav.products}</Link></li>
+              <li><Link href={base("industries")}>{copy.nav.industries}</Link></li>
+              <li><Link href={base("solutions")}>{copy.nav.solutions}</Link></li>
+              <li><Link href={base("markets")}>{copy.nav.markets}</Link></li>
+              <li><Link href={base("technical-support")}>{copy.nav.support}</Link></li>
+              <li><Link href={base("blog")}>{copy.nav.news}</Link></li>
             </ul>
           </div>
           <div className="footer-column footer-contact-card">
-            <h3>Contacts</h3>
+            <h3>{copy.footer.contacts}</h3>
             <p className="footer-contact-line">{siteConfig.company}</p>
             <a className="footer-contact-line" href={`tel:+${siteConfig.whatsapp}`}>+86 156 6513 5205</a>
             <a className="footer-contact-line" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>

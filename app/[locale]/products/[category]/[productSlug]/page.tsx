@@ -112,7 +112,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <article><h3>{copy.technicalSupport}</h3><p>{copy.technicalSupportText}</p><Link href={localizedPath(locale, "technical-support")}>{copy.viewSupport}</Link></article>
         </div>
       </section>
-      <section className="band muted"><div className="section-heading"><p className="eyebrow">{copy.quote}</p><h2>{copy.quoteTitle}</h2></div><QuoteForm /></section>
+      <section className="band muted"><div className="section-heading"><p className="eyebrow">{copy.quote}</p><h2>{copy.quoteTitle}</h2></div><QuoteForm locale={locale} /></section>
       <section className="band"><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>{copy.fullQuote}</Link></section>
     </>
   );

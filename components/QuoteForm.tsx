@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { Locale, uiText } from "@/data/site";
 
-export function QuoteForm() {
+export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const copy = uiText[locale] ?? uiText["es-cl"];
 
   return (
     <form
@@ -13,13 +15,13 @@ export function QuoteForm() {
         event.preventDefault();
         const form = event.currentTarget;
         if (!form.checkValidity()) {
-          setStatus("Revise los campos obligatorios.");
+          setStatus(copy.quoteForm.reviewRequired);
           form.reportValidity();
           return;
         }
 
         setLoading(true);
-        setStatus("Enviando solicitud...");
+        setStatus(copy.quoteForm.sending);
         const formData = new FormData(form);
         const payload = {
           name: String(formData.get("name") || ""),
@@ -58,44 +60,44 @@ export function QuoteForm() {
           });
           const result = await response.json();
           if (!response.ok || !result.success) {
-            setStatus(result.error || "No se pudo enviar la solicitud.");
+            setStatus(result.error || copy.quoteForm.failed);
             return;
           }
-          setStatus(`Solicitud guardada: ${result.data.id}`);
+          setStatus(`${copy.quoteForm.success}: ${result.data.id}`);
           form.reset();
         } catch {
-          setStatus("No se pudo conectar con el servidor.");
+          setStatus(copy.quoteForm.connectError);
         } finally {
           setLoading(false);
         }
       }}
     >
-      <label>Nombre<input name="name" autoComplete="name" required /></label>
-      <label>Pais<select name="country" required><option value="">Seleccionar</option><option>Chile</option><option>Peru</option><option>Brazil</option><option>Argentina</option><option>Bolivia</option><option>Colombia</option><option>Ecuador</option><option>Other LATAM</option></select></label>
-      <label>WhatsApp o telefono<input name="whatsapp" autoComplete="tel" placeholder="+56..." /></label>
-      <label>Correo<input type="email" name="email" autoComplete="email" placeholder="name@company.com" /></label>
-      <label>Producto o necesidad<input name="product" placeholder="Separador magnetico, detector, reciclaje..." required /></label>
-      <label>Material o industria<input name="material" placeholder="Cobre, hierro, aridos, reciclaje..." /></label>
-      <label className="full">Mensaje breve<textarea name="projectDescription" rows={4} placeholder="Cuente en 2-3 lineas que quiere separar, proteger o cotizar." required /></label>
+      <label>{copy.quoteForm.name}<input name="name" autoComplete="name" required /></label>
+      <label>{copy.quoteForm.country}<select name="country" required><option value="">{copy.quoteForm.select}</option><option>Chile</option><option>Peru</option><option>Brazil</option><option>Argentina</option><option>Bolivia</option><option>Colombia</option><option>Ecuador</option><option>Other LATAM</option></select></label>
+      <label>{copy.quoteForm.phone}<input name="whatsapp" autoComplete="tel" placeholder="+56..." /></label>
+      <label>{copy.quoteForm.email}<input type="email" name="email" autoComplete="email" placeholder="name@company.com" /></label>
+      <label>{copy.quoteForm.product}<input name="product" placeholder={copy.quoteForm.productPlaceholder} required /></label>
+      <label>{copy.quoteForm.material}<input name="material" placeholder={copy.quoteForm.materialPlaceholder} /></label>
+      <label className="full">{copy.quoteForm.message}<textarea name="projectDescription" rows={4} placeholder={copy.quoteForm.messagePlaceholder} required /></label>
       <details className="optional-fields full">
-        <summary>Agregar datos tecnicos opcionales</summary>
+        <summary>{copy.quoteForm.optional}</summary>
         <div className="optional-grid">
-          <label>Empresa<input name="company" autoComplete="organization" /></label>
-          <label>Ciudad o region<input name="region" /></label>
-          <label>Industria<input name="industry" /></label>
-          <label>Capacidad<input name="capacity" placeholder="t/h" /></label>
-          <label>Ancho de cinta<input name="beltWidth" placeholder="mm" /></label>
-          <label>Altura de instalacion<input name="suspensionHeight" placeholder="mm" /></label>
-          <label>Instalacion<select name="installation"><option value="">Seleccionar</option><option>Transversal</option><option>En linea</option><option>Sobre chute</option><option>Por confirmar</option></select></label>
-          <label>Limpieza<select name="cleaning"><option value="">Seleccionar</option><option>Manual</option><option>Automatica</option><option>Autolimpiante</option><option>Por confirmar</option></select></label>
-          <label>Voltaje<input name="voltage" placeholder="V" /></label>
-          <label>Idioma preferido<select name="language"><option>Spanish</option><option>Portuguese</option><option>English</option></select></label>
-          <label className="full">Archivos adjuntos<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp" /></label>
+          <label>{copy.quoteForm.company}<input name="company" autoComplete="organization" /></label>
+          <label>{copy.quoteForm.region}<input name="region" /></label>
+          <label>{copy.quoteForm.industry}<input name="industry" /></label>
+          <label>{copy.quoteForm.capacity}<input name="capacity" placeholder="t/h" /></label>
+          <label>{copy.quoteForm.beltWidth}<input name="beltWidth" placeholder="mm" /></label>
+          <label>{copy.quoteForm.suspensionHeight}<input name="suspensionHeight" placeholder="mm" /></label>
+          <label>{copy.quoteForm.installation}<select name="installation"><option value="">{copy.quoteForm.select}</option><option>Cross-belt</option><option>Inline</option><option>Above chute</option><option>To confirm</option></select></label>
+          <label>{copy.quoteForm.cleaning}<select name="cleaning"><option value="">{copy.quoteForm.select}</option><option>Manual</option><option>Automatic</option><option>Self-cleaning</option><option>To confirm</option></select></label>
+          <label>{copy.quoteForm.voltage}<input name="voltage" placeholder="V" /></label>
+          <label>{copy.quoteForm.language}<select name="language"><option>Spanish</option><option>Portuguese</option><option>English</option></select></label>
+          <label className="full">{copy.quoteForm.attachments}<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp" /></label>
         </div>
       </details>
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="honeypot" aria-hidden="true" />
-      <label className="consent full"><input type="checkbox" required /> Acepto que Cowinmagnet use estos datos para responder mi consulta.</label>
-      <button className="button primary" type="submit" disabled={loading}>{loading ? "Enviando..." : "Enviar solicitud"}</button>
+      <label className="consent full"><input type="checkbox" required /> {copy.quoteForm.consent}</label>
+      <button className="button primary" type="submit" disabled={loading}>{loading ? copy.quoteForm.submitting : copy.quoteForm.submit}</button>
       <p className="form-status" role="status">{status}</p>
     </form>
   );

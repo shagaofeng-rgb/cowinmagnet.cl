@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Locale, localeLabels, locales, localizedPath, siteConfig } from "@/data/site";
+import { Locale, localeLabels, locales, localizedPath, siteConfig, uiText } from "@/data/site";
 import { getCategoryDisplay, industries, productCategories, solutions } from "@/data/catalog";
 
 export function Header({ locale }: { locale: Locale }) {
@@ -13,27 +13,40 @@ export function Header({ locale }: { locale: Locale }) {
   const [mega, setMega] = useState<string | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
   const base = (path = "") => localizedPath(locale, path);
+  const copy = uiText[locale] ?? uiText["es-cl"];
   const featuredProducts = [
     {
       href: "products/suspended-self-unloading-iron-removers/rcyd-type-permanent-magnet-self-dumping-iron-remover",
       title: "RCYD permanent iron remover",
-      text: "Self-unloading tramp iron removal above conveyor belts."
+      text: locale === "pt-br" ? "Remocao autolimpante de ferro tramp sobre correias." : locale === "en" ? "Self-unloading tramp iron removal above conveyor belts." : "Retiro autolimpiante de hierro trampa sobre cintas."
     },
     {
       href: "products/magnetic-separation-equipment/wet-drum-magnetic-separator",
       title: "Wet Drum Magnetic Separator",
-      text: "Wet mineral and slurry magnetic separation."
+      text: locale === "pt-br" ? "Separacao magnetica umida para minerais e polpas." : locale === "en" ? "Wet mineral and slurry magnetic separation." : "Separacion magnetica humeda para minerales y pulpas."
     },
     {
       href: "products/metal-detection-recycling-sorting/permanent-overband-magnetic-separator",
       title: "Permanent Overband Magnetic Separator",
-      text: "Continuous ferrous metal capture for recycling and bulk handling."
+      text: locale === "pt-br" ? "Captura continua de metais ferrosos para reciclagem e granels." : locale === "en" ? "Continuous ferrous metal capture for recycling and bulk handling." : "Captura continua de metales ferrosos para reciclaje y graneles."
     }
   ];
   const supportLinks = [
-    { href: "technical-support", title: "Selection guide", text: "Material, belt, capacity and installation data." },
-    { href: "downloads", title: "Downloads", text: "Questionnaires and maintenance checklists." },
-    { href: "request-a-quote", title: "Send requirement", text: "Share the minimum useful data for quote follow-up." }
+    {
+      href: "technical-support",
+      title: locale === "pt-br" ? "Guia de selecao" : locale === "en" ? "Selection guide" : "Guia de seleccion",
+      text: locale === "pt-br" ? "Material, correia, capacidade e instalacao." : locale === "en" ? "Material, belt, capacity and installation data." : "Material, cinta, capacidad e instalacion."
+    },
+    {
+      href: "downloads",
+      title: locale === "pt-br" ? "Downloads" : locale === "en" ? "Downloads" : "Descargas",
+      text: locale === "pt-br" ? "Questionarios e listas de manutencao." : locale === "en" ? "Questionnaires and maintenance checklists." : "Cuestionarios y listas de mantenimiento."
+    },
+    {
+      href: "request-a-quote",
+      title: locale === "pt-br" ? "Enviar requisito" : locale === "en" ? "Send requirement" : "Enviar requerimiento",
+      text: locale === "pt-br" ? "Compartilhe o minimo util para acompanhamento." : locale === "en" ? "Share the minimum useful data for quote follow-up." : "Comparta los datos minimos utiles para seguimiento."
+    }
   ];
 
   useEffect(() => {
@@ -77,27 +90,27 @@ export function Header({ locale }: { locale: Locale }) {
         Menu
       </button>
       <nav id="site-nav" className={`site-nav ${mobileOpen ? "open" : ""}`} aria-label="Main navigation">
-        <Link className={pathname === base() ? "active" : ""} href={base()}>Home</Link>
+        <Link className={pathname === base() ? "active" : ""} href={base()}>{copy.nav.home}</Link>
         <div className={`nav-item has-mega ${mega === "products" ? "mega-open" : ""}`} onMouseEnter={() => setMega("products")} onMouseLeave={() => setMega(null)}>
           <button className="nav-trigger" type="button" aria-expanded={mega === "products"} onClick={() => setMega(mega === "products" ? null : "products")}>
-            Products
+            {copy.nav.products}
           </button>
           <div className="mega-menu" role="region" aria-label="Products">
             <div className="mega-feature">
-              <span className="eyebrow">Product Center</span>
-              <h3>Magnetic separation equipment for South America</h3>
-              <p>88 synced Cowinmagnet products across suspended magnets, wet/dry separators, recycling sorting, magnetic filters and industrial equipment.</p>
-              <Link className="mega-cta" href={base("products")}>View products</Link>
+              <span className="eyebrow">{copy.nav.productCenter}</span>
+              <h3>{copy.nav.productTitle}</h3>
+              <p>{copy.nav.productText}</p>
+              <Link className="mega-cta" href={base("products")}>{copy.nav.viewProducts}</Link>
             </div>
             <div className="mega-columns">
               <div>
-                <h4>Categories</h4>
+                <h4>{copy.nav.categories}</h4>
                 {productCategories.map((category) => (
                   <Link key={category.slug} href={base(`products/${category.slug}`)}>{getCategoryDisplay(category, locale).title}</Link>
                 ))}
               </div>
               <div>
-                <h4>Common buyer paths</h4>
+                <h4>{copy.nav.buyerPaths}</h4>
                 {featuredProducts.map((item) => (
                   <Link className="mega-rich-link" key={item.href} href={base(item.href)}>
                     <strong>{item.title}</strong>
@@ -106,9 +119,9 @@ export function Header({ locale }: { locale: Locale }) {
                 ))}
               </div>
               <div>
-                <h4>Before quotation</h4>
-                <p className="mega-note">Useful data: material, capacity, belt width, installation height, contamination type and site voltage.</p>
-                <Link href={base("request-a-quote")}>Send project requirement</Link>
+                <h4>{copy.nav.beforeQuote}</h4>
+                <p className="mega-note">{copy.nav.beforeQuoteText}</p>
+                <Link href={base("request-a-quote")}>{copy.nav.sendRequirement}</Link>
               </div>
             </div>
           </div>
@@ -116,31 +129,31 @@ export function Header({ locale }: { locale: Locale }) {
 
         <div className={`nav-item has-mega ${mega === "applications" ? "mega-open" : ""}`} onMouseEnter={() => setMega("applications")} onMouseLeave={() => setMega(null)}>
           <button className="nav-trigger" type="button" aria-expanded={mega === "applications"} onClick={() => setMega(mega === "applications" ? null : "applications")}>
-            Applications
+            {copy.nav.applications}
           </button>
           <div className="mega-menu mega-compact" role="region" aria-label="Applications">
             <div className="mega-feature">
-              <span className="eyebrow">Applications</span>
-              <h3>Industries, solutions and selection support</h3>
-              <p>Start from the site problem: crusher protection, tramp iron removal, recycling recovery, dusty plants or high-altitude mining.</p>
-              <Link className="mega-cta" href={base("industries")}>View applications</Link>
+              <span className="eyebrow">{copy.nav.applications}</span>
+              <h3>{copy.nav.applicationsTitle}</h3>
+              <p>{copy.nav.applicationsText}</p>
+              <Link className="mega-cta" href={base("industries")}>{copy.nav.viewApplications}</Link>
             </div>
             <div className="mega-columns">
               <div>
-                <h4>Industries</h4>
+                <h4>{copy.nav.industries}</h4>
                 {industries.slice(0, 5).map((item) => (
                   <Link key={item.slug} href={base(`industries/${item.slug}`)}>{item.title}</Link>
                 ))}
               </div>
               <div>
-                <h4>Solutions</h4>
+                <h4>{copy.nav.solutions}</h4>
                 {solutions.slice(0, 5).map((item) => (
                   <Link key={item.slug} href={base(`solutions/${item.slug}`)}>{item.title}</Link>
                 ))}
-                <Link href={base("technical-support")}>Technical Support</Link>
+                <Link href={base("technical-support")}>{copy.nav.support}</Link>
               </div>
               <div>
-                <h4>Practical support</h4>
+                <h4>{copy.nav.practicalSupport}</h4>
                 {supportLinks.map((item) => (
                   <Link className="mega-rich-link" key={item.href} href={base(item.href)}>
                     <strong>{item.title}</strong>
@@ -152,9 +165,9 @@ export function Header({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <Link className={pathname === base("markets") ? "active" : ""} href={base("markets")}>Markets</Link>
-        <Link className={pathname === base("blog") ? "active" : ""} href={base("blog")}>News</Link>
-        <Link className={pathname === base("about") ? "active" : ""} href={base("about")}>About</Link>
+        <Link className={pathname === base("markets") ? "active" : ""} href={base("markets")}>{copy.nav.markets}</Link>
+        <Link className={pathname === base("blog") ? "active" : ""} href={base("blog")}>{copy.nav.news}</Link>
+        <Link className={pathname === base("about") ? "active" : ""} href={base("about")}>{copy.nav.about}</Link>
 
         <div className="language-switcher">
           <button className="nav-trigger" type="button" aria-label="Language" onClick={() => setMega(mega === "lang" ? null : "lang")}>
@@ -166,7 +179,7 @@ export function Header({ locale }: { locale: Locale }) {
             ))}
           </div>
         </div>
-        <Link className="quote-link" href={base("request-a-quote")}>Request a Quote</Link>
+        <Link className="quote-link" href={base("request-a-quote")}>{copy.nav.quote}</Link>
       </nav>
     </header>
   );

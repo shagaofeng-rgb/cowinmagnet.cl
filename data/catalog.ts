@@ -401,7 +401,15 @@ export const industries = [
   slug,
   title: slug.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join(" "),
   summary: "Problemas comunes, riesgos para trituradoras y cintas, equipos recomendados y factores de seleccion.",
-  image: slug.includes("cemento") || slug.includes("aridos") ? categoryImages.application : "/assets/generated/latam-mining-overband.png"
+  image: {
+    "mineria-de-cobre": "/assets/markets/chile-copper-ore.jpg",
+    "mineria-de-hierro": "/assets/markets/brazil-iron-ore.jpg",
+    reciclaje: "/assets/markets/uruguay-recycling-line.jpg",
+    "cantera-y-aridos": "/assets/markets/paraguay-aggregate-line.jpg",
+    cemento: "/assets/markets/argentina-limestone.jpg",
+    "sistemas-de-transporte": "/assets/markets/calama-copper.jpg",
+    "puertos-y-terminales": "/assets/markets/colombia-coal.jpg"
+  }[slug] ?? "/assets/markets/markets-hero.jpg"
 }));
 
 export const solutions = [
@@ -417,29 +425,104 @@ export const solutions = [
   slug,
   title: slug.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join(" "),
   summary: "Problema del cliente, equipo recomendado, parametros de seleccion, productos relacionados y CTA.",
-  image: "/assets/generated/latam-mining-overband.png"
+  image: {
+    "recuperacion-de-metales-ferrosos": "/assets/markets/uruguay-recycling-line.jpg",
+    "altas-altitudes": "/assets/markets/antofagasta-copper.jpg",
+    "ambientes-polvorientos": "/assets/markets/argentina-limestone.jpg"
+  }[slug] ?? "/assets/markets/chile-copper-ore.jpg"
 }));
 
 export const markets = [
-  "chile",
-  "peru",
-  "brazil",
-  "argentina",
-  "bolivia",
-  "colombia",
-  "ecuador",
-  "uruguay",
-  "paraguay"
-].map((slug) => ({
-  slug,
-  title: slug[0].toUpperCase() + slug.slice(1),
-  summary: "Industrias locales, minerales principales, aplicaciones de cintas, condiciones ambientales y logistica.",
-  image: slug === "chile" || slug === "peru" ? "/assets/generated/latam-mining-overband.png" : categoryImages.application
-}));
+  {
+    slug: "chile",
+    title: "Chile",
+    summary: "Cobre, litio, correas transportadoras de alta exigencia, polvo, altitud y logistica minera.",
+    image: "/assets/markets/chile-copper-ore.jpg"
+  },
+  {
+    slug: "peru",
+    title: "Peru",
+    summary: "Mineria andina, cobre, oro, chancado, transporte de mineral y proteccion de equipos.",
+    image: "/assets/markets/peru-gold-ore.jpg"
+  },
+  {
+    slug: "brazil",
+    title: "Brazil",
+    summary: "Mineral de hierro, agregados, puertos, reciclaje industrial y lineas de gran tonelaje.",
+    image: "/assets/markets/brazil-iron-ore.jpg"
+  },
+  {
+    slug: "argentina",
+    title: "Argentina",
+    summary: "Litio, aridos, cemento, canteras y aplicaciones de separacion para materiales industriales.",
+    image: "/assets/markets/argentina-limestone.jpg"
+  },
+  {
+    slug: "bolivia",
+    title: "Bolivia",
+    summary: "Minerales metalicos, manganeso, altura, polvo y seleccion magnetica para procesos mineros.",
+    image: "/assets/markets/bolivia-manganese-ore.jpg"
+  },
+  {
+    slug: "colombia",
+    title: "Colombia",
+    summary: "Carbon, agregados, puertos, transportadores y proteccion contra hierro trampa.",
+    image: "/assets/markets/colombia-coal.jpg"
+  },
+  {
+    slug: "ecuador",
+    title: "Ecuador",
+    summary: "Mineria, cuarzo, agregados y lineas de procesamiento con control de contaminacion ferrosa.",
+    image: "/assets/markets/ecuador-quartz-sand.jpg"
+  },
+  {
+    slug: "uruguay",
+    title: "Uruguay",
+    summary: "Reciclaje, manejo de residuos, materiales industriales y recuperacion de metales.",
+    image: "/assets/markets/uruguay-recycling-line.jpg"
+  },
+  {
+    slug: "paraguay",
+    title: "Paraguay",
+    summary: "Agregados, construccion, reciclaje y plantas de procesamiento de materiales.",
+    image: "/assets/markets/paraguay-aggregate-line.jpg"
+  }
+];
 
-export const chileRegions = ["antofagasta", "calama", "atacama", "coquimbo", "santiago"].map((slug) => ({
-  slug,
-  country: "chile",
-  title: slug[0].toUpperCase() + slug.slice(1),
-  summary: "Pagina regional chilena para aplicaciones mineras, condiciones ambientales, logistica y confirmacion electrica."
-}));
+export const chileRegions = [
+  {
+    slug: "antofagasta",
+    country: "chile",
+    title: "Antofagasta",
+    summary: "Region minera de cobre con alta exigencia en correas, polvo, altitud y continuidad operacional.",
+    image: "/assets/markets/antofagasta-copper.jpg"
+  },
+  {
+    slug: "calama",
+    country: "chile",
+    title: "Calama",
+    summary: "Aplicaciones de transporte de mineral, chancado y separacion magnetica en entorno desertico.",
+    image: "/assets/markets/calama-copper.jpg"
+  },
+  {
+    slug: "atacama",
+    country: "chile",
+    title: "Atacama",
+    summary: "Mineria metalica, polvo, altura y seleccion de equipos para puntos de transferencia.",
+    image: "/assets/markets/atacama-gold.jpg"
+  },
+  {
+    slug: "coquimbo",
+    country: "chile",
+    title: "Coquimbo",
+    summary: "Minerales, agregados y correas transportadoras con necesidad de proteccion de chancadores.",
+    image: "/assets/markets/coquimbo-iron.jpg"
+  },
+  {
+    slug: "santiago",
+    country: "chile",
+    title: "Santiago",
+    summary: "Reciclaje, servicios industriales, bodegas tecnicas y coordinacion logistica nacional.",
+    image: "/assets/markets/santiago-recycling.jpg"
+  }
+];

@@ -24,7 +24,7 @@ export default async function ChileRegionPage({ params }: { params: Promise<{ lo
   return (
     <>
       <Breadcrumbs locale={locale} items={[{ label: "Markets", href: localizedPath(locale, "markets") }, { label: "Chile", href: localizedPath(locale, "markets/chile") }, { label: region.title }]} />
-      <HeroBanner eyebrow="Chile Region" title={region.title} summary={region.summary} />
+      <HeroBanner eyebrow="Chile Region" title={region.title} summary={region.summary} image={region.image} />
       <section className="band"><div className="geo-grid"><article><h3>Minerales principales</h3><p>Confirmar mineral, granulometria, humedad y tonelaje del proyecto.</p></article><article><h3>Aplicaciones de cintas</h3><p>Proteccion de chancadores, correas transportadoras y puntos de transferencia.</p></article><article><h3>Confirmacion electrica</h3><p>Voltaje, frecuencia, fases, altitud y ambiente son obligatorios antes de seleccionar.</p></article></div></section>
     </>
   );

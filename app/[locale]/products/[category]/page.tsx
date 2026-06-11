@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContentCard } from "@/components/ContentCard";
 import { HeroBanner } from "@/components/HeroBanner";
-import { categoryImages, productCategories, products } from "@/data/catalog";
+import { categoryImages, getCategoryDisplay, getProductSummary, productCategories, productCopy, products } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
 
 export function generateStaticParams() {
@@ -23,11 +23,13 @@ export default async function ProductCategoryPage({ params }: { params: Promise<
   const category = productCategories.find((item) => item.slug === categorySlug);
   if (!category) notFound();
   const list = products.filter((item) => item.category === categorySlug);
+  const copy = productCopy[locale] ?? productCopy["es-cl"];
+  const display = getCategoryDisplay(category, locale);
   return (
     <>
-      <Breadcrumbs locale={locale} items={[{ label: "Products", href: localizedPath(locale, "products") }, { label: category.title }]} />
-      <HeroBanner eyebrow="Product Category" title={category.title} summary={category.summary} image={categoryImages[category.key]} />
-      <section className="band"><div className="page-grid">{list.map((product) => <ContentCard key={product.slug} title={product.title} summary={product.summary} image={product.image} href={localizedPath(locale, `products/${categorySlug}/${product.slug}`)} />)}</div></section>
+      <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: display.title }]} />
+      <HeroBanner eyebrow={copy.productCategory} title={display.title} summary={display.summary} image={categoryImages[category.key]} />
+      <section className="band"><div className="page-grid">{list.map((product) => <ContentCard key={product.slug} title={product.title} summary={getProductSummary(product, locale)} image={product.image} href={localizedPath(locale, `products/${categorySlug}/${product.slug}`)} />)}</div></section>
     </>
   );
 }

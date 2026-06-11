@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Locale, localeLabels, locales, localizedPath, siteConfig } from "@/data/site";
-import { industries, productCategories, solutions } from "@/data/catalog";
+import { getCategoryDisplay, industries, productCategories, solutions } from "@/data/catalog";
 
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
@@ -71,7 +71,7 @@ export function Header({ locale }: { locale: Locale }) {
               <div>
                 <h4>Categories</h4>
                 {productCategories.map((category) => (
-                  <Link key={category.slug} href={base(`products/${category.slug}`)}>{category.title}</Link>
+                  <Link key={category.slug} href={base(`products/${category.slug}`)}>{getCategoryDisplay(category, locale).title}</Link>
                 ))}
               </div>
               <div>

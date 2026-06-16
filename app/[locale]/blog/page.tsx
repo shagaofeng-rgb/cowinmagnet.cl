@@ -1,6 +1,7 @@
+import Image from "next/image";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
-import { posts } from "@/data/blog";
+import { getPublishedPosts } from "@/data/blog";
 import { Locale, localizedPath } from "@/data/site";
 import Link from "next/link";
 
@@ -8,12 +9,29 @@ export const metadata = { title: "Blog" };
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
+  const posts = await getPublishedPosts();
 
   return (
     <>
-      <Breadcrumbs locale={locale} items={[{ label: "Blog" }]} />
-      <HeroBanner eyebrow="Blog" title="Recursos sobre separacion magnetica" summary="Articulos con tabla de contenido, productos relacionados y CTA de cotizacion." />
-      <section className="band"><div className="page-grid">{posts.map((post) => <article className="content-card" key={post.slug}><div className="content-card-body"><h3>{post.title}</h3><p>{post.summary}</p><small>{post.date} | {post.author}</small><br /><Link href={localizedPath(locale, `blog/${post.slug}`)}>Leer articulo</Link></div></article>)}</div></section>
+      <Breadcrumbs locale={locale} items={[{ label: "News" }]} />
+      <HeroBanner eyebrow="News" title="Noticias industriales de Sudamerica" summary="Resumimos fuentes externas relevantes y agregamos una lectura tecnica para mineria, reciclaje, cemento y separacion magnetica." />
+      <section className="band">
+        <div className="news-grid">
+          {posts.map((post) => (
+            <article className="news-card" key={post.slug}>
+              {post.image ? <Image src={post.image} alt={post.title} width={720} height={430} unoptimized /> : null}
+              <div className="news-card-body">
+                <p className="eyebrow">{post.categoryTitle || "Industry News"}</p>
+                <h3>{post.title}</h3>
+                <p>{post.summary}</p>
+                <small>{post.date} | {post.author}</small>
+                {post.sourceUrl ? <small>Fuente: {post.sourceTitle || post.sourceDomain}</small> : null}
+                <Link href={localizedPath(locale, `blog/${post.slug}`)}>Leer noticia</Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
     </>
   );
 }

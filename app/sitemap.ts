@@ -1,8 +1,12 @@
 import type { MetadataRoute } from "next";
 import { productCategories, products, industries, markets, chileRegions, solutions } from "@/data/catalog";
+import { getPublishedPosts } from "@/data/blog";
 
 const baseUrl = "https://cowinmagnet.cl";
 const locales = ["es-cl", "es", "pt-br", "en"];
+
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 function entry(path: string, priority = 0.7): MetadataRoute.Sitemap[number] {
   return {
@@ -13,7 +17,7 @@ function entry(path: string, priority = 0.7): MetadataRoute.Sitemap[number] {
   };
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages = locales.flatMap((locale) => [
     entry(`/${locale}`, 1),
     entry(`/${locale}/products`, 0.9),
@@ -47,5 +51,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     chileRegions.map((region) => entry(`/${locale}/markets/chile/${region.slug}`, 0.65))
   );
 
-  return [...staticPages, ...categoryPages, ...productPages, ...industryPages, ...solutionPages, ...marketPages, ...chileRegionPages];
+  const posts = await getPublishedPosts();
+  const blogPages = locales.flatMap((locale) =>
+    posts.map((post) => entry(`/${locale}/blog/${post.slug}`, 0.68))
+  );
+
+  return [...staticPages, ...categoryPages, ...productPages, ...industryPages, ...solutionPages, ...marketPages, ...chileRegionPages, ...blogPages];
 }

@@ -955,6 +955,96 @@ h3 { margin: 0 0 10px; font-size: 1.05rem; }
 .brief-cta p:not(.eyebrow) {
   color: #dbe6e2;
 }
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.news-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 14px 38px rgba(17, 44, 36, .06);
+}
+.news-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.news-card-body {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+}
+.news-card-body h3,
+.news-card-body p {
+  margin: 0;
+}
+.news-card-body p:not(.eyebrow),
+.news-card-body small {
+  color: var(--muted);
+}
+.news-card-body small {
+  display: block;
+}
+.news-card-body a,
+.news-source-box a,
+.news-article a {
+  color: var(--brand);
+  font-weight: 800;
+  text-decoration: none;
+}
+.news-article-layout {
+  background: linear-gradient(180deg, #f8faf9 0%, #eef4f1 100%);
+}
+.news-article {
+  display: grid;
+  gap: 22px;
+  width: min(920px, 100%);
+  margin: 0 auto;
+  padding: clamp(22px, 4vw, 40px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 16px 44px rgba(17, 44, 36, .08);
+}
+.news-article p,
+.news-article li {
+  color: #34443f;
+  line-height: 1.78;
+}
+.news-article h2 {
+  margin-top: 8px;
+  font-size: clamp(1.25rem, 2.2vw, 1.9rem);
+}
+.news-source-box,
+.geo-answer-box {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f4f8f6;
+}
+.geo-answer-box {
+  border-color: rgba(23, 108, 87, .24);
+  background: #edf6f2;
+}
+.news-article-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 560px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.news-meta-line {
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: .9rem;
+}
 .audit-grid article,
 .market-card,
 .geo-grid article,
@@ -1504,7 +1594,8 @@ textarea { resize: vertical; }
   .home-market-layout,
   .brief-product-row { grid-template-columns: 1fr; }
   .home-paths,
-  .home-image-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-image-grid,
+  .news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brief-product-row img {
     width: 100%;
     height: 180px;
@@ -1534,6 +1625,7 @@ textarea { resize: vertical; }
   .home-paths,
   .home-image-grid,
   .home-market-links,
+  .news-grid,
   .quote-form,
   .optional-grid,
   .toc { grid-template-columns: 1fr; }

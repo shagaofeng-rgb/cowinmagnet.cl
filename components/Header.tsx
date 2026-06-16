@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Locale, localeLabels, locales, localizedPath, siteConfig, uiText } from "@/data/site";
-import { getCategoryDisplay, industries, productCategories, solutions } from "@/data/catalog";
+import { getCategoryDisplay, productCategories } from "@/data/catalog";
 
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
@@ -31,24 +31,6 @@ export function Header({ locale }: { locale: Locale }) {
       text: locale === "pt-br" ? "Captura continua de metais ferrosos para reciclagem e granels." : locale === "en" ? "Continuous ferrous metal capture for recycling and bulk handling." : "Captura continua de metales ferrosos para reciclaje y graneles."
     }
   ];
-  const supportLinks = [
-    {
-      href: "technical-support",
-      title: locale === "pt-br" ? "Guia de selecao" : locale === "en" ? "Selection guide" : "Guia de seleccion",
-      text: locale === "pt-br" ? "Material, correia, capacidade e instalacao." : locale === "en" ? "Material, belt, capacity and installation data." : "Material, cinta, capacidad e instalacion."
-    },
-    {
-      href: "downloads",
-      title: locale === "pt-br" ? "Downloads" : locale === "en" ? "Downloads" : "Descargas",
-      text: locale === "pt-br" ? "Questionarios e listas de manutencao." : locale === "en" ? "Questionnaires and maintenance checklists." : "Cuestionarios y listas de mantenimiento."
-    },
-    {
-      href: "request-a-quote",
-      title: locale === "pt-br" ? "Enviar requisito" : locale === "en" ? "Send requirement" : "Enviar requerimiento",
-      text: locale === "pt-br" ? "Compartilhe o minimo util para acompanhamento." : locale === "en" ? "Share the minimum useful data for quote follow-up." : "Comparta los datos minimos utiles para seguimiento."
-    }
-  ];
-
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -127,45 +109,6 @@ export function Header({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <div className={`nav-item has-mega ${mega === "applications" ? "mega-open" : ""}`} onMouseEnter={() => setMega("applications")} onMouseLeave={() => setMega(null)}>
-          <button className="nav-trigger" type="button" aria-expanded={mega === "applications"} onClick={() => setMega(mega === "applications" ? null : "applications")}>
-            {copy.nav.applications}
-          </button>
-          <div className="mega-menu mega-compact" role="region" aria-label="Applications">
-            <div className="mega-feature">
-              <span className="eyebrow">{copy.nav.applications}</span>
-              <h3>{copy.nav.applicationsTitle}</h3>
-              <p>{copy.nav.applicationsText}</p>
-              <Link className="mega-cta" href={base("industries")}>{copy.nav.viewApplications}</Link>
-            </div>
-            <div className="mega-columns">
-              <div>
-                <h4>{copy.nav.industries}</h4>
-                {industries.slice(0, 5).map((item) => (
-                  <Link key={item.slug} href={base(`industries/${item.slug}`)}>{item.title}</Link>
-                ))}
-              </div>
-              <div>
-                <h4>{copy.nav.solutions}</h4>
-                {solutions.slice(0, 5).map((item) => (
-                  <Link key={item.slug} href={base(`solutions/${item.slug}`)}>{item.title}</Link>
-                ))}
-                <Link href={base("technical-support")}>{copy.nav.support}</Link>
-              </div>
-              <div>
-                <h4>{copy.nav.practicalSupport}</h4>
-                {supportLinks.map((item) => (
-                  <Link className="mega-rich-link" key={item.href} href={base(item.href)}>
-                    <strong>{item.title}</strong>
-                    <span>{item.text}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <Link className={pathname === base("markets") ? "active" : ""} href={base("markets")}>{copy.nav.markets}</Link>
         <Link className={pathname === base("blog") ? "active" : ""} href={base("blog")}>{copy.nav.news}</Link>
         <Link className={pathname === base("about") ? "active" : ""} href={base("about")}>{copy.nav.about}</Link>
 

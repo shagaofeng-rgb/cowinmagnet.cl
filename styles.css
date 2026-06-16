@@ -29,9 +29,9 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  min-height: 72px;
-  padding: 10px clamp(18px, 4vw, 56px);
+  gap: 16px;
+  min-height: 64px;
+  padding: 8px clamp(16px, 4vw, 48px);
   background: rgba(248, 250, 249, .94);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(14px);
@@ -39,7 +39,7 @@ a { color: inherit; }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 9px;
   min-width: 0;
   text-decoration: none;
   font-weight: 700;
@@ -47,16 +47,16 @@ a { color: inherit; }
 .brand-logo-wrap {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 8px;
   background: #fff;
-  box-shadow: 0 8px 22px rgba(21, 73, 122, .12);
+  box-shadow: 0 6px 16px rgba(21, 73, 122, .1);
 }
 .brand img {
-  width: 60px;
-  height: 60px;
+  width: 54px;
+  height: 54px;
   object-fit: contain;
   transform: scale(1.65);
 }
@@ -67,14 +67,14 @@ a { color: inherit; }
 }
 .brand-copy strong {
   color: var(--brand);
-  font-size: .98rem;
+  font-size: .92rem;
   letter-spacing: 0;
 }
 .brand-copy small {
   color: #70807a;
-  font-size: .72rem;
+  font-size: .66rem;
   font-weight: 700;
-  letter-spacing: .02em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 .site-nav {
@@ -781,6 +781,180 @@ h3 { margin: 0 0 10px; font-size: 1.05rem; }
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
+.brief-page {
+  background: linear-gradient(180deg, #f8faf9 0%, #eef4f1 100%);
+}
+.brief-intro,
+.brief-stack,
+.brief-group,
+.brief-cta {
+  width: min(1120px, 100%);
+  margin-inline: auto;
+}
+.brief-intro {
+  max-width: 880px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+.brief-intro p:not(.eyebrow),
+.brief-group-head p,
+.brief-text-section p,
+.brief-text-section li,
+.brief-cta p:not(.eyebrow) {
+  color: var(--muted);
+  line-height: 1.68;
+}
+.brief-stack {
+  display: grid;
+  gap: 18px;
+}
+.brief-group,
+.brief-text-section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 14px 38px rgba(17, 44, 36, .06);
+}
+.brief-group {
+  padding: clamp(20px, 3vw, 30px);
+}
+.brief-group-head {
+  display: grid;
+  gap: 8px;
+  max-width: 820px;
+  margin-bottom: 18px;
+}
+.brief-group-head h2,
+.brief-text-section h2 {
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+}
+.brief-product-list {
+  display: grid;
+  gap: 10px;
+}
+.brief-product-row {
+  display: grid;
+  grid-template-columns: 156px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfdfc;
+}
+.brief-product-row img {
+  width: 156px;
+  height: 112px;
+  object-fit: contain;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--white);
+}
+.brief-product-row span {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #eaf2ef;
+  color: var(--brand);
+  font-size: .78rem;
+  font-weight: 900;
+}
+.brief-product-row h3 {
+  margin: 0 0 5px;
+}
+.brief-product-row p {
+  margin: 0;
+  color: var(--muted);
+}
+.brief-table-image {
+  width: min(900px, 100%);
+  margin: 0 auto 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+.brief-table-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.brief-table-wrap {
+  width: min(1120px, 100%);
+  margin: 0 auto 18px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+.brief-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+.brief-table th,
+.brief-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.brief-table thead th {
+  background: #dfeaf5;
+  color: #10231f;
+}
+.brief-table tbody th {
+  width: 220px;
+  color: var(--ink);
+}
+.brief-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.brief-chip-list a {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f4f8f6;
+  color: var(--brand);
+  font-weight: 800;
+  text-decoration: none;
+}
+.brief-text-section {
+  display: grid;
+  gap: 12px;
+  padding: clamp(22px, 4vw, 36px);
+}
+.brief-text-section p,
+.brief-text-section ul {
+  margin: 0;
+}
+.brief-text-section ul {
+  display: grid;
+  gap: 10px;
+  padding-left: 20px;
+}
+.brief-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin-top: 22px;
+  padding: clamp(22px, 4vw, 34px);
+  border-radius: 8px;
+  background: #10231f;
+  color: var(--white);
+}
+.brief-cta .eyebrow {
+  color: var(--accent);
+}
+.brief-cta p:not(.eyebrow) {
+  color: #dbe6e2;
+}
 .audit-grid article,
 .market-card,
 .geo-grid article,
@@ -1281,7 +1455,7 @@ textarea { resize: vertical; }
   .menu-button { display: inline-flex; align-items: center; }
   .site-nav {
     position: absolute;
-    top: 72px;
+    top: 64px;
     left: 0;
     right: 0;
     display: none;
@@ -1327,9 +1501,17 @@ textarea { resize: vertical; }
   .optional-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .home-hero-inner,
   .home-product-showcase,
-  .home-market-layout { grid-template-columns: 1fr; }
+  .home-market-layout,
+  .brief-product-row { grid-template-columns: 1fr; }
   .home-paths,
   .home-image-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .brief-product-row img {
+    width: 100%;
+    height: 180px;
+  }
+  .brief-product-row .text-link {
+    justify-self: start;
+  }
   .home-market-map img { min-height: 340px; }
   .detail-layout,
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -1362,7 +1544,8 @@ textarea { resize: vertical; }
     padding-top: 108px;
   }
   .home-hero-panel div,
-  .home-quote-band {
+  .home-quote-band,
+  .brief-cta {
     flex-direction: column;
     align-items: flex-start;
   }

@@ -25,8 +25,8 @@ const homeCopy: Record<Locale, {
     heroTitle: "Equipos de separacion magnetica para mineria, reciclaje y manejo de graneles",
     heroSummary: "Catalogo de productos, orientacion de aplicacion y soporte de cotizacion para proteccion de cintas, eliminacion de hierro trampa, separacion humeda/seca y recuperacion en Sudamerica.",
     stats: [
-      { value: "88", label: "productos sincronizados" },
-      { value: "5", label: "familias de producto" },
+      { value: "21", label: "productos clave" },
+      { value: "4", label: "familias de producto" },
       { value: "LATAM", label: "paginas de mercado" }
     ],
     paths: [
@@ -35,7 +35,7 @@ const homeCopy: Record<Locale, {
       { label: "03", title: "Chile y Sudamerica", summary: "Condiciones para mineria, aridos, reciclaje y logistica regional.", href: "markets/chile" }
     ],
     productTitle: "Parte desde una familia real de productos",
-    productSummary: "Cada categoria abre productos sincronizados del sitio principal, con imagenes reales, notas de seleccion y acceso directo a cotizacion.",
+    productSummary: "Cada categoria muestra productos clave con imagenes reales, notas simples de seleccion y acceso directo a cotizacion.",
     featuredEyebrow: "Equipo destacado",
     featuredTitle: "RCYD removedor de hierro autodescargable con iman permanente",
     featuredSummary: "Punto de partida frecuente para retiro de hierro trampa en cintas de mineria, aridos y manejo de graneles.",
@@ -51,8 +51,8 @@ const homeCopy: Record<Locale, {
     heroTitle: "Equipos de separacion magnetica para mineria, reciclaje y manejo de graneles",
     heroSummary: "Catalogo de productos, orientacion de aplicacion y soporte de cotizacion para proteccion de cintas, eliminacion de hierro trampa, separacion humeda/seca y recuperacion en Sudamerica.",
     stats: [
-      { value: "88", label: "productos sincronizados" },
-      { value: "5", label: "familias de producto" },
+      { value: "21", label: "productos clave" },
+      { value: "4", label: "familias de producto" },
       { value: "LATAM", label: "paginas de mercado" }
     ],
     paths: [
@@ -61,7 +61,7 @@ const homeCopy: Record<Locale, {
       { label: "03", title: "Chile y Sudamerica", summary: "Condiciones para mineria, aridos, reciclaje y logistica regional.", href: "markets/chile" }
     ],
     productTitle: "Parte desde una familia real de productos",
-    productSummary: "Cada categoria abre productos sincronizados del sitio principal, con imagenes reales, notas de seleccion y acceso directo a cotizacion.",
+    productSummary: "Cada categoria muestra productos clave con imagenes reales, notas simples de seleccion y acceso directo a cotizacion.",
     featuredEyebrow: "Equipo destacado",
     featuredTitle: "RCYD removedor de hierro autodescargable con iman permanente",
     featuredSummary: "Punto de partida frecuente para retiro de hierro trampa en cintas de mineria, aridos y manejo de graneles.",
@@ -77,8 +77,8 @@ const homeCopy: Record<Locale, {
     heroTitle: "Equipamentos de separacao magnetica para mineracao, reciclagem e granéis",
     heroSummary: "Catalogo de produtos, orientacao de aplicacao e suporte de cotacao para protecao de correias, remocao de ferro tramp, separacao umida/seca e recuperacao na America do Sul.",
     stats: [
-      { value: "88", label: "produtos sincronizados" },
-      { value: "5", label: "familias de produto" },
+      { value: "21", label: "produtos principais" },
+      { value: "4", label: "familias de produto" },
       { value: "LATAM", label: "paginas de mercado" }
     ],
     paths: [
@@ -87,7 +87,7 @@ const homeCopy: Record<Locale, {
       { label: "03", title: "Chile e America do Sul", summary: "Condicoes para mineracao, agregados, reciclagem e logistica regional.", href: "markets/chile" }
     ],
     productTitle: "Comece por uma familia real de produtos",
-    productSummary: "Cada categoria abre produtos sincronizados do site principal, com imagens reais, notas de selecao e caminho direto para cotacao.",
+    productSummary: "Cada categoria mostra produtos principais com imagens reais, notas simples de selecao e caminho direto para cotacao.",
     featuredEyebrow: "Equipamento em destaque",
     featuredTitle: "RCYD removedor de ferro autodescarregavel com ima permanente",
     featuredSummary: "Ponto de partida comum para remocao de ferro tramp em correias de mineracao, agregados e granéis.",
@@ -103,8 +103,8 @@ const homeCopy: Record<Locale, {
     heroTitle: "Magnetic separation equipment for mining, recycling and bulk handling",
     heroSummary: "Product catalog, application guidance and quote support for conveyor protection, tramp iron removal, wet/dry separation and recycling recovery across South America.",
     stats: [
-      { value: "88", label: "synced products" },
-      { value: "5", label: "product families" },
+      { value: "21", label: "core products" },
+      { value: "4", label: "product families" },
       { value: "LATAM", label: "market pages" }
     ],
     paths: [
@@ -113,7 +113,7 @@ const homeCopy: Record<Locale, {
       { label: "03", title: "Chile and South America", summary: "Mining, aggregates, recycling and logistics conditions.", href: "markets/chile" }
     ],
     productTitle: "Start from a real product family",
-    productSummary: "Each category opens into synced main-site products with real images, selection notes and direct quotation paths.",
+    productSummary: "Each category shows core products with real images, simple selection notes and direct quotation paths.",
     featuredEyebrow: "Featured equipment",
     featuredTitle: "RCYD permanent magnet self dumping iron remover",
     featuredSummary: "Common starting point for conveyor tramp iron removal in mining, aggregate and bulk handling lines.",
@@ -133,7 +133,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   const copy = uiText[locale] ?? uiText["es-cl"];
   const productText = productCopy[locale] ?? productCopy["es-cl"];
   const home = homeCopy[locale] ?? homeCopy["es-cl"];
-  const featuredCategories = productCategories.slice(0, 5).map((category) => ({
+  const featuredCategories = productCategories.slice(0, 4).map((category) => ({
     ...category,
     display: getCategoryDisplay(category, locale)
   }));

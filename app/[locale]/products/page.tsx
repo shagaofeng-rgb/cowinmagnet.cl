@@ -1,8 +1,10 @@
+import Image from "next/image";
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ContentCard } from "@/components/ContentCard";
 import { HeroBanner } from "@/components/HeroBanner";
-import { categoryImages, getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
-import { Locale, localizedPath } from "@/data/site";
+import { briefProductGroups, getBriefProductHref } from "@/data/brief";
+import { productCopy } from "@/data/catalog";
+import { Locale } from "@/data/site";
 
 export const metadata = { title: "Products" };
 
@@ -13,13 +15,38 @@ export default async function ProductsPage({ params }: { params: Promise<{ local
   return (
     <>
       <Breadcrumbs locale={locale} items={[{ label: copy.products }]} />
-      <HeroBanner eyebrow={copy.products} title={copy.productCenterTitle} summary={copy.productCenterSummary} image="/assets/products/rcyd-type-permanent-magnet-self-dumping-iron-remover/rcyd-type-permanent-magnet-self-dumping-iron-remover-01.jpg" />
-      <section className="band">
-        <div className="page-grid">
-          {productCategories.map((category) => {
-            const display = getCategoryDisplay(category, locale);
-            return <ContentCard key={category.slug} title={display.title} summary={display.summary} image={categoryImages[category.key]} href={localizedPath(locale, `products/${category.slug}`)} />;
-          })}
+      <HeroBanner eyebrow={copy.products} title="Productos principales de separacion magnetica" summary="Una vista clara por familias: equipos suspendidos, separadores magneticos, reciclaje y componentes de filtracion." image="/assets/brief/rcyd-self-cleaning-permanent-magnet.jpg" />
+      <section className="band brief-page">
+        <div className="brief-intro">
+          <p className="eyebrow">Simple catalog</p>
+          <h2>Productos clave para cotizacion tecnica</h2>
+          <p>La seleccion final depende del material, ancho de cinta, capacidad, altura de instalacion, ambiente y energia disponible. Esta pagina deja solo las familias utiles para revisar rapido.</p>
+        </div>
+        <div className="brief-stack">
+          {briefProductGroups.map((group) => (
+            <section className="brief-group" id={group.id} key={group.id}>
+              <div className="brief-group-head">
+                <p className="eyebrow">{group.products.length} products</p>
+                <h2>{group.title[locale]}</h2>
+                <p>{group.summary[locale]}</p>
+              </div>
+              <div className="brief-product-list">
+                {group.products.map((product) => (
+                  <article className="brief-product-row" key={product.model}>
+                    <Image src={product.image} alt={`${product.model} ${product.title}`} width={260} height={190} />
+                    <div>
+                      <span>{product.model}</span>
+                      <h3>{product.title}</h3>
+                      <p>{product.summary}</p>
+                    </div>
+                    <Link className="text-link" href={getBriefProductHref(locale, product)}>
+                      {product.href ? copy.viewProduct : copy.fullQuote}
+                    </Link>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       </section>
     </>

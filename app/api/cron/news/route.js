@@ -18,7 +18,7 @@ export async function GET(request) {
   }
 
   const url = new URL(request.url);
-  const limit = Math.min(3, Math.max(1, Number(url.searchParams.get("limit") || 3)));
+  const limit = Math.min(4, Math.max(1, Number(url.searchParams.get("limit") || 4)));
   const dryRun = url.searchParams.get("dryRun") === "1";
   const result = await runNewsAutomation({ limit, dryRun });
   return Response.json(result);

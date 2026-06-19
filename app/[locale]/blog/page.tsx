@@ -9,7 +9,7 @@ export const metadata = { title: "Blog" };
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
-  const posts = await getPublishedPosts();
+  const posts = await getPublishedPosts(locale);
 
   return (
     <>

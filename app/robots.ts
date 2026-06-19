@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/"
     },
-    sitemap: "https://cowinmagnet.cl/sitemap.xml"
+    sitemap: ["https://cowinmagnet.cl/sitemap.xml", "https://cowinmagnet.cl/news-sitemap.xml"]
   };
 }

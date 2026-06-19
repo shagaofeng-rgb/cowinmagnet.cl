@@ -11,9 +11,9 @@ export function generateStaticParams() {
   return posts.flatMap((post) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, slug: post.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const post = await getPostBySlug(slug);
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
+  const { locale, slug } = await params;
+  const post = await getPostBySlug(slug, locale);
   return {
     title: post ? post.title : "Blog",
     description: post?.summary,
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogPostPage({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
   const { locale, slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getPostBySlug(slug, locale);
   if (!post) notFound();
   const copy = productCopy[locale] ?? productCopy["es-cl"];
   const articleBody = post.body ? post.body.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean) : [];
@@ -59,6 +59,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
           <div className="news-source-box">
             <p><strong>Fuente citada:</strong> {post.sourceUrl ? <a href={post.sourceUrl} target="_blank" rel="nofollow noopener noreferrer">{post.sourceTitle || post.sourceDomain || post.sourceUrl}</a> : "Cowinmagnet editorial"}</p>
             {post.sourceUrl ? <p>Esta noticia es un resumen editorial con analisis propio. No reproduce el articulo completo de la fuente original.</p> : null}
+            {post.imageCredit ? <p><strong>Imagen:</strong> {post.imageCredit}. Politica: {post.imagePolicy || "remote source image with credit"}.</p> : null}
           </div>
           {post.image ? <Image className="news-article-image" src={post.image} alt={post.title} width={1080} height={640} unoptimized /> : null}
           {post.geoSummary ? <section className="geo-answer-box"><p className="eyebrow">AI / GEO Summary</p><p>{post.geoSummary}</p></section> : null}

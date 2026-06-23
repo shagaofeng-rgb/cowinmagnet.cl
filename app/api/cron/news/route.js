@@ -22,6 +22,18 @@ export async function GET(request) {
   const dryRun = url.searchParams.get("dryRun") === "1";
   try {
     const result = await runNewsAutomation({ limit, dryRun });
+    if (!dryRun) {
+      return Response.json({
+        success: result.success,
+        publishedCount: result.data?.published?.length || 0,
+        selected_source: result.data?.log?.selected_source || [],
+        rejectedCount: result.data?.log?.rejected_sources?.length || 0,
+        daily_quota: result.data?.daily_quota,
+        published_today: result.data?.published_today,
+        remaining_today: result.data?.remaining_today,
+        time_zone: result.data?.time_zone
+      });
+    }
     return Response.json(result);
   } catch (error) {
     console.error("[cron/news] failed", error);

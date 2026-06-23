@@ -1,10 +1,10 @@
 import { getAdminDateRange } from "@/lib/adminDateRange";
 import { getAnalyticsSnapshot } from "@/lib/analyticsStore";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
-import { AdminPagesPanel } from "@/components/admin/AdminAnalyticsPanels";
+import { AdminPagesRealtime } from "@/components/admin/AdminRealtimePanels";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "页面表现 | Cowinmagnet LATAM" };
+export const metadata = { title: "页面表现 | Cowinmagnet.cl Admin" };
 
 export default async function AdminPagesPerformancePage({ searchParams }) {
   const params = await searchParams;
@@ -21,7 +21,7 @@ export default async function AdminPagesPerformancePage({ searchParams }) {
         </div>
         <AdminDateRangeFilter range={range} />
       </section>
-      <AdminPagesPanel data={analytics} />
+      <AdminPagesRealtime initialData={analytics} />
     </>
   );
 }

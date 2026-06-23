@@ -15,6 +15,14 @@
     {
       "path": "/api/cron/news?limit=1&slot=4",
       "schedule": "31 22 * * *"
+    },
+    {
+      "path": "/api/cron/analytics-sync",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/website-monitor",
+      "schedule": "7 */6 * * *"
     }
   ]
 }

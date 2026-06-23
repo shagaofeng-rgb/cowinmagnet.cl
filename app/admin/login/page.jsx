@@ -31,6 +31,7 @@ export default async function AdminLoginPage({ searchParams }) {
         </p>
         {!configured ? <div className="admin-alert">Admin login is not enabled yet. Configure an admin password first.</div> : null}
         {error ? <div className="admin-alert">{errorMessages[error] || "Login failed."}</div> : null}
+        {params?.reset === "success" ? <div className="admin-alert success">Password updated. Please sign in again.</div> : null}
         <form className="admin-login-form" action="/api/admin/login" method="post">
           <label>
             Email
@@ -41,6 +42,7 @@ export default async function AdminLoginPage({ searchParams }) {
             Login
           </button>
         </form>
+        <Link href="/admin/forgot-password">Forgot password?</Link>
       </section>
     </main>
   );

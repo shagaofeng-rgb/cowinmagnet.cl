@@ -1,10 +1,10 @@
 import { getAdminDateRange } from "@/lib/adminDateRange";
 import { getAnalyticsSnapshot } from "@/lib/analyticsStore";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
-import { AdminTrafficPanel } from "@/components/admin/AdminAnalyticsPanels";
+import { AdminTrafficRealtime } from "@/components/admin/AdminRealtimePanels";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "流量分析 | Cowinmagnet LATAM" };
+export const metadata = { title: "流量分析 | Cowinmagnet.cl Admin" };
 
 export default async function AdminAnalyticsPage({ searchParams }) {
   const params = await searchParams;
@@ -17,11 +17,11 @@ export default async function AdminAnalyticsPage({ searchParams }) {
         <div>
           <p className="eyebrow">流量分析</p>
           <h1>访问来源与设备分布</h1>
-          <p>按时间范围查看渠道、来源平台、国家地区、浏览器和设备表现。</p>
+          <p>按时间范围查看渠道、来源平台、国家地区、浏览器、设备和营销归因表现。</p>
         </div>
         <AdminDateRangeFilter range={range} />
       </section>
-      <AdminTrafficPanel data={analytics} />
+      <AdminTrafficRealtime initialData={analytics} />
     </>
   );
 }

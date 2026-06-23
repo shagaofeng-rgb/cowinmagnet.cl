@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { productCategories, products, industries, markets, solutions } from "@/data/catalog";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "内外链审计 | Cowinmagnet LATAM" };
+export const metadata = { title: "内外链审计 | Cowinmagnet.cl Admin" };
 
 function internalLinks() {
   const base = [
@@ -11,8 +12,8 @@ function internalLinks() {
     { title: "解决方案", url: "/es-cl/solutions", type: "核心页面" },
     { title: "报价页", url: "/es-cl/request-a-quote", type: "转化页面" }
   ];
-  const categoryLinks = productCategories.map((item) => ({ title: item.title, url: `/es-cl/products/${item.slug}`, type: "产品分类" }));
-  const productLinks = products.slice(0, 20).map((item) => ({ title: item.title, url: `/es-cl/products/${item.category}/${item.slug}`, type: "产品详情" }));
+  const categoryLinks = productCategories.map((item) => ({ title: item.title, url: `/es-cl/products/${item.slug || item.id}`, type: "产品分类" }));
+  const productLinks = products.slice(0, 40).map((item) => ({ title: item.title, url: `/es-cl/products/${item.categoryId || item.category}/${item.slug}`, type: "产品详情" }));
   const marketLinks = markets.map((item) => ({ title: item.title, url: `/es-cl/markets/${item.slug}`, type: "市场页面" }));
   const industryLinks = industries.map((item) => ({ title: item.title, url: `/es-cl/industries/${item.slug}`, type: "行业页面" }));
   const solutionLinks = solutions.map((item) => ({ title: item.title, url: `/es-cl/solutions/${item.slug}`, type: "方案页面" }));
@@ -22,7 +23,7 @@ function internalLinks() {
 export default function AdminLinkAuditPage() {
   const links = internalLinks();
   const externalLinks = [
-    { title: "Cowinmagnet 主站产品源", url: "https://www.cowinmagnet.com/en/products", status: "已同步" },
+    { title: "Cowinmagnet 主站产品源", url: "https://www.cowinmagnet.com/en/products", status: "已同步产品结构" },
     { title: "WhatsApp 联系入口", url: "https://wa.me/", status: "前台浮窗" },
     { title: "Google Search Console", url: "https://search.google.com/search-console", status: process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL ? "待拉取数据" : "未配置" }
   ];
@@ -33,14 +34,15 @@ export default function AdminLinkAuditPage() {
         <div>
           <p className="eyebrow">内外链审计</p>
           <h1>站内链接与外部来源检查</h1>
-          <p>用于检查核心页面、产品页、市场页和外部数据源，避免上线后出现无意义跳转或断链。</p>
+          <p>检查核心页面、产品页、市场页和外部数据源，避免上线后出现无意义跳转或断链。</p>
         </div>
+        <Link href="/api/admin/link-audit">查看 JSON 报告</Link>
       </div>
       <section className="admin-stats">
         <article><strong>{links.length}</strong><span>站内链接</span><small>当前索引</small></article>
         <article><strong>{productCategories.length}</strong><span>产品分类</span><small>主站同步</small></article>
         <article><strong>{products.length}</strong><span>产品详情</span><small>主站产品库</small></article>
-        <article><strong>{externalLinks.length}</strong><span>外部入口</span><small>需上线复核</small></article>
+        <article><strong>{externalLinks.length}</strong><span>外部入口</span><small>上线复核</small></article>
       </section>
       <section className="admin-grid">
         <article>

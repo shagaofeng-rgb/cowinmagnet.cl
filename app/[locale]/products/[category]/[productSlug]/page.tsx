@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { HeroBanner } from "@/components/HeroBanner";
@@ -11,12 +12,38 @@ export function generateStaticParams() {
   return products.flatMap((product) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, category: product.category, productSlug: product.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ productSlug: string }> }) {
-  const { productSlug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; category: string; productSlug: string }> }): Promise<Metadata> {
+  const { locale, category, productSlug } = await params;
   const product = products.find((item) => item.slug === productSlug);
+  const canonical = `/${locale}/products/${category}/${productSlug}`;
+  const title = product ? `${product.title} for magnetic separation projects` : "Product";
+  const description = product ? getProductSummary(product, locale).slice(0, 155) : undefined;
   return {
-    title: product ? product.title : "Product",
-    description: product?.summary
+    title,
+    description,
+    alternates: {
+      canonical,
+      languages: {
+        "es-CL": `/es-cl/products/${category}/${productSlug}`,
+        es: `/es/products/${category}/${productSlug}`,
+        "pt-BR": `/pt-br/products/${category}/${productSlug}`,
+        en: `/en/products/${category}/${productSlug}`,
+        "x-default": `/es-cl/products/${category}/${productSlug}`
+      }
+    },
+    openGraph: product ? {
+      title,
+      description,
+      type: "website",
+      url: canonical,
+      images: [{ url: product.image, width: 1200, height: 800, alt: product.title }]
+    } : undefined,
+    twitter: product ? {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [product.image]
+    } : undefined
   };
 }
 
@@ -30,6 +57,22 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const categoryDisplay = getCategoryDisplay(category, locale);
   const productSummary = getProductSummary(product, locale);
   const gallery = product.imageGallery?.length ? product.imageGallery : [product.image];
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: productSummary,
+    image: gallery.map((item) => item.startsWith("http") ? item : `https://cowinmagnet.cl${item}`),
+    brand: { "@type": "Brand", name: "Cowinmagnet" },
+    category: categoryDisplay.title,
+    url: `https://cowinmagnet.cl/${locale}/products/${product.category}/${product.slug}`,
+    additionalProperty: (product.parameters || []).slice(0, 12).map((item) => ({
+      "@type": "PropertyValue",
+      name: item,
+      value: copy.confirm
+    })),
+    isRelatedTo: product.sourceUrl
+  };
   const technicalRows = [
     "Tipo de sistema magnetico",
     "Intensidad del campo",
@@ -53,6 +96,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   return (
     <>
       <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: product.title }]} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       <HeroBanner eyebrow={copy.productDetail} title={product.title} summary={productSummary} image={product.image} />
       <section className="band">
         <div className="geo-grid">

@@ -4,17 +4,29 @@ import { ContentCard } from "@/components/ContentCard";
 import { HeroBanner } from "@/components/HeroBanner";
 import { categoryImages, getCategoryDisplay, getProductSummary, productCategories, productCopy, products } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
+import type { Metadata } from "next";
 
 export function generateStaticParams() {
   return productCategories.flatMap((category) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, category: category.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ category: string }> }) {
-  const { category: categorySlug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; category: string }> }): Promise<Metadata> {
+  const { locale, category: categorySlug } = await params;
   const category = productCategories.find((item) => item.slug === categorySlug);
+  const display = category ? getCategoryDisplay(category, locale) : null;
   return {
-    title: category ? category.title : "Product Category",
-    description: category?.summary
+    title: display ? display.title : "Product Category",
+    description: display?.summary,
+    alternates: {
+      canonical: `/${locale}/products/${categorySlug}`,
+      languages: {
+        "es-CL": `/es-cl/products/${categorySlug}`,
+        es: `/es/products/${categorySlug}`,
+        "pt-BR": `/pt-br/products/${categorySlug}`,
+        en: `/en/products/${categorySlug}`,
+        "x-default": `/es-cl/products/${categorySlug}`
+      }
+    }
   };
 }
 

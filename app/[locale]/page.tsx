@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCategoryDisplay, industries, markets, productCategories, productCopy, solutions } from "@/data/catalog";
+import type { Metadata } from "next";
+import { getCategoryDisplay, industries, markets, productCategories, productCopy, products, solutions } from "@/data/catalog";
 import { Locale, localizedPath, uiText } from "@/data/site";
 
 const homeCopy: Record<Locale, {
@@ -127,6 +128,43 @@ const homeCopy: Record<Locale, {
   }
 };
 
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const home = homeCopy[locale] ?? homeCopy["es-cl"];
+  const title = locale === "en"
+    ? "Magnetic Separation Equipment for Latin America"
+    : locale === "pt-br"
+      ? "Equipamentos de separacao magnetica para a America Latina"
+      : "Equipos de separacion magnetica para LATAM";
+  return {
+    title,
+    description: home.heroSummary,
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        "es-CL": "/es-cl",
+        es: "/es",
+        "pt-BR": "/pt-br",
+        en: "/en",
+        "x-default": "/es-cl"
+      }
+    },
+    openGraph: {
+      title: home.heroTitle,
+      description: home.heroSummary,
+      url: `/${locale}`,
+      type: "website",
+      images: [{ url: "/assets/markets/chile-copper-ore.jpg", width: 1200, height: 630, alt: "Copper mining conveyor operation in Chile" }]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: home.heroTitle,
+      description: home.heroSummary,
+      images: ["/assets/markets/chile-copper-ore.jpg"]
+    }
+  };
+}
+
 export default async function HomePage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const base = (path = "") => localizedPath(locale, path);
@@ -137,6 +175,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     ...category,
     display: getCategoryDisplay(category, locale)
   }));
+  const homeStats = home.stats.map((item, index) => index === 0 ? { ...item, value: String(products.length) } : item);
 
   return (
     <>
@@ -154,7 +193,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
             </div>
           </div>
           <div className="home-hero-panel" aria-label="Cowinmagnet catalog snapshot">
-            {home.stats.map((item) => (
+            {homeStats.map((item) => (
               <div key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>
             ))}
           </div>

@@ -5,8 +5,26 @@ import { HeroBanner } from "@/components/HeroBanner";
 import { briefProductGroups, getBriefProductHref } from "@/data/brief";
 import { productCopy } from "@/data/catalog";
 import { Locale } from "@/data/site";
+import type { Metadata } from "next";
 
-export const metadata = { title: "Products" };
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const copy = productCopy[locale] ?? productCopy["es-cl"];
+  return {
+    title: copy.productCenterTitle,
+    description: copy.productCenterSummary,
+    alternates: {
+      canonical: `/${locale}/products`,
+      languages: {
+        "es-CL": "/es-cl/products",
+        es: "/es/products",
+        "pt-BR": "/pt-br/products",
+        en: "/en/products",
+        "x-default": "/es-cl/products"
+      }
+    }
+  };
+}
 
 export default async function ProductsPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;

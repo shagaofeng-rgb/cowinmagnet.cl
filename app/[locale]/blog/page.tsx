@@ -4,8 +4,31 @@ import { HeroBanner } from "@/components/HeroBanner";
 import { getPublishedPosts } from "@/data/blog";
 import { Locale, localizedPath } from "@/data/site";
 import Link from "next/link";
+import type { Metadata } from "next";
 
-export const metadata = { title: "Blog" };
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const title = locale === "en" ? "Industry News for Magnetic Separation in the Americas" : locale === "pt-br" ? "Noticias industriais de separacao magnetica nas Americas" : "Noticias industriales de separacion magnetica en Americas";
+  const description = locale === "en"
+    ? "Editorial briefs from cited external sources with Cowinmagnet technical analysis for mining, recycling, cement and magnetic separation buyers."
+    : locale === "pt-br"
+      ? "Resumos editoriais com fontes citadas e analise tecnica para mineracao, reciclagem, cimento e separacao magnetica."
+      : "Resumimos fuentes externas relevantes y agregamos una lectura tecnica para mineria, reciclaje, cemento y separacion magnetica.";
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/${locale}/blog`,
+      languages: {
+        "es-CL": "/es-cl/blog",
+        es: "/es/blog",
+        "pt-BR": "/pt-br/blog",
+        en: "/en/blog",
+        "x-default": "/es-cl/blog"
+      }
+    }
+  };
+}
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;

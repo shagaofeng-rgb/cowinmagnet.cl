@@ -2,8 +2,26 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Locale, uiText } from "@/data/site";
+import type { Metadata } from "next";
 
-export const metadata = { title: "Request a Quote" };
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const copy = uiText[locale] ?? uiText["es-cl"];
+  return {
+    title: copy.quotePage.title,
+    description: copy.quotePage.summary,
+    alternates: {
+      canonical: `/${locale}/request-a-quote`,
+      languages: {
+        "es-CL": "/es-cl/request-a-quote",
+        es: "/es/request-a-quote",
+        "pt-BR": "/pt-br/request-a-quote",
+        en: "/en/request-a-quote",
+        "x-default": "/es-cl/request-a-quote"
+      }
+    }
+  };
+}
 
 export default async function RequestQuotePage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;

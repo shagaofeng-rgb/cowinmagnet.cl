@@ -37,13 +37,13 @@ export const metadata: Metadata = {
     title: "Cowinmagnet LATAM",
     description: "Magnetic separation equipment and technical quotation support for Chile and Latin America.",
     url: "https://cowinmagnet.cl",
-    images: [{ url: "/assets/markets/chile-copper-ore.jpg", width: 1200, height: 630, alt: "Cowinmagnet magnetic separation equipment for Chile mining" }]
+    images: [{ url: "/assets/home-hero-cowinmagnet-ai.jpg", width: 1600, height: 900, alt: "Cowinmagnet suspended magnetic separator and conveyor protection system" }]
   },
   twitter: {
     card: "summary_large_image",
     title: "Cowinmagnet LATAM",
     description: "Magnetic separation equipment and technical quotation support for Chile and Latin America.",
-    images: ["/assets/markets/chile-copper-ore.jpg"]
+    images: ["/assets/home-hero-cowinmagnet-ai.jpg"]
   }
 };
 

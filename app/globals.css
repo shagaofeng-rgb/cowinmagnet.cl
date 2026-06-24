@@ -40,7 +40,9 @@ body {
 .content-card img {
   width: 100%;
   aspect-ratio: 4 / 3;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 12px;
+  background: linear-gradient(135deg, #fbfdfc, #edf3f0);
 }
 
 .content-card-body {

@@ -354,7 +354,16 @@ a { color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   opacity: .68;
+}
+.page-hero-product img {
+  object-fit: contain;
+  object-position: right center;
+  padding: clamp(26px, 5vw, 72px) clamp(18px, 5vw, 70px) clamp(26px, 5vw, 72px) min(46vw, 620px);
+  background:
+    radial-gradient(circle at 78% 48%, rgba(255, 255, 255, .9), rgba(242, 247, 245, .56) 34%, rgba(16, 35, 31, .16) 68%),
+    linear-gradient(90deg, #10231f 0%, #223f38 100%);
 }
 .page-hero::after {
   content: "";
@@ -482,6 +491,7 @@ h3 { margin: 0 0 10px; font-size: 1.05rem; }
 }
 .home-hero img {
   object-fit: cover;
+  object-position: center right;
 }
 .home-hero-shade {
   position: absolute;
@@ -618,7 +628,9 @@ h3 { margin: 0 0 10px; font-size: 1.05rem; }
   display: block;
   width: 100%;
   height: clamp(260px, 36vw, 430px);
-  object-fit: cover;
+  object-fit: contain;
+  padding: clamp(14px, 2vw, 28px);
+  background: linear-gradient(135deg, #f7faf8, #eef4f1);
 }
 .home-feature-product div {
   display: grid;
@@ -676,6 +688,7 @@ h3 { margin: 0 0 10px; font-size: 1.05rem; }
   height: 100%;
   min-height: 280px;
   object-fit: cover;
+  object-position: center;
   transition: transform .35s ease;
 }
 .home-image-card::after {
@@ -732,6 +745,7 @@ h3 { margin: 0 0 10px; font-size: 1.05rem; }
   height: 100%;
   min-height: 460px;
   object-fit: cover;
+  object-position: center;
 }
 .home-market-links {
   display: grid;
@@ -1108,8 +1122,9 @@ dd { margin: 0 0 10px; font-weight: 700; }
 .product-card img {
   width: 100%;
   aspect-ratio: 4 / 3;
-  object-fit: cover;
-  background: #eef1ef;
+  object-fit: contain;
+  padding: 12px;
+  background: linear-gradient(135deg, #fbfdfc, #edf3f0);
   border-bottom: 1px solid var(--line);
 }
 .product-image-button {
@@ -1191,6 +1206,7 @@ dd { margin: 0 0 10px; font-weight: 700; }
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  object-position: center;
   border-radius: 8px;
   box-shadow: var(--shadow);
 }
@@ -1238,7 +1254,9 @@ dd { margin: 0 0 10px; font-weight: 700; }
   width: 100%;
   height: 100%;
   min-height: 420px;
-  object-fit: cover;
+  object-fit: contain;
+  padding: clamp(12px, 2vw, 28px);
+  background: linear-gradient(135deg, #fbfdfc, #eef4f1);
 }
 .detail-content {
   padding: clamp(20px, 4vw, 34px);
@@ -1604,6 +1622,11 @@ textarea { resize: vertical; }
     justify-self: start;
   }
   .home-market-map img { min-height: 340px; }
+  .page-hero-product img {
+    object-position: center;
+    padding: 210px clamp(16px, 5vw, 42px) 28px;
+    opacity: .46;
+  }
   .detail-layout,
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .product-layout { grid-template-columns: 1fr; }

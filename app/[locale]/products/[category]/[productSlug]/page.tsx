@@ -97,7 +97,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     <>
       <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: product.title }]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
-      <HeroBanner eyebrow={copy.productDetail} title={product.title} summary={productSummary} image={product.image} />
+      <HeroBanner eyebrow={copy.productDetail} title={product.title} summary={productSummary} image={product.image} imageMode="product" />
       <section className="band">
         <div className="geo-grid">
           <article><h3>{copy.overview}</h3><p>{productSummary}</p></article>

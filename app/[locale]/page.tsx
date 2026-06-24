@@ -154,13 +154,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
       description: home.heroSummary,
       url: `/${locale}`,
       type: "website",
-      images: [{ url: "/assets/markets/chile-copper-ore.jpg", width: 1200, height: 630, alt: "Copper mining conveyor operation in Chile" }]
+      images: [{ url: "/assets/home-hero-cowinmagnet-ai.jpg", width: 1600, height: 900, alt: "Cowinmagnet suspended magnetic separator and conveyor protection system" }]
     },
     twitter: {
       card: "summary_large_image",
       title: home.heroTitle,
       description: home.heroSummary,
-      images: ["/assets/markets/chile-copper-ore.jpg"]
+      images: ["/assets/home-hero-cowinmagnet-ai.jpg"]
     }
   };
 }
@@ -180,7 +180,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
   return (
     <>
       <section className="home-hero">
-        <Image src="/assets/markets/chile-copper-ore.jpg" alt="Copper mining conveyor operation in Chile" fill priority sizes="100vw" />
+        <Image src="/assets/home-hero-cowinmagnet-ai.jpg" alt="Cowinmagnet suspended magnetic separator and conveyor protection system" fill priority sizes="100vw" />
         <div className="home-hero-shade" />
         <div className="home-hero-inner">
           <div className="home-hero-copy">

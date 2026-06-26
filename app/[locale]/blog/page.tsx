@@ -6,6 +6,9 @@ import { Locale, localizedPath } from "@/data/site";
 import Link from "next/link";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const title = locale === "en" ? "Industry News for Magnetic Separation in the Americas" : locale === "pt-br" ? "Noticias industriais de separacao magnetica nas Americas" : "Noticias industriales de separacion magnetica en Americas";

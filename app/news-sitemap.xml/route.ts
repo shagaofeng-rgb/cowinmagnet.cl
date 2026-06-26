@@ -1,7 +1,7 @@
 import { getPublishedPosts } from "@/data/blog";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 1800;
+export const revalidate = 0;
 
 const baseUrl = "https://cowinmagnet.cl";
 
@@ -46,7 +46,7 @@ export async function GET() {
   return new Response(xml, {
     headers: {
       "content-type": "application/xml; charset=utf-8",
-      "cache-control": "public, max-age=900, s-maxage=1800"
+      "cache-control": "no-store, max-age=0"
     }
   });
 }

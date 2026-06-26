@@ -7,6 +7,9 @@ import { getPostBySlug, posts } from "@/data/blog";
 import { getProductSummary, productCopy, products } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export function generateStaticParams() {
   return posts.flatMap((post) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, slug: post.slug })));
 }

@@ -1,5 +1,6 @@
 import { getCmsItems } from "@/lib/cmsStore";
 import { Locale, defaultLocale } from "@/data/site";
+import { unstable_noStore as noStore } from "next/cache";
 
 export type LocalizedNewsContent = {
   title?: string;
@@ -102,6 +103,7 @@ function localizePost(post: BlogPost, locale: Locale = defaultLocale): BlogPost 
 }
 
 export async function getPublishedPosts(locale: Locale = defaultLocale): Promise<BlogPost[]> {
+  noStore();
   const cmsPosts = await getCmsItems("news");
   return [...cmsPosts.map(normalizeCmsPost), ...staticPosts].map((post) => localizePost(post, locale)).sort((a, b) => {
     return new Date(b.publishedAt || b.date).getTime() - new Date(a.publishedAt || a.date).getTime();

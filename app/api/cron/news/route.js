@@ -2,6 +2,7 @@ import { runNewsAutomation } from "@/lib/newsAutomation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 function isAuthorized(request) {
   const secret = process.env.CRON_SECRET;
@@ -23,15 +24,16 @@ export async function GET(request) {
   try {
     const result = await runNewsAutomation({ limit, dryRun });
     if (!dryRun) {
+      const log = result.data?.log || {};
       return Response.json({
         success: result.success,
         publishedCount: result.data?.published?.length || 0,
-        selected_source: result.data?.log?.selected_source || [],
-        rejectedCount: result.data?.log?.rejected_sources?.length || 0,
-        daily_quota: result.data?.daily_quota,
-        published_today: result.data?.published_today,
-        remaining_today: result.data?.remaining_today,
-        time_zone: result.data?.time_zone
+        selected_source: log.selected_source || [],
+        rejectedCount: log.rejected_sources?.length || 0,
+        daily_quota: log.daily_quota,
+        published_today: log.published_today,
+        remaining_today: log.remaining_today,
+        time_zone: log.time_zone
       });
     }
     return Response.json(result);

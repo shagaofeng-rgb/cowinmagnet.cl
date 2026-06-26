@@ -26,7 +26,7 @@ export async function POST(request) {
   }
 
   if (!isJson) {
-    const published = Array.isArray(result.published) ? result.published.length : Number(result.publishedCount || 0);
+    const published = Array.isArray(result.data?.published) ? result.data.published.length : 0;
     return NextResponse.redirect(new URL(`/admin/news?automation=${published ? "published" : "checked"}`, request.url), 303);
   }
 

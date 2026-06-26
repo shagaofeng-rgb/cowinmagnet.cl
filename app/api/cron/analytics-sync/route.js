@@ -1,5 +1,4 @@
-import { getAdminDateRange } from "@/lib/adminDateRange";
-import { getAnalyticsSnapshot } from "@/lib/analyticsStore";
+import { runAnalyticsSync } from "@/lib/analyticsStore";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,14 +14,11 @@ function isAuthorized(request) {
 
 export async function GET(request) {
   if (!isAuthorized(request)) return Response.json({ success: false, error: "Unauthorized" }, { status: 401 });
-  const range = getAdminDateRange({ range: "day" });
-  const snapshot = await getAnalyticsSnapshot(range);
+  const result = await runAnalyticsSync({ source: "vercel-cron" });
   return Response.json({
-    success: true,
-    processedCount: snapshot.overview.pageViews,
-    storageMode: snapshot.storageMode,
-    finishedAt: new Date().toISOString()
-  });
+    success: result.success,
+    ...result.data
+  }, { status: result.success ? 200 : 500 });
 }
 
 export async function POST(request) {

@@ -37,6 +37,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const copy = productCopy[locale] ?? productCopy["es-cl"];
   const articleBody = post.body ? post.body.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean) : [];
   const image = post.image || "/assets/markets/chile-copper-ore.jpg";
+  const relatedProducts = post.relatedProducts?.length
+    ? post.relatedProducts
+      .map((relation) => products.find((product) => product.slug === relation.slug && product.category === relation.category) || products.find((product) => product.slug === relation.slug))
+      .filter(Boolean)
+      .slice(0, 3)
+    : products.slice(0, 2);
   const schema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
@@ -49,7 +55,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     image: [image],
     mainEntityOfPage: `https://cowinmagnet.cl/${locale}/blog/${post.slug}`,
     isBasedOn: post.sourceUrl || undefined,
-    keywords: post.seoKeywords?.join(", ")
+    keywords: post.seoKeywords?.join(", "),
+    articleSection: post.categoryTitle || "Industry News",
+    about: post.topicClusterId || "magnetic separation equipment",
+    mentions: relatedProducts.map((product) => ({
+      "@type": "Product",
+      name: product?.title,
+      url: `https://cowinmagnet.cl/${locale}/products/${product?.category}/${product?.slug}`
+    }))
   };
 
   return (
@@ -62,6 +75,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
           <div className="news-source-box">
             <p><strong>Fuente citada:</strong> {post.sourceUrl ? <a href={post.sourceUrl} target="_blank" rel="nofollow noopener noreferrer">{post.sourceTitle || post.sourceDomain || post.sourceUrl}</a> : "Cowinmagnet editorial"}</p>
             {post.sourceUrl ? <p>Esta noticia es un resumen editorial con analisis propio. No reproduce el articulo completo de la fuente original.</p> : null}
+            {post.sourcePublishedAt ? <p><strong>Fecha original:</strong> {new Date(post.sourcePublishedAt).toISOString()}</p> : null}
+            {post.sourceFetchedAt ? <p><strong>Fecha de consulta:</strong> {new Date(post.sourceFetchedAt).toISOString()}</p> : null}
             {post.imageCredit ? <p><strong>Imagen:</strong> {post.imageCredit}. Politica: {post.imagePolicy || "remote source image with credit"}.</p> : null}
           </div>
           {post.image ? <Image className="news-article-image" src={post.image} alt={post.title} width={1080} height={640} unoptimized /> : null}
@@ -88,7 +103,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
           {post.topicClusterId ? <p className="news-meta-line">Topic cluster: {post.topicClusterId} | Information gain score: {post.informationGainScore} | Duplication score: {post.duplicationScore}</p> : null}
         </article>
       </section>
-      <section className="band muted"><div className="section-heading"><p className="eyebrow">Related Products</p><h2>{copy.relatedTitle}</h2></div><div className="page-grid">{products.slice(0, 2).map((product) => <article className="content-card" key={product.slug}><div className="content-card-body"><h3>{product.title}</h3><p>{getProductSummary(product, locale)}</p><Link href={localizedPath(locale, `products/${product.category}/${product.slug}`)}>{copy.viewProduct}</Link></div></article>)}</div></section>
+      <section className="band muted"><div className="section-heading"><p className="eyebrow">Related Products</p><h2>{copy.relatedTitle}</h2></div><div className="page-grid">{relatedProducts.map((product) => product ? <article className="content-card" key={product.slug}><img src={product.image} alt={product.title} /><div className="content-card-body"><h3>{product.title}</h3><p>{getProductSummary(product, locale)}</p><Link href={localizedPath(locale, `products/${product.category}/${product.slug}`)}>{copy.viewProduct}</Link></div></article> : null)}</div></section>
       <section className="band"><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>Solicitar cotizacion</Link></section>
     </>
   );

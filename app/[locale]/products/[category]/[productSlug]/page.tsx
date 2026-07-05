@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { HeroBanner } from "@/components/HeroBanner";
 import { QuoteForm } from "@/components/QuoteForm";
+import { getPublishedPosts } from "@/data/blog";
 import { getCategoryDisplay, getProductSummary, productCategories, productCopy, products } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
 
@@ -53,6 +54,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const category = productCategories.find((item) => item.slug === categorySlug);
   if (!product || !category) notFound();
   const relatedProducts = products.filter((item) => item.category === categorySlug && item.slug !== product.slug).slice(0, 3);
+  const relatedNews = (await getPublishedPosts(locale))
+    .filter((post) => post.relatedProducts?.some((related) => related.slug === product.slug || related.category === product.category))
+    .slice(0, 3);
   const copy = productCopy[locale] ?? productCopy["es-cl"];
   const categoryDisplay = getCategoryDisplay(category, locale);
   const productSummary = getProductSummary(product, locale);
@@ -149,6 +153,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <div className="section-heading"><p className="eyebrow">{copy.related}</p><h2>{copy.relatedTitle}</h2></div>
         <div className="page-grid">{relatedProducts.map((item) => <article className="content-card" key={item.slug}><img src={item.image} alt={item.title} /><div className="content-card-body"><h3>{item.title}</h3><p>{getProductSummary(item, locale)}</p><Link href={localizedPath(locale, `products/${item.category}/${item.slug}`)}>{copy.viewProduct}</Link></div></article>)}</div>
       </section>
+      {relatedNews.length ? (
+        <section className="band">
+          <div className="section-heading"><p className="eyebrow">News</p><h2>Related industry news</h2></div>
+          <div className="page-grid">{relatedNews.map((post) => <article className="content-card" key={post.slug}>{post.image ? <img src={post.image} alt={post.title} /> : null}<div className="content-card-body"><h3>{post.title}</h3><p>{post.summary}</p><Link href={localizedPath(locale, `blog/${post.slug}`)}>Read news</Link></div></article>)}</div>
+        </section>
+      ) : null}
       <section className="band">
         <div className="geo-grid">
           <article><h3>{copy.relatedIndustries}</h3><p>{copy.relatedIndustriesText}</p><Link href={localizedPath(locale, "industries")}>{copy.viewIndustries}</Link></article>

@@ -1,19 +1,19 @@
 {
   "crons": [
     {
-      "path": "/api/cron/news?limit=1&slot=1",
+      "path": "/api/cron/news?limit=4&slot=1",
       "schedule": "17 11 * * *"
     },
     {
-      "path": "/api/cron/news?limit=1&slot=2",
+      "path": "/api/cron/news?limit=4&slot=2",
       "schedule": "43 14 * * *"
     },
     {
-      "path": "/api/cron/news?limit=1&slot=3",
+      "path": "/api/cron/news?limit=4&slot=3",
       "schedule": "9 18 * * *"
     },
     {
-      "path": "/api/cron/news?limit=1&slot=4",
+      "path": "/api/cron/news?limit=4&slot=4",
       "schedule": "31 22 * * *"
     },
     {

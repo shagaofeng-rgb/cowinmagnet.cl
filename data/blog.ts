@@ -21,7 +21,16 @@ export type BlogPost = {
   categoryTitle?: string;
   sourceTitle?: string;
   sourceUrl?: string;
+  canonicalSourceUrl?: string;
   sourceDomain?: string;
+  sourceLanguage?: string;
+  sourcePublishedAt?: string;
+  sourceFetchedAt?: string;
+  sourceTimezone?: string;
+  sourceFingerprint?: string;
+  normalizedTitle?: string;
+  contentHash?: string;
+  eventFingerprint?: string;
   canonicalUrl?: string;
   publishedAt?: string;
   topicClusterId?: string;
@@ -37,6 +46,7 @@ export type BlogPost = {
   licenseUrl?: string;
   citations?: { title: string; url: string; domain: string }[];
   internalLinks?: { label: string; href: string }[];
+  relatedProducts?: { slug: string; category: string; title: string; image?: string; href?: string; relevanceScore?: number; relationshipReason?: string }[];
 };
 
 export const staticPosts: BlogPost[] = [
@@ -252,7 +262,16 @@ function normalizeCmsPost(item: any): BlogPost {
     categoryTitle: item.categoryTitle || "Industry News",
     sourceTitle: item.sourceTitle || item.sourceDomain || "",
     sourceUrl: item.sourceUrl || "",
+    canonicalSourceUrl: item.canonicalSourceUrl || item.sourceUrl || "",
     sourceDomain: item.sourceDomain || "",
+    sourceLanguage: item.sourceLanguage || "",
+    sourcePublishedAt: item.sourcePublishedAt || "",
+    sourceFetchedAt: item.sourceFetchedAt || "",
+    sourceTimezone: item.sourceTimezone || "",
+    sourceFingerprint: item.sourceFingerprint || "",
+    normalizedTitle: item.normalizedTitle || "",
+    contentHash: item.contentHash || "",
+    eventFingerprint: item.eventFingerprint || "",
     canonicalUrl: item.canonicalUrl || "",
     publishedAt: item.publishedAt || item.createdAt,
     topicClusterId: item.topicClusterId || "",
@@ -267,7 +286,8 @@ function normalizeCmsPost(item: any): BlogPost {
     imageRightsUrl: item.imageRightsUrl || "",
     licenseUrl: item.licenseUrl || "",
     citations: item.citations || [],
-    internalLinks: item.internalLinks || []
+    internalLinks: item.internalLinks || [],
+    relatedProducts: item.relatedProducts || []
   };
 }
 

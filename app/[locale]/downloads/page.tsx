@@ -1,11 +1,17 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
-import { Locale } from "@/data/site";
+import { Locale, t } from "@/data/site";
+import { localizedAlternates } from "@/lib/seo";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Downloads",
-  description: "Catalogos, hojas tecnicas y cuestionarios para seleccion de equipos magneticos Cowinmagnet LATAM."
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: t(locale, "Descargas tecnicas", "Downloads tecnicos", "Technical downloads"),
+    description: t(locale, "Catalogos, hojas tecnicas y cuestionarios para seleccion de equipos magneticos Cowinmagnet LATAM.", "Catalogos, folhas tecnicas e questionarios para selecao de equipamentos magneticos Cowinmagnet LATAM.", "Catalogs, technical sheets and questionnaires for Cowinmagnet LATAM magnetic equipment selection."),
+    alternates: localizedAlternates(locale, "downloads")
+  };
+}
 
 const downloads = [
   {
@@ -30,8 +36,13 @@ export default async function DownloadsPage({ params }: { params: Promise<{ loca
 
   return (
     <>
-      <Breadcrumbs locale={locale} items={[{ label: "Downloads" }]} />
-      <HeroBanner eyebrow="Downloads" title="Catalogos, hojas tecnicas y cuestionarios" summary="Archivos locales disponibles para preparar una solicitud tecnica antes de cotizar." image="/assets/products/cbs-drawer-type-magnetic-filter/cbs-drawer-type-magnetic-filter-01.jpg" />
+      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Descargas", "Downloads", "Downloads") }]} />
+      <HeroBanner
+        eyebrow={t(locale, "Descargas", "Downloads", "Downloads")}
+        title={t(locale, "Catalogos, hojas tecnicas y cuestionarios", "Catalogos, folhas tecnicas e questionarios", "Catalogs, technical sheets and questionnaires")}
+        summary={t(locale, "Archivos locales disponibles para preparar una solicitud tecnica antes de cotizar.", "Arquivos locais disponiveis para preparar uma solicitacao tecnica antes da cotacao.", "Local files available to prepare a technical request before quotation.")}
+        image="/assets/products/cbs-drawer-type-magnetic-filter/cbs-drawer-type-magnetic-filter-01.jpg"
+      />
       <section className="band">
         <div className="page-grid">
           {downloads.map((item) => (
@@ -39,7 +50,7 @@ export default async function DownloadsPage({ params }: { params: Promise<{ loca
               <div className="content-card-body">
                 <h3>{item.title}</h3>
                 <p>{item.note}</p>
-                <a href={item.href} download>Descargar archivo</a>
+                <a href={item.href} download>{t(locale, "Descargar archivo", "Baixar arquivo", "Download file")}</a>
               </div>
             </article>
           ))}
@@ -47,9 +58,9 @@ export default async function DownloadsPage({ params }: { params: Promise<{ loca
       </section>
       <section className="band muted">
         <div className="section-heading">
-          <p className="eyebrow">Aviso</p>
-          <h2>Documentos locales de preparacion</h2>
-          <p>Estos archivos sirven para recopilar datos. Catalogos, planos y hojas tecnicas definitivas deben sustituirse por documentos reales aprobados antes de produccion.</p>
+          <p className="eyebrow">{t(locale, "Aviso", "Aviso", "Notice")}</p>
+          <h2>{t(locale, "Documentos locales de preparacion", "Documentos locais de preparacao", "Local preparation documents")}</h2>
+          <p>{t(locale, "Estos archivos sirven para recopilar datos. Catalogos, planos y hojas tecnicas definitivas deben sustituirse por documentos reales aprobados antes de produccion.", "Estes arquivos servem para coletar dados. Catalogos, desenhos e folhas tecnicas definitivas devem ser substituidos por documentos reais aprovados antes da producao.", "These files help collect project data. Final catalogs, drawings and technical sheets should be replaced by approved documents before production.")}</p>
         </div>
       </section>
     </>

@@ -10,6 +10,11 @@ import { Locale, localizedPath } from "@/data/site";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function displayImage(src = "") {
+  if (!src || /^https?:\/\//i.test(src)) return "/assets/markets/chile-copper-ore.jpg";
+  return src;
+}
+
 export function generateStaticParams() {
   return posts.flatMap((post) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, slug: post.slug })));
 }
@@ -24,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
     openGraph: post ? {
       title: post.title,
       description: post.summary,
-      images: post.image ? [post.image] : undefined,
+      images: post.image ? [displayImage(post.image)] : undefined,
       type: "article"
     } : undefined
   };
@@ -36,7 +41,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   if (!post) notFound();
   const copy = productCopy[locale] ?? productCopy["es-cl"];
   const articleBody = post.body ? post.body.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean) : [];
-  const image = post.image || "/assets/markets/chile-copper-ore.jpg";
+  const image = displayImage(post.image);
   const relatedProducts = post.relatedProducts?.length
     ? post.relatedProducts
       .map((relation) => products.find((product) => product.slug === relation.slug && product.category === relation.category) || products.find((product) => product.slug === relation.slug))

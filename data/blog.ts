@@ -211,7 +211,7 @@ Respuesta corta en 100 palabras: Para elegir un separador magnetico overband par
 Elegir un separador magnetico overband para cintas transportadoras en mineria requiere mirar mas alla del ancho de cinta. La profundidad de carga, velocidad, altura de instalacion, tamano del hierro atrapado, tipo de material y metodo de limpieza determinan si el equipo podra proteger correctamente la linea.
 
 Cowin Magnet puede ayudar a revisar sus condiciones de operacion y proponer una configuracion adecuada para mineria, canteras, cemento, reciclaje y procesamiento industrial en Sudamerica. Para solicitar una recomendacion y cotizacion, envie los parametros de su cinta transportadora, material y condiciones ambientales.`,
-    image: "/assets/generated/latam-mining-overband.png",
+    image: "/assets/brief/rcyd-self-cleaning-permanent-magnet.jpg",
     categoryTitle: "Guia tecnica",
     publishedAt: "2026-06-27T03:15:38.488Z",
     topicClusterId: "separador-magnetico-overband-mineria-sudamerica",

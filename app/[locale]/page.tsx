@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getCategoryDisplay, industries, markets, productCategories, productCopy, products, solutions } from "@/data/catalog";
-import { Locale, localizedPath, uiText } from "@/data/site";
+import { Locale, localizedPath, siteConfig, t, uiText } from "@/data/site";
 
 const homeCopy: Record<Locale, {
   heroTitle: string;
@@ -176,11 +176,26 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     display: getCategoryDisplay(category, locale)
   }));
   const homeStats = home.stats.map((item, index) => index === 0 ? { ...item, value: String(products.length) } : item);
+  const regionChips = ["Colombia", "Peru", "Brazil", "Bolivia", "Chile", "Argentina"];
+  const benefitCards = [
+    t(locale, "Proteccion de chancadores y equipos criticos", "Protecao de britadores e equipamentos criticos", "Crusher and critical equipment protection"),
+    t(locale, "Eliminacion continua de hierro trampa", "Remocao continua de ferro tramp", "Continuous tramp iron removal"),
+    t(locale, "Proteccion de cintas transportadoras", "Protecao de correias transportadoras", "Conveyor belt protection"),
+    t(locale, "Recuperacion de metales ferrosos", "Recuperacao de metais ferrosos", "Ferrous metal recovery"),
+    t(locale, "Soporte tecnico para seleccion", "Suporte tecnico para selecao", "Technical support for selection"),
+    t(locale, "Configuracion segun condicion de planta", "Configuracao conforme condicao da planta", "Configuration by plant condition")
+  ];
+  const quoteSpecs = [
+    t(locale, "Ancho de cinta", "Largura da correia", "Belt width"),
+    t(locale, "Tipo de material", "Tipo de material", "Material type"),
+    t(locale, "Altura de instalacion", "Altura de instalacao", "Installation height"),
+    t(locale, "Nivel de contaminacion", "Nivel de contaminacao", "Contamination level")
+  ];
 
   return (
     <>
-      <section className="home-hero">
-        <Image src="/assets/home-hero-cowinmagnet-ai.jpg" alt="Cowinmagnet suspended magnetic separator and conveyor protection system" fill priority sizes="100vw" />
+      <section className="home-hero home-hero-redesign">
+        <Image src="/assets/home-design/hero-equipment.jpg" alt="Cowinmagnet suspended magnetic separator and conveyor protection system in South America mining operation" fill priority sizes="100vw" />
         <div className="home-hero-shade" />
         <div className="home-hero-inner">
           <div className="home-hero-copy">
@@ -200,7 +215,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         </div>
       </section>
 
-      <section className="home-paths">
+      <section className="home-paths home-region-quicknav" aria-label="South America regional coverage">
+        {regionChips.map((country) => (
+          <Link href={base(`markets/${country.toLowerCase()}`)} key={country}>{country}</Link>
+        ))}
+      </section>
+
+      <section className="home-paths home-paths-redesign">
         {home.paths.map((item) => (
           <Link href={base(item.href)} className="home-path" key={item.title}>
             <span>{item.label}</span>
@@ -218,7 +239,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         </div>
         <div className="home-product-showcase">
           <article className="home-feature-product">
-            <Image src="/assets/products/rcyd-type-permanent-magnet-self-dumping-iron-remover/rcyd-type-permanent-magnet-self-dumping-iron-remover-01.jpg" alt="RCYD permanent magnet self dumping iron remover" width={980} height={720} />
+            <Image src="/assets/home-design/product-close.jpg" alt="RCYD permanent magnet self dumping iron remover on conveyor" width={980} height={720} />
             <div>
               <p className="eyebrow">{home.featuredEyebrow}</p>
               <h3>{home.featuredTitle}</h3>
@@ -237,11 +258,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         </div>
       </section>
 
-      <section className="band muted home-industries">
+      <section className="band muted home-industries home-industries-redesign">
         <div className="home-section-head">
           <p className="eyebrow">{copy.nav.applications}</p>
           <h2>{home.applicationTitle}</h2>
           <p>{home.applicationSummary}</p>
+        </div>
+        <div className="home-application-panorama" aria-hidden="true">
+          <Image src="/assets/home-design/applications-strip.jpg" alt="" width={1680} height={460} />
         </div>
         <div className="home-image-grid">
           {industries.slice(0, 3).map((item) => (
@@ -266,7 +290,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         </div>
         <div className="home-market-layout">
           <div className="home-market-map">
-            <Image src="/assets/markets/markets-hero.jpg" alt="South America mining market application" width={980} height={620} />
+            <Image src="/assets/home-design/south-america-map.jpg" alt="South America regional coverage for Cowinmagnet LATAM" width={980} height={620} />
           </div>
           <div className="home-market-links">
             {markets.slice(0, 6).map((item) => (
@@ -279,13 +303,30 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
         </div>
       </section>
 
-      <section className="home-quote-band">
+      <section className="home-benefits" aria-label="Cowinmagnet advantages">
+        <div className="home-section-head">
+          <p className="eyebrow">{t(locale, "Por que elegir Cowinmagnet", "Por que escolher Cowinmagnet", "Why choose Cowinmagnet")}</p>
+          <h2>{t(locale, "Ventajas que impactan en tus resultados", "Vantagens que impactam seus resultados", "Advantages that impact your results")}</h2>
+        </div>
+        <div className="home-benefit-grid">
+          {benefitCards.map((item) => <article key={item}><span aria-hidden="true" /> <h3>{item}</h3></article>)}
+        </div>
+      </section>
+
+      <section className="home-quote-band home-quote-redesign">
+        <Image src="/assets/markets/chile-copper-ore.jpg" alt="Technical consultation for South America mining plant" width={560} height={390} />
         <div>
           <p className="eyebrow">{home.quoteEyebrow}</p>
           <h2>{home.quoteTitle}</h2>
           <p>{home.quoteSummary}</p>
+          <div className="home-quote-specs">
+            {quoteSpecs.map((item) => <span key={item}>{item}</span>)}
+          </div>
+          <div className="hero-actions">
+            <Link className="button primary" href={base("request-a-quote")}>{copy.nav.quote}</Link>
+            <a className="button secondary" href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer nofollow">WhatsApp</a>
+          </div>
         </div>
-        <Link className="button primary" href={base("request-a-quote")}>{copy.nav.quote}</Link>
       </section>
     </>
   );

@@ -1,7 +1,7 @@
 import { getAdminDateRange } from "@/lib/adminDateRange";
-import { getAnalyticsSnapshot } from "@/lib/analyticsStore";
+import { getSearchConsoleSnapshot } from "@/lib/analyticsStore";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
-import { AdminSearchConsolePanel } from "@/components/admin/AdminAnalyticsPanels";
+import AdminSearchConsoleLivePanel from "@/components/admin/AdminSearchConsoleLivePanel";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "SEO 数据 | Cowinmagnet.cl Admin" };
@@ -9,7 +9,7 @@ export const metadata = { title: "SEO 数据 | Cowinmagnet.cl Admin" };
 export default async function AdminSearchConsolePage({ searchParams }) {
   const params = await searchParams;
   const range = getAdminDateRange(params);
-  const analytics = await getAnalyticsSnapshot(range);
+  const searchConsole = await getSearchConsoleSnapshot(range);
 
   return (
     <>
@@ -21,7 +21,7 @@ export default async function AdminSearchConsolePage({ searchParams }) {
         </div>
         <AdminDateRangeFilter range={range} />
       </section>
-      <AdminSearchConsolePanel data={analytics} />
+      <AdminSearchConsoleLivePanel searchConsole={searchConsole} />
     </>
   );
 }

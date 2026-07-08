@@ -4,9 +4,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const options = [
-  ["day", "日"],
-  ["week", "周"],
-  ["month", "月"],
+  ["day", "今日"],
+  ["week", "本周"],
+  ["month", "本月"],
   ["custom", "自定义"]
 ];
 
@@ -16,8 +16,14 @@ export default function AdminDateRangeFilter({ range }) {
   const searchParams = useSearchParams();
   const [start, setStart] = useState(range?.startInput || "");
   const [end, setEnd] = useState(range?.endInput || "");
+  const [error, setError] = useState("");
 
   function pushRange(value) {
+    setError("");
+    if (value === "custom" && start && end && start > end) {
+      setError("开始日期不能晚于结束日期。");
+      return;
+    }
     const params = new URLSearchParams(searchParams.toString());
     params.set("range", value);
     if (value === "custom") {
@@ -48,6 +54,7 @@ export default function AdminDateRangeFilter({ range }) {
         <input aria-label="开始日期" type="date" value={start} onChange={(event) => setStart(event.target.value)} />
         <input aria-label="结束日期" type="date" value={end} onChange={(event) => setEnd(event.target.value)} />
       </div>
+      {error ? <p className="admin-field-error">{error}</p> : null}
       <button className="admin-date-submit" type="submit">刷新当前范围</button>
     </form>
   );

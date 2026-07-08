@@ -179,6 +179,24 @@ body {
   gap: 8px;
 }
 
+.admin-checkbox-row {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.admin-checkbox-row input {
+  width: auto;
+}
+
+.admin-field-error {
+  margin: 0;
+  color: #ffd325;
+  font-size: .9rem;
+}
+
 .admin-login-form button,
 .admin-form button,
 .password-row button,

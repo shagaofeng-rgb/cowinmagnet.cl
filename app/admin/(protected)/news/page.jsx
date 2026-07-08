@@ -1,7 +1,7 @@
 import { getCmsItems } from "@/lib/cmsStore";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "新闻管理 | Cowinmagnet.cl Admin" };
+export const metadata = { title: "新闻管理 | Cowinmagnet.cl 后台" };
 
 export default async function AdminNewsPage({ searchParams }) {
   const params = await searchParams;
@@ -13,7 +13,7 @@ export default async function AdminNewsPage({ searchParams }) {
         <div>
           <p className="eyebrow">新闻管理</p>
           <h1>南美行业新闻</h1>
-          <p>管理美洲行业资讯、引用来源、SEO 摘要和自动采编文章。每天 4 篇新闻由 Cron 自动发布，也可以在这里手动触发一次。</p>
+          <p>管理美洲行业资讯、引用来源、SEO 摘要和自动采编文章。Cron 每天按计划发布新闻，也可以在这里手动触发一次。</p>
         </div>
       </div>
       {params?.saved ? <div className="admin-alert good">新闻已保存。</div> : null}
@@ -46,7 +46,7 @@ export default async function AdminNewsPage({ searchParams }) {
                 <td>{item.title}</td><td>{item.categoryTitle || "-"}</td><td>{item.status}</td><td>{item.sourceUrl || "CMS"}</td><td>{item.updatedAt || item.createdAt}</td>
               </tr>
             ))}
-            {!news.length ? <tr><td colSpan="5">暂无新闻。可以先手动录入，自动采编上线后会每天发布 4 篇。</td></tr> : null}
+            {!news.length ? <tr><td colSpan="5">暂无新闻。可以先手动录入，自动采编上线后会持续发布。</td></tr> : null}
           </tbody>
         </table>
       </div>

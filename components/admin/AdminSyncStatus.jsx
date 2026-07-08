@@ -77,7 +77,7 @@ export default function AdminSyncStatus({ initialStatus }) {
           <strong>{formatDate(status.finishedAt)}</strong>
         </article>
         <article>
-          <span>本日处理</span>
+          <span>本次处理</span>
           <strong>{Number(status.processedCount || 0)} 条</strong>
         </article>
         <article>
@@ -86,7 +86,7 @@ export default function AdminSyncStatus({ initialStatus }) {
         </article>
       </div>
       <p className="admin-sync-note">
-        Cron 每 {status.intervalMinutes || 30} 分钟自动同步一次；前台访问、来源渠道、UTM、访问路径会写入 Analytics 数据库。
+        Cron 每 {status.intervalMinutes || 30} 分钟自动同步一次；前台访问、来源渠道、UTM 和访问路径会写入 Analytics 数据库。
         {status.error ? ` 最近错误：${status.error}` : ""}
       </p>
     </section>

@@ -5,6 +5,66 @@ import { useSearchParams } from "next/navigation";
 import { BarList, CsvExportButton, MetricCard, TrendChart } from "@/components/admin/AdminWidgets";
 
 const refreshMs = 30 * 60 * 1000;
+const text = {
+  refreshFail: "\u5b9e\u65f6\u5237\u65b0\u5931\u8d25\uff0c\u9875\u9762\u663e\u793a\u6700\u8fd1\u4e00\u6b21\u6570\u636e\u3002",
+  refreshing: "\u6b63\u5728\u8bfb\u53d6\u6700\u65b0\u540e\u53f0\u6570\u636e...",
+  syncOn: "30 \u5206\u949f\u81ea\u52a8\u540c\u6b65\u5df2\u5f00\u542f",
+  frontendRefresh: "\u524d\u7aef\u5237\u65b0",
+  init: "\u521d\u59cb\u5316\u4e2d",
+  databaseConnected: "Analytics \u6570\u636e\u5e93\u5df2\u8fde\u63a5",
+  storageMode: "Analytics \u5b58\u50a8\u6a21\u5f0f",
+  analyticsNote: "PV\u3001UV\u3001\u8bbf\u5ba2\u8bb0\u5f55\u3001\u6765\u6e90\u6e20\u9053\u548c\u9875\u9762\u8868\u73b0\u5747\u6765\u81ea analytics_events \u6570\u636e\u3002",
+  pageViews: "\u9875\u9762\u6d4f\u89c8\u91cf",
+  uniqueVisitors: "\u72ec\u7acb\u8bbf\u5ba2",
+  sessions: "\u8bbf\u95ee\u4f1a\u8bdd",
+  enquiries: "\u8be2\u76d8\u63d0\u4ea4",
+  effectiveVisit: "\u6709\u6548\u8bbf\u95ee",
+  formEvent: "\u8868\u5355\u4e8b\u4ef6",
+  productContent: "\u4ea7\u54c1\u5185\u5bb9",
+  news: "News \u65b0\u95fb",
+  blog: "\u9759\u6001\u6587\u7ae0",
+  cmsStorage: "CMS \u5b58\u50a8",
+  currentMode: "\u5f53\u524d\u6a21\u5f0f",
+  fromAdmin: "\u6765\u81ea\u540e\u53f0",
+  contentLib: "Blog \u5185\u5bb9\u5e93",
+  trafficTrend: "\u6d41\u91cf\u8d8b\u52bf",
+  dailyPvUv: "\u6bcf\u65e5 PV / UV",
+  sourceChannel: "\u6765\u6e90\u6e20\u9053",
+  whereFrom: "\u5ba2\u6237\u4ece\u54ea\u91cc\u6765",
+  hotPages: "\u70ed\u95e8\u9875\u9762",
+  pageRank: "\u9875\u9762\u8868\u73b0\u6392\u884c",
+  seoSnapshot: "SEO \u5feb\u7167",
+  clicks: "\u70b9\u51fb",
+  impressions: "\u5c55\u793a",
+  avgDuration: "\u5e73\u5747\u505c\u7559",
+  bounceRate: "\u8df3\u51fa\u7387",
+  countries: "\u56fd\u5bb6\u5730\u533a",
+  devices: "\u8bbe\u5907\u7c7b\u578b",
+  dailyTrend: "\u6bcf\u65e5\u8d8b\u52bf",
+  dailyChange: "\u6bcf\u65e5\u6d4f\u89c8\u91cf\u53d8\u5316",
+  acquisition: "\u83b7\u5ba2\u6765\u6e90",
+  channelDist: "\u6e20\u9053\u5206\u5e03",
+  sourcePlatform: "\u6765\u6e90\u5e73\u53f0",
+  market: "\u76ee\u6807\u5e02\u573a",
+  deviceEnv: "\u8bbe\u5907\u73af\u5883",
+  attribution: "\u8425\u9500\u5f52\u56e0",
+  realtimeVisitors: "\u5b9e\u65f6\u8bbf\u5ba2",
+  recentVisits: "\u6700\u8fd1\u8bbf\u95ee\u8bb0\u5f55",
+  time: "\u65f6\u95f4",
+  customerNo: "\u5ba2\u6237\u7f16\u53f7",
+  country: "\u56fd\u5bb6",
+  device: "\u8bbe\u5907",
+  browser: "\u6d4f\u89c8\u5668",
+  source: "\u6765\u6e90",
+  page: "\u9875\u9762",
+  pagePerformance: "\u9875\u9762\u8868\u73b0",
+  landingData: "\u843d\u5730\u9875\u6570\u636e",
+  views: "\u6d4f\u89c8",
+  visitors: "\u8bbf\u5ba2",
+  conversion: "\u8be2\u76d8\u7387",
+  journeys: "\u8bbf\u95ee\u8def\u5f84",
+  pageJourney: "\u9875\u9762\u8df3\u8f6c\u8def\u5f84"
+};
 
 function useLiveAnalytics(initialData) {
   const searchParams = useSearchParams();
@@ -36,7 +96,7 @@ function useLiveAnalytics(initialData) {
           })
         });
       } catch {
-        if (active) setState((current) => ({ ...current, loading: false, error: "实时刷新失败，页面显示最近一次数据。" }));
+        if (active) setState((current) => ({ ...current, loading: false, error: text.refreshFail }));
       }
     }
     const timer = window.setInterval(refresh, refreshMs);
@@ -52,8 +112,8 @@ function useLiveAnalytics(initialData) {
 function LiveNote({ state }) {
   return (
     <div className={`admin-live-note ${state.error ? "error" : ""}`}>
-      <span>{state.loading ? "正在读取最新后台数据..." : "30 分钟自动同步已开启"}</span>
-      <small>{state.error || `前端刷新：${state.syncedAt || "初始化中"}，后台数据按当前时间范围读取。`}</small>
+      <span>{state.loading ? text.refreshing : text.syncOn}</span>
+      <small>{state.error || `${text.frontendRefresh}: ${state.syncedAt || text.init}`}</small>
     </div>
   );
 }
@@ -84,28 +144,28 @@ export function AdminOverviewRealtime({ initialData, contentStats = {} }) {
     <>
       <LiveNote state={state} />
       <section className={`admin-alert ${storageMode === "database" ? "success" : "warning"}`}>
-        <strong>{storageMode === "database" ? "Analytics 数据库已连接" : "Analytics 当前为本地存储"}</strong>
-        <span>PV、UV、访客记录、来源渠道和页面表现从 analytics_events 数据读取。</span>
+        <strong>{storageMode === "database" ? text.databaseConnected : `${text.storageMode}: ${storageMode || "-"}`}</strong>
+        <span>{text.analyticsNote}</span>
       </section>
       <section className="admin-grid four">
-        <MetricCard label="页面浏览量" value={Number(overview.pageViews || 0).toLocaleString()} note="PV" />
-        <MetricCard label="独立访客" value={Number(overview.uniqueVisitors || 0).toLocaleString()} note="UV" />
-        <MetricCard label="访问会话" value={Number(overview.sessions || 0).toLocaleString()} note="有效访问" />
-        <MetricCard label="询盘提交" value={Number(overview.inquiries || 0).toLocaleString()} note="表单事件" />
+        <MetricCard label={text.pageViews} value={Number(overview.pageViews || 0).toLocaleString()} note="PV" />
+        <MetricCard label={text.uniqueVisitors} value={Number(overview.uniqueVisitors || 0).toLocaleString()} note="UV" />
+        <MetricCard label={text.sessions} value={Number(overview.sessions || 0).toLocaleString()} note={text.effectiveVisit} />
+        <MetricCard label={text.enquiries} value={Number(overview.inquiries || 0).toLocaleString()} note={text.formEvent} />
       </section>
       <section className="admin-grid four">
-        <MetricCard label="产品内容" value={contentStats.products || 0} note={`${contentStats.cmsProducts || 0} 个来自后台`} />
-        <MetricCard label="News 新闻" value={contentStats.newsPosts || 0} note={`${contentStats.cmsNews || 0} 个来自后台`} />
-        <MetricCard label="静态文章" value={contentStats.blogPosts || 0} note="Blog 内容库" />
-        <MetricCard label="CMS 存储" value={contentStats.cmsStorageMode || "unknown"} note="当前模式" />
+        <MetricCard label={text.productContent} value={contentStats.products || 0} note={`${contentStats.cmsProducts || 0} ${text.fromAdmin}`} />
+        <MetricCard label={text.news} value={contentStats.newsPosts || 0} note={`${contentStats.cmsNews || 0} ${text.fromAdmin}`} />
+        <MetricCard label={text.blog} value={contentStats.blogPosts || 0} note={text.contentLib} />
+        <MetricCard label={text.cmsStorage} value={contentStats.cmsStorageMode || "-"} note={text.currentMode} />
       </section>
       <section className="admin-grid two">
-        <article className="admin-panel"><p className="eyebrow">流量趋势</p><h2>每日 PV / UV</h2><TrendChart rows={list(traffic.series)} /></article>
-        <article className="admin-panel"><p className="eyebrow">来源渠道</p><h2>客户从哪里来</h2><BarList rows={list(traffic.channels)} /></article>
+        <article className="admin-panel"><p className="eyebrow">{text.trafficTrend}</p><h2>{text.dailyPvUv}</h2><TrendChart rows={list(traffic.series)} /></article>
+        <article className="admin-panel"><p className="eyebrow">{text.sourceChannel}</p><h2>{text.whereFrom}</h2><BarList rows={list(traffic.channels)} /></article>
       </section>
       <section className="admin-grid two">
-        <article className="admin-panel"><p className="eyebrow">热门页面</p><h2>页面表现排行</h2><BarList rows={list(pages).slice(0, 8).map((page) => ({ label: page.title || page.page, value: page.views }))} /></article>
-        <article className="admin-panel"><p className="eyebrow">SEO 快照</p><h2>Google Search Console</h2><div className="admin-mini-metrics"><MetricCard label="点击" value={searchConsole.overview?.clicks || 0} note="GSC" /><MetricCard label="展示" value={searchConsole.overview?.impressions || 0} note="GSC" /></div></article>
+        <article className="admin-panel"><p className="eyebrow">{text.hotPages}</p><h2>{text.pageRank}</h2><BarList rows={list(pages).slice(0, 8).map((page) => ({ label: page.title || page.page, value: page.views }))} /></article>
+        <article className="admin-panel"><p className="eyebrow">{text.seoSnapshot}</p><h2>Google Search Console</h2><div className="admin-mini-metrics"><MetricCard label={text.clicks} value={searchConsole.overview?.clicks || 0} note="GSC" /><MetricCard label={text.impressions} value={searchConsole.overview?.impressions || 0} note="GSC" /></div></article>
       </section>
     </>
   );
@@ -118,20 +178,20 @@ export function AdminTrafficRealtime({ initialData }) {
     <>
       <LiveNote state={state} />
       <section className="admin-grid four">
-        <MetricCard label="平均停留" value={`${overview.avgDuration || 0}s`} note="页面参与度" />
-        <MetricCard label="跳出率" value={`${overview.bounceRate || 0}%`} note="估算值" />
-        <MetricCard label="国家地区" value={list(traffic.countries).length} note="活跃市场" />
-        <MetricCard label="设备类型" value={list(traffic.devices).length} note="访问设备" />
+        <MetricCard label={text.avgDuration} value={`${overview.avgDuration || 0}s`} note={text.pagePerformance} />
+        <MetricCard label={text.bounceRate} value={`${overview.bounceRate || 0}%`} note={text.currentMode} />
+        <MetricCard label={text.countries} value={list(traffic.countries).length} note={text.market} />
+        <MetricCard label={text.devices} value={list(traffic.devices).length} note={text.deviceEnv} />
       </section>
-      <section className="admin-panel"><p className="eyebrow">每日趋势</p><h2>每日浏览量变化</h2><TrendChart rows={list(traffic.series)} /></section>
+      <section className="admin-panel"><p className="eyebrow">{text.dailyTrend}</p><h2>{text.dailyChange}</h2><TrendChart rows={list(traffic.series)} /></section>
       <section className="admin-grid four">
-        <article className="admin-panel"><p className="eyebrow">获客来源</p><h2>渠道分布</h2><BarList rows={list(traffic.channels)} /></article>
-        <article className="admin-panel"><p className="eyebrow">来源平台</p><h2>搜索 / 社媒 / AI / 直接访问</h2><BarList rows={list(traffic.sourcePlatforms)} /></article>
-        <article className="admin-panel"><p className="eyebrow">目标市场</p><h2>国家 / 地区</h2><BarList rows={list(traffic.countries)} /></article>
-        <article className="admin-panel"><p className="eyebrow">设备环境</p><h2>设备类型</h2><BarList rows={list(traffic.devices)} /></article>
+        <article className="admin-panel"><p className="eyebrow">{text.acquisition}</p><h2>{text.channelDist}</h2><BarList rows={list(traffic.channels)} /></article>
+        <article className="admin-panel"><p className="eyebrow">{text.sourcePlatform}</p><h2>Search / Social / AI / Direct</h2><BarList rows={list(traffic.sourcePlatforms)} /></article>
+        <article className="admin-panel"><p className="eyebrow">{text.market}</p><h2>{text.countries}</h2><BarList rows={list(traffic.countries)} /></article>
+        <article className="admin-panel"><p className="eyebrow">{text.deviceEnv}</p><h2>{text.devices}</h2><BarList rows={list(traffic.devices)} /></article>
       </section>
       <section className="admin-panel">
-        <p className="eyebrow">营销归因</p>
+        <p className="eyebrow">{text.attribution}</p>
         <h2>Session Source Acquisition</h2>
         <div className="admin-table-wrap">
           <table className="admin-table"><thead><tr><th>Source</th><th>Channel</th><th>Visitors</th><th>Sessions</th><th>PV</th><th>Leads</th><th>CVR</th></tr></thead><tbody>{list(acquisition.session).map((row, index) => <tr key={`${row.source}-${index}`}><td>{row.source}</td><td>{row.channel}</td><td>{row.visitors}</td><td>{row.sessions}</td><td>{row.pageViews}</td><td>{row.leads}</td><td>{row.conversionRate}%</td></tr>)}</tbody></table>
@@ -149,9 +209,9 @@ export function AdminVisitorsRealtime({ initialData }) {
     <>
       <LiveNote state={state} />
       <section className="admin-panel">
-        <div className="admin-panel-head"><div><p className="eyebrow">实时访客</p><h2>最近访问记录</h2></div><CsvExportButton rows={rows} filename="cowin-visitors.csv" /></div>
+        <div className="admin-panel-head"><div><p className="eyebrow">{text.realtimeVisitors}</p><h2>{text.recentVisits}</h2></div><CsvExportButton rows={rows} filename="cowin-visitors.csv" /></div>
         <div className="admin-table-wrap">
-          <table className="admin-table"><thead><tr><th>时间</th><th>客户编号</th><th>国家</th><th>设备</th><th>浏览器</th><th>来源</th><th>页面</th><th>IP</th></tr></thead><tbody>{visitors.map((item, index) => <tr key={`${item.timestamp}-${index}`}><td>{formatDate(item.timestamp)}</td><td>C{String(item.customerNumber || 0).padStart(5, "0")}</td><td>{item.country}</td><td>{item.device}</td><td>{item.browser}</td><td>{item.sourcePlatform}</td><td>{item.page}</td><td>{item.ip}</td></tr>)}</tbody></table>
+          <table className="admin-table"><thead><tr><th>{text.time}</th><th>{text.customerNo}</th><th>{text.country}</th><th>{text.device}</th><th>{text.browser}</th><th>{text.source}</th><th>{text.page}</th><th>IP</th></tr></thead><tbody>{visitors.map((item, index) => <tr key={`${item.timestamp}-${index}`}><td>{formatDate(item.timestamp)}</td><td>C{String(item.customerNumber || 0).padStart(5, "0")}</td><td>{item.country}</td><td>{item.device}</td><td>{item.browser}</td><td>{item.sourcePlatform}</td><td>{item.page}</td><td>{item.ip}</td></tr>)}</tbody></table>
         </div>
       </section>
     </>
@@ -165,10 +225,10 @@ export function AdminPagesRealtime({ initialData }) {
     <>
       <LiveNote state={state} />
       <section className="admin-panel">
-        <p className="eyebrow">页面表现</p>
-        <h2>落地页数据</h2>
+        <p className="eyebrow">{text.pagePerformance}</p>
+        <h2>{text.landingData}</h2>
         <div className="admin-table-wrap">
-          <table className="admin-table"><thead><tr><th>页面</th><th>URL</th><th>浏览</th><th>访客</th><th>平均停留</th><th>询盘率</th></tr></thead><tbody>{pages.map((page) => <tr key={page.page}><td>{page.title}</td><td>{page.page}</td><td>{page.views}</td><td>{page.visitors}</td><td>{page.avgDuration}s</td><td>{page.conversionRate}%</td></tr>)}</tbody></table>
+          <table className="admin-table"><thead><tr><th>{text.page}</th><th>URL</th><th>{text.views}</th><th>{text.visitors}</th><th>{text.avgDuration}</th><th>{text.conversion}</th></tr></thead><tbody>{pages.map((page) => <tr key={page.page}><td>{page.title}</td><td>{page.page}</td><td>{page.views}</td><td>{page.visitors}</td><td>{page.avgDuration}s</td><td>{page.conversionRate}%</td></tr>)}</tbody></table>
         </div>
       </section>
     </>
@@ -182,8 +242,8 @@ export function AdminJourneysRealtime({ initialData }) {
     <>
       <LiveNote state={state} />
       <section className="admin-panel">
-        <p className="eyebrow">访问路径</p>
-        <h2>页面跳转路径</h2>
+        <p className="eyebrow">{text.journeys}</p>
+        <h2>{text.pageJourney}</h2>
         <BarList rows={journeys.map((item) => ({ label: item.route, value: item.value }))} />
       </section>
     </>

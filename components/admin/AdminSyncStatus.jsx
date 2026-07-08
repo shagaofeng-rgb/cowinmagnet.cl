@@ -2,8 +2,27 @@
 
 import { useEffect, useState } from "react";
 
+const t = {
+  never: "\u5c1a\u672a\u540c\u6b65",
+  success: "\u540c\u6b65\u6b63\u5e38",
+  error: "\u540c\u6b65\u5f02\u5e38",
+  waiting: "\u7b49\u5f85\u9996\u6b21\u540c\u6b65",
+  eyebrow: "\u6570\u636e\u540c\u6b65",
+  title: "\u540e\u53f0\u6570\u636e\u540c\u6b65\u72b6\u6001",
+  running: "\u540c\u6b65\u4e2d...",
+  runNow: "\u7acb\u5373\u540c\u6b65",
+  current: "\u5f53\u524d\u72b6\u6001",
+  latest: "\u6700\u8fd1\u540c\u6b65",
+  processed: "\u672c\u6b21\u5904\u7406",
+  rows: "\u6761",
+  storage: "\u6570\u636e\u5b58\u50a8",
+  notePrefix: "Cron \u6bcf",
+  noteSuffix: "\u5206\u949f\u81ea\u52a8\u540c\u6b65\u4e00\u6b21\uff1b\u524d\u53f0\u8bbf\u95ee\u3001\u6765\u6e90\u6e20\u9053\u3001UTM \u548c\u8bbf\u95ee\u8def\u5f84\u4f1a\u5199\u5165 Analytics \u6570\u636e\u5e93\u3002",
+  recentError: "\u6700\u8fd1\u9519\u8bef"
+};
+
 function formatDate(value) {
-  if (!value) return "尚未同步";
+  if (!value) return t.never;
   try {
     return new Date(value).toLocaleString("zh-CN", {
       timeZone: "Asia/Shanghai",
@@ -21,9 +40,9 @@ function formatDate(value) {
 }
 
 function statusLabel(status) {
-  if (status === "success") return "同步正常";
-  if (status === "error") return "同步异常";
-  return "等待首次同步";
+  if (status === "success") return t.success;
+  if (status === "error") return t.error;
+  return t.waiting;
 }
 
 export default function AdminSyncStatus({ initialStatus }) {
@@ -60,34 +79,34 @@ export default function AdminSyncStatus({ initialStatus }) {
     <section className="admin-panel admin-sync-panel">
       <div className="admin-panel-head">
         <div>
-          <p className="eyebrow">数据同步</p>
-          <h2>后台数据同步状态</h2>
+          <p className="eyebrow">{t.eyebrow}</p>
+          <h2>{t.title}</h2>
         </div>
         <button type="button" onClick={runNow} disabled={busy}>
-          {busy ? "同步中..." : "立即同步"}
+          {busy ? t.running : t.runNow}
         </button>
       </div>
       <div className="admin-sync-grid">
         <article>
-          <span>当前状态</span>
+          <span>{t.current}</span>
           <strong className={`admin-sync-pill ${state}`}>{statusLabel(state)}</strong>
         </article>
         <article>
-          <span>最近同步</span>
+          <span>{t.latest}</span>
           <strong>{formatDate(status.finishedAt)}</strong>
         </article>
         <article>
-          <span>本次处理</span>
-          <strong>{Number(status.processedCount || 0)} 条</strong>
+          <span>{t.processed}</span>
+          <strong>{Number(status.processedCount || 0)} {t.rows}</strong>
         </article>
         <article>
-          <span>数据存储</span>
-          <strong>{status.analytics || status.storageMode || "unknown"}</strong>
+          <span>{t.storage}</span>
+          <strong>{status.analytics || status.storageMode || "-"}</strong>
         </article>
       </div>
       <p className="admin-sync-note">
-        Cron 每 {status.intervalMinutes || 30} 分钟自动同步一次；前台访问、来源渠道、UTM 和访问路径会写入 Analytics 数据库。
-        {status.error ? ` 最近错误：${status.error}` : ""}
+        {t.notePrefix} {status.intervalMinutes || 30} {t.noteSuffix}
+        {status.error ? ` ${t.recentError}: ${status.error}` : ""}
       </p>
     </section>
   );

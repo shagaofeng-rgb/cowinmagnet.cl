@@ -9,8 +9,20 @@ import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { AdminOverviewRealtime } from "@/components/admin/AdminRealtimePanels";
 import AdminSyncStatus from "@/components/admin/AdminSyncStatus";
 
+const t = {
+  title: "\u5357\u7f8e\u7ad9\u7f51\u7ad9\u6570\u636e\u540e\u53f0",
+  eyebrow: "\u6570\u636e\u6982\u89c8",
+  desc: "\u67e5\u770b\u8bbf\u95ee\u3001\u8be2\u76d8\u3001\u4ea7\u54c1\u3001\u65b0\u95fb\u3001SEO \u4e0e\u540c\u6b65\u72b6\u6001\u3002\u6570\u636e\u5747\u6765\u81ea\u7ad9\u5185\u91c7\u96c6\u3001CMS\u3001\u8be2\u76d8\u8868\u5355\u548c\u5df2\u914d\u7f6e\u7684\u5916\u90e8\u6570\u636e\u6e90\u3002",
+  storage: "\u6570\u636e\u5b58\u50a8",
+  online: "\u751f\u4ea7\u63a5\u5165",
+  cms: "CMS",
+  enquiries: "\u8be2\u76d8",
+  account: "\u8d26\u53f7",
+  onlineText: "\u7ebf\u4e0a\u73af\u5883\u901a\u8fc7 DATABASE_URL\u3001CMS_TABLE_PREFIX \u548c\u540e\u53f0\u73af\u5883\u53d8\u91cf\u8fde\u63a5\u6570\u636e\u5e93\u3001\u90ae\u4ef6\u3001Search Console \u548c\u5b9a\u65f6\u4efb\u52a1\u3002"
+};
+
 export const dynamic = "force-dynamic";
-export const metadata = { title: "数据概览 | Cowinmagnet.cl 后台" };
+export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminDashboardPage({ searchParams }) {
   const params = await searchParams;
@@ -28,9 +40,9 @@ export default async function AdminDashboardPage({ searchParams }) {
     <>
       <section className="admin-page-head">
         <div>
-          <p className="eyebrow">数据概览</p>
-          <h1>南美站网站数据后台</h1>
-          <p>查看访问、询盘、产品、新闻、SEO 与同步状态。业务数据使用数据库持久化，外部服务未配置时不展示伪造数据。</p>
+          <p className="eyebrow">{t.eyebrow}</p>
+          <h1>{t.title}</h1>
+          <p>{t.desc}</p>
         </div>
         <AdminDateRangeFilter range={range} />
       </section>
@@ -58,14 +70,14 @@ export default async function AdminDashboardPage({ searchParams }) {
       />
       <section className="admin-grid">
         <article className="admin-panel">
-          <h3>存储连接</h3>
-          <p>CMS：{cmsStorageMode()}</p>
-          <p>询盘：{enquiryStorageMode()}</p>
-          <p>账号：{adminAccountStorageMode()}</p>
+          <h3>{t.storage}</h3>
+          <p>{t.cms}: {cmsStorageMode()}</p>
+          <p>{t.enquiries}: {enquiryStorageMode()}</p>
+          <p>{t.account}: {adminAccountStorageMode()}</p>
         </article>
         <article className="admin-panel">
-          <h3>上线接入</h3>
-          <p>生产环境使用 DATABASE_URL、CMS_TABLE_PREFIX 和后台环境变量；内容、询盘、访问数据会持久化到 PostgreSQL。</p>
+          <h3>{t.online}</h3>
+          <p>{t.onlineText}</p>
         </article>
       </section>
     </>

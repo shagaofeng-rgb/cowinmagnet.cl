@@ -145,6 +145,18 @@ body {
   font-weight: 800;
 }
 
+.admin-logo img {
+  width: 138px;
+  height: auto;
+  object-fit: contain;
+}
+
+.admin-logo strong {
+  color: #e8eef8;
+  font-size: .86rem;
+  letter-spacing: 0;
+}
+
 .admin-login-form,
 .admin-form {
   display: grid;

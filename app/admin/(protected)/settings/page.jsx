@@ -1,11 +1,24 @@
 import { cmsStorageMode } from "@/lib/cmsStore";
 import { enquiryStorageMode } from "@/lib/enquiryStore";
 
+const t = {
+  eyebrow: "\u7cfb\u7edf\u8bbe\u7f6e",
+  title: "\u73af\u5883\u3001\u90ae\u4ef6\u3001\u6570\u636e\u6e90\u4e0e\u5b89\u5168\u914d\u7f6e",
+  desc: "\u540e\u53f0\u53ea\u663e\u793a\u914d\u7f6e\u72b6\u6001\uff0c\u4e0d\u8fd4\u56de\u5b8c\u6574\u5bc6\u94a5\u6216\u5bc6\u7801\u3002",
+  configured: "\u5df2\u914d\u7f6e",
+  missing: "\u672a\u914d\u7f6e",
+  database: "\u6570\u636e\u5e93",
+  admin: "\u7ba1\u7406\u5458",
+  email: "\u90ae\u4ef6\u901a\u77e5",
+  seo: "SEO \u6570\u636e\u6e90",
+  passwordSource: "\u5bc6\u7801\u6765\u6e90\uff1a\u73af\u5883\u53d8\u91cf\u6216\u6570\u636e\u5e93\u7ba1\u7406\u5458\u8d26\u53f7\u3002"
+};
+
 export const dynamic = "force-dynamic";
-export const metadata = { title: "系统设置 | Cowinmagnet.cl 后台" };
+export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 function masked(value) {
-  return value ? "已配置" : "未配置";
+  return value ? t.configured : t.missing;
 }
 
 export default function AdminSettingsPage() {
@@ -13,33 +26,33 @@ export default function AdminSettingsPage() {
     <section className="admin-panel">
       <div className="admin-page-head">
         <div>
-          <p className="eyebrow">系统设置</p>
-          <h1>环境、邮件、数据源与安全配置</h1>
-          <p>敏感配置通过 Vercel 环境变量管理，后台只显示配置状态，不返回完整密钥或密码。</p>
+          <p className="eyebrow">{t.eyebrow}</p>
+          <h1>{t.title}</h1>
+          <p>{t.desc}</p>
         </div>
       </div>
       <div className="admin-grid">
         <article className="admin-panel">
-          <h3>数据库</h3>
-          <p>DATABASE_URL：{masked(process.env.DATABASE_URL)}</p>
-          <p>CMS 存储：{cmsStorageMode()}</p>
-          <p>询盘存储：{enquiryStorageMode()}</p>
+          <h3>{t.database}</h3>
+          <p>DATABASE_URL: {masked(process.env.DATABASE_URL)}</p>
+          <p>CMS: {cmsStorageMode()}</p>
+          <p>{t.email}: {enquiryStorageMode()}</p>
         </article>
         <article className="admin-panel">
-          <h3>管理员</h3>
-          <p>ADMIN_EMAIL：{process.env.ADMIN_EMAIL || "davidsha@cowinmagnet.com"}</p>
-          <p>密码来源：环境变量或数据库中的管理员账号。</p>
+          <h3>{t.admin}</h3>
+          <p>ADMIN_EMAIL: {process.env.ADMIN_EMAIL || "davidsha@cowinmagnet.com"}</p>
+          <p>{t.passwordSource}</p>
         </article>
         <article className="admin-panel">
-          <h3>邮件通知</h3>
-          <p>INQUIRY_TO_EMAIL：{masked(process.env.INQUIRY_TO_EMAIL)}</p>
-          <p>SMTP_HOST：{masked(process.env.SMTP_HOST)}</p>
-          <p>SMTP_USER：{masked(process.env.SMTP_USER)}</p>
+          <h3>{t.email}</h3>
+          <p>INQUIRY_TO_EMAIL: {masked(process.env.INQUIRY_TO_EMAIL)}</p>
+          <p>SMTP_HOST: {masked(process.env.SMTP_HOST)}</p>
+          <p>SMTP_USER: {masked(process.env.SMTP_USER)}</p>
         </article>
         <article className="admin-panel">
-          <h3>SEO 数据源</h3>
-          <p>Search Console 站点：{masked(process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL)}</p>
-          <p>Google 服务账号：{masked(process.env.GOOGLE_SERVICE_ACCOUNT_BASE64 || process.env.GOOGLE_SERVICE_ACCOUNT_JSON)}</p>
+          <h3>{t.seo}</h3>
+          <p>Search Console: {masked(process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL)}</p>
+          <p>Google Service Account: {masked(process.env.GOOGLE_SERVICE_ACCOUNT_BASE64 || process.env.GOOGLE_SERVICE_ACCOUNT_JSON)}</p>
         </article>
       </div>
     </section>

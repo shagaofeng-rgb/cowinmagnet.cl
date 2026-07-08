@@ -17,18 +17,18 @@ export async function GET(_request: Request, { params }: { params: Promise<{ loc
   const { locale } = await params;
   const posts = (await getPublishedPosts(locale)).slice(0, 40);
   const siteUrl = "https://cowinmagnet.cl";
-  const feedUrl = `${siteUrl}/${locale}/blog/rss.xml`;
+  const feedUrl = `${siteUrl}/${locale}/news/rss.xml`;
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
     <title>Cowinmagnet LATAM News</title>
-    <link>${siteUrl}/${locale}/blog</link>
+    <link>${siteUrl}/${locale}/news</link>
     <description>Industry news with Cowinmagnet technical analysis for magnetic separation, mining, recycling and bulk handling.</description>
     <language>${locale}</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="${feedUrl}" rel="self" type="application/rss+xml" />
     ${posts.map((post) => {
-      const url = `${siteUrl}/${locale}/blog/${post.slug}`;
+      const url = `${siteUrl}/${locale}/news/${post.slug}`;
       return `<item>
       <title>${escapeXml(post.title)}</title>
       <link>${url}</link>

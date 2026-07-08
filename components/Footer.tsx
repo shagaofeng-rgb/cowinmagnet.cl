@@ -34,7 +34,7 @@ export function Footer({ locale }: { locale: Locale }) {
               <li><Link href={base("solutions")}>{copy.nav.solutions}</Link></li>
               <li><Link href={base("markets")}>{copy.nav.markets}</Link></li>
               <li><Link href={base("technical-support")}>{copy.nav.support}</Link></li>
-              <li><Link href={base("blog")}>{copy.nav.news}</Link></li>
+              <li><Link href={base("news")}>{copy.nav.news}</Link></li>
             </ul>
           </div>
           <div className="footer-column footer-contact-card">

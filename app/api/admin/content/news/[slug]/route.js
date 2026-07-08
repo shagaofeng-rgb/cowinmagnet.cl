@@ -11,10 +11,10 @@ async function slugFromContext(context) {
 }
 
 function revalidateNews(slug) {
-  revalidatePath("/es-cl/blog");
-  revalidatePath("/en/blog");
-  revalidatePath(`/es-cl/blog/${slug}`);
-  revalidatePath(`/en/blog/${slug}`);
+  revalidatePath("/es-cl/news");
+  revalidatePath("/en/news");
+  revalidatePath(`/es-cl/news/${slug}`);
+  revalidatePath(`/en/news/${slug}`);
   revalidatePath("/news-sitemap.xml");
   revalidatePath("/sitemap.xml");
 }

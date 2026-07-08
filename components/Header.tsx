@@ -109,7 +109,7 @@ export function Header({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <Link className={pathname === base("blog") ? "active" : ""} href={base("blog")}>{copy.nav.news}</Link>
+        <Link className={pathname === base("news") ? "active" : ""} href={base("news")}>{copy.nav.news}</Link>
         <Link className={pathname === base("about") ? "active" : ""} href={base("about")}>{copy.nav.about}</Link>
 
         <div className="language-switcher">

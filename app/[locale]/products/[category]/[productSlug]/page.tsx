@@ -156,7 +156,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       {relatedNews.length ? (
         <section className="band">
           <div className="section-heading"><p className="eyebrow">News</p><h2>Related industry news</h2></div>
-          <div className="page-grid">{relatedNews.map((post) => <article className="content-card" key={post.slug}>{post.image ? <img src={post.image} alt={post.title} /> : null}<div className="content-card-body"><h3>{post.title}</h3><p>{post.summary}</p><Link href={localizedPath(locale, `blog/${post.slug}`)}>Read news</Link></div></article>)}</div>
+          <div className="page-grid">{relatedNews.map((post) => <article className="content-card" key={post.slug}>{post.image ? <img src={post.image} alt={post.title} /> : null}<div className="content-card-body"><h3>{post.title}</h3><p>{post.summary}</p><Link href={localizedPath(locale, `news/${post.slug}`)}>Read news</Link></div></article>)}</div>
         </section>
       ) : null}
       <section className="band">

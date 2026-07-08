@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry(`/${locale}/technical-support`, 0.7),
     entry(`/${locale}/downloads`, 0.6),
     entry(`/${locale}/about`, 0.6),
-    entry(`/${locale}/blog`, 0.7),
+    entry(`/${locale}/news`, 0.7),
     entry(`/${locale}/contact`, 0.8),
     entry(`/${locale}/request-a-quote`, 0.9)
   ]);
@@ -53,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const posts = await getPublishedPosts();
   const blogPages = locales.flatMap((locale) =>
-    posts.map((post) => entry(`/${locale}/blog/${post.slug}`, 0.68))
+    posts.map((post) => entry(`/${locale}/news/${post.slug}`, 0.68))
   );
 
   return [...staticPages, ...categoryPages, ...productPages, ...industryPages, ...solutionPages, ...marketPages, ...chileRegionPages, ...blogPages];

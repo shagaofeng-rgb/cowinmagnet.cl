@@ -26,7 +26,7 @@ export async function GET() {
     const publishedAt = new Date(post.publishedAt || post.date).toISOString();
     return `
   <url>
-    <loc>${baseUrl}/es-cl/blog/${escapeXml(post.slug)}</loc>
+    <loc>${baseUrl}/es-cl/news/${escapeXml(post.slug)}</loc>
     <news:news>
       <news:publication>
         <news:name>Cowinmagnet.cl News</news:name>

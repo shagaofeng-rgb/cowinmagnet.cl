@@ -29,10 +29,10 @@ export async function POST(request) {
     sourceUrl: value(formData, "sourceUrl"),
     publishedAt: new Date().toISOString(),
     status: "published",
-    href: `/blog/${slug}`
+    href: `/news/${slug}`
   });
 
   revalidatePath("/admin/news");
-  revalidatePath("/es-cl/blog");
+  revalidatePath("/es-cl/news");
   redirect("/admin/news?saved=news");
 }

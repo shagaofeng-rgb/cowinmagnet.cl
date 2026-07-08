@@ -19,8 +19,8 @@ export async function POST(request) {
   const result = await runNewsAutomation({ limit, dryRun });
 
   if (!dryRun) {
-    revalidatePath("/es-cl/blog");
-    revalidatePath("/en/blog");
+    revalidatePath("/es-cl/news");
+    revalidatePath("/en/news");
     revalidatePath("/news-sitemap.xml");
     revalidatePath("/sitemap.xml");
   }

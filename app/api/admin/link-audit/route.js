@@ -19,11 +19,11 @@ export async function GET() {
     { label: "Products", href: "/es-cl/products" },
     { label: "Applications", href: "/es-cl/industries" },
     { label: "Markets", href: "/es-cl/markets" },
-    { label: "News", href: "/es-cl/blog" },
+    { label: "News", href: "/es-cl/news" },
     ...productCategories.map((category) => ({ label: category.title, href: `/es-cl/products/${category.id}` })),
     ...products.map((product) => ({ label: product.title, href: `/es-cl/products/${product.categoryId}/${product.slug}` })),
-    ...posts.map((post) => ({ label: post.title, href: `/es-cl/blog/${post.slug}` })),
-    ...cmsNews.map((post) => ({ label: post.title, href: `/es-cl/blog/${post.slug}` }))
+    ...posts.map((post) => ({ label: post.title, href: `/es-cl/news/${post.slug}` })),
+    ...cmsNews.map((post) => ({ label: post.title, href: `/es-cl/news/${post.slug}` }))
   ];
 
   const domains = new Map();

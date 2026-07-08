@@ -8,9 +8,10 @@ function isAuthorized(request) {
   const secret = process.env.CRON_SECRET;
   const auth = request.headers.get("authorization") || "";
   const vercelCron = request.headers.get("x-vercel-cron");
+  if (secret) return auth === `Bearer ${secret}`;
   if (vercelCron) return true;
   if (!secret && process.env.NODE_ENV !== "production") return true;
-  return Boolean(secret && auth === `Bearer ${secret}`);
+  return false;
 }
 
 export async function GET(request) {

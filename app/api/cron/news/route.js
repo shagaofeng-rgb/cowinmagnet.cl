@@ -26,6 +26,9 @@ export async function GET(request) {
   try {
     const result = await runNewsAutomation({ limit, dryRun });
     if (!dryRun) {
+      if (result.success && result.data?.published?.length) {
+        queueSitemapRefresh("news-automation-published");
+      }
       const log = result.data?.log || {};
       return Response.json({
         success: result.success,
@@ -38,7 +41,6 @@ export async function GET(request) {
         time_zone: log.time_zone
       });
     }
-    if (result.success && result.data?.published?.length) queueSitemapRefresh("news-automation-published");
     return Response.json(result);
   } catch (error) {
     console.error("[cron/news] failed", error);

@@ -2,14 +2,12 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContentCard } from "@/components/ContentCard";
 import { HeroBanner } from "@/components/HeroBanner";
-import { categoryImages, getCategoryDisplay, getProductSummary, productCategories, productCopy, products } from "@/data/catalog";
+import { categoryImages, getCategoryDisplay, getProductSummary, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath } from "@/data/site";
 import type { Metadata } from "next";
 
-export function generateStaticParams() {
-  return productCategories.flatMap((category) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, category: category.slug })));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; category: string }> }): Promise<Metadata> {
   const { locale, category: categorySlug } = await params;
@@ -34,7 +32,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function ProductCategoryPage({ params }: { params: Promise<{ locale: Locale; category: string }> }) {
   const { locale, category: categorySlug } = await params;
-  const [categories, catalogProducts] = await Promise.all([getPublishedCatalogCategories(), getPublishedCatalogProducts()]);
+  const catalogProducts = await getPublishedCatalogProducts();
+  const categories = await getPublishedCatalogCategories(catalogProducts);
   const category = categories.find((item) => item.slug === categorySlug);
   if (!category) notFound();
   const list = catalogProducts.filter((item) => item.category === categorySlug);

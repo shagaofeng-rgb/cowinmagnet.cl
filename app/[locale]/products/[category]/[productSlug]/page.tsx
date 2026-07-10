@@ -7,13 +7,11 @@ import { FAQAccordion } from "@/components/FAQAccordion";
 import { HeroBanner } from "@/components/HeroBanner";
 import { QuoteForm } from "@/components/QuoteForm";
 import { getPublishedPosts } from "@/data/blog";
-import { getCategoryDisplay, getProductSummary, productCategories, productCopy, products } from "@/data/catalog";
+import { getCategoryDisplay, getProductSummary, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath } from "@/data/site";
 
-export function generateStaticParams() {
-  return products.flatMap((product) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, category: product.category, productSlug: product.slug })));
-}
+export const dynamic = "force-dynamic";
 
 function CatalogImage({ src, alt }: { src: string; alt: string }) {
   const unoptimized = src.startsWith("data:") || src.startsWith("http://") || src.startsWith("https://");
@@ -58,7 +56,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ locale: Locale; category: string; productSlug: string }> }) {
   const { locale, category: categorySlug, productSlug } = await params;
-  const [catalogProducts, categories] = await Promise.all([getPublishedCatalogProducts(), getPublishedCatalogCategories()]);
+  const catalogProducts = await getPublishedCatalogProducts();
+  const categories = await getPublishedCatalogCategories(catalogProducts);
   const product = catalogProducts.find((item) => item.category === categorySlug && item.slug === productSlug);
   const category = categories.find((item) => item.slug === categorySlug);
   if (!product || !category) notFound();

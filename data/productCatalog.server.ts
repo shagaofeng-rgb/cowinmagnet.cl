@@ -27,8 +27,8 @@ export async function getPublishedCatalogProducts() {
   return [...bySlug.values()];
 }
 
-export async function getPublishedCatalogCategories() {
-  const products = await getPublishedCatalogProducts();
+export async function getPublishedCatalogCategories(catalogProducts?: Awaited<ReturnType<typeof getPublishedCatalogProducts>>) {
+  const products = catalogProducts || await getPublishedCatalogProducts();
   const bySlug = new Map(staticCategories.map((item) => [item.slug, item]));
   for (const product of products) {
     if (!bySlug.has(product.category)) {

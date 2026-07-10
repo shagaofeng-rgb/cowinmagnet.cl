@@ -10,6 +10,7 @@ import { getPublishedPosts } from "@/data/blog";
 import { getCategoryDisplay, getProductSummary, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath } from "@/data/site";
+import { localizedProductSeo } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const catalogProducts = await getPublishedCatalogProducts();
   const product = catalogProducts.find((item) => item.slug === productSlug);
   const canonical = `/${locale}/products/${category}/${productSlug}`;
-  const title = product ? `${product.title} for magnetic separation projects` : "Product";
+  const title = product ? localizedProductSeo(locale, product.title) : "Product";
   const description = product ? getProductSummary(product, locale).slice(0, 155) : undefined;
   return {
     title,

@@ -41,6 +41,7 @@ export function Header({ locale }: { locale: Locale }) {
     function onPointer(event: MouseEvent) {
       if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
         setMega(null);
+        setMobileOpen(false);
       }
     }
     document.addEventListener("keydown", onKey);
@@ -50,6 +51,11 @@ export function Header({ locale }: { locale: Locale }) {
       document.removeEventListener("mousedown", onPointer);
     };
   }, []);
+
+  useEffect(() => {
+    setMega(null);
+    setMobileOpen(false);
+  }, [pathname]);
 
   function switchLocale(target: Locale) {
     const parts = pathname.split("/").filter(Boolean);
@@ -68,7 +74,7 @@ export function Header({ locale }: { locale: Locale }) {
           <small>Chile & LATAM</small>
         </span>
       </Link>
-      <button className="menu-button" type="button" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>
+      <button className="menu-button" type="button" aria-controls="site-nav" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>
         Menu
       </button>
       <nav id="site-nav" className={`site-nav ${mobileOpen ? "open" : ""}`} aria-label="Main navigation">
@@ -113,7 +119,7 @@ export function Header({ locale }: { locale: Locale }) {
         <Link className={pathname === base("about") ? "active" : ""} href={base("about")}>{copy.nav.about}</Link>
 
         <div className="language-switcher">
-          <button className="nav-trigger" type="button" aria-label="Language" onClick={() => setMega(mega === "lang" ? null : "lang")}>
+          <button className="nav-trigger" type="button" aria-label="Language" aria-expanded={mega === "lang"} onClick={() => setMega(mega === "lang" ? null : "lang")}>
             {localeLabels[locale]}
           </button>
           <div className={`language-menu ${mega === "lang" ? "open" : ""}`}>

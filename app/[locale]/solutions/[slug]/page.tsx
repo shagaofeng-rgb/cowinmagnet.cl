@@ -5,17 +5,19 @@ import { ContentCard } from "@/components/ContentCard";
 import { HeroBanner } from "@/components/HeroBanner";
 import { getProductSummary, products, solutions } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
+import { localizedAlternates } from "@/lib/seo";
 
 export function generateStaticParams() {
   return solutions.flatMap((item) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, slug: item.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
+  const { locale, slug } = await params;
   const solution = solutions.find((item) => item.slug === slug);
   return {
     title: solution ? solution.title : "Solution",
-    description: solution?.summary
+    description: solution?.summary,
+    alternates: localizedAlternates(locale, `solutions/${slug}`)
   };
 }
 

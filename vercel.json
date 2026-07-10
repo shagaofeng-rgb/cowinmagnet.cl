@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/cron/sitemap?submit=true",
+      "schedule": "23 9 * * *"
+    },
+    {
       "path": "/api/cron/news?limit=4&slot=1",
       "schedule": "17 11 * * *"
     },

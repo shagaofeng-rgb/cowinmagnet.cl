@@ -3,17 +3,19 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
 import { chileRegions } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
+import { localizedAlternates } from "@/lib/seo";
 
 export function generateStaticParams() {
   return chileRegions.flatMap((region) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, country: "chile", region: region.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ region: string }> }) {
-  const { region: regionSlug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; country: string; region: string }> }) {
+  const { locale, country, region: regionSlug } = await params;
   const region = chileRegions.find((item) => item.slug === regionSlug);
   return {
     title: region ? `Chile ${region.title}` : "Chile Region",
-    description: region?.summary
+    description: region?.summary,
+    alternates: localizedAlternates(locale, `markets/${country}/${regionSlug}`)
   };
 }
 

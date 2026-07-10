@@ -24,6 +24,8 @@ Copy `.env.example` and configure production secrets in Vercel:
 - `INQUIRY_TO_EMAIL`: receiver email for form submissions.
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_SECURE`: outbound email.
 - `GOOGLE_SEARCH_CONSOLE_SITE_URL`: for example `sc-domain:cowinmagnet.cl`.
+- `GOOGLE_SEARCH_CONSOLE_SITEMAP_URL`: production Sitemap index URL.
+- `GOOGLE_SEARCH_CONSOLE_ENABLED`: set to `true` only after the service account is authorized in Search Console.
 - `GOOGLE_SERVICE_ACCOUNT_BASE64`: base64 encoded Google service account JSON.
 
 Never commit real secrets.
@@ -99,6 +101,21 @@ vercel --prod --yes
 ```
 
 Cron jobs are configured in `vercel.json` for news automation, analytics sync and website monitoring.
+
+## Sitemap Automation
+
+The public Sitemap index is `https://cowinmagnet.cl/sitemap.xml`. It references UTF-8 child files under `/sitemaps/` for pages, categories, products and posts. URL fingerprints preserve real `lastmod` values until significant content changes. PostgreSQL transactions and advisory locks protect production generation; local development uses atomic file replacement and a stale-safe lock.
+
+Content mutations queue a Sitemap refresh. Vercel also checks it daily at `09:23 UTC`. The authenticated admin page is `/admin/sitemap`.
+
+```bash
+npm run sitemap:generate -- --dry-run --verbose
+npm run sitemap:generate -- --force
+npm run sitemap:generate -- --force --submit --verbose
+npm test
+```
+
+The CLI calls the protected production route and therefore requires `CRON_SECRET`. Search Console submission uses the Sitemaps API, never the deprecated ping endpoint or the Indexing API. See [docs/sitemap.md](docs/sitemap.md) for setup, authorization, logs and troubleshooting.
 
 ## Known Limits
 

@@ -1,4 +1,5 @@
 import { runNewsAutomation } from "@/lib/newsAutomation";
+import { queueSitemapRefresh } from "@/lib/sitemapHooks";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +38,7 @@ export async function GET(request) {
         time_zone: log.time_zone
       });
     }
+    if (result.success && result.data?.published?.length) queueSitemapRefresh("news-automation-published");
     return Response.json(result);
   } catch (error) {
     console.error("[cron/news] failed", error);

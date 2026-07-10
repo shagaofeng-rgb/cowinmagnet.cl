@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { FAQAccordion } from "@/components/FAQAccordion";
@@ -7,15 +8,22 @@ import { HeroBanner } from "@/components/HeroBanner";
 import { QuoteForm } from "@/components/QuoteForm";
 import { getPublishedPosts } from "@/data/blog";
 import { getCategoryDisplay, getProductSummary, productCategories, productCopy, products } from "@/data/catalog";
+import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath } from "@/data/site";
 
 export function generateStaticParams() {
   return products.flatMap((product) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, category: product.category, productSlug: product.slug })));
 }
 
+function CatalogImage({ src, alt }: { src: string; alt: string }) {
+  const unoptimized = src.startsWith("data:") || src.startsWith("http://") || src.startsWith("https://");
+  return <Image src={src} alt={alt} width={720} height={540} sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw" unoptimized={unoptimized} />;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; category: string; productSlug: string }> }): Promise<Metadata> {
   const { locale, category, productSlug } = await params;
-  const product = products.find((item) => item.slug === productSlug);
+  const catalogProducts = await getPublishedCatalogProducts();
+  const product = catalogProducts.find((item) => item.slug === productSlug);
   const canonical = `/${locale}/products/${category}/${productSlug}`;
   const title = product ? `${product.title} for magnetic separation projects` : "Product";
   const description = product ? getProductSummary(product, locale).slice(0, 155) : undefined;
@@ -50,15 +58,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ locale: Locale; category: string; productSlug: string }> }) {
   const { locale, category: categorySlug, productSlug } = await params;
-  const product = products.find((item) => item.category === categorySlug && item.slug === productSlug);
-  const category = productCategories.find((item) => item.slug === categorySlug);
+  const [catalogProducts, categories] = await Promise.all([getPublishedCatalogProducts(), getPublishedCatalogCategories()]);
+  const product = catalogProducts.find((item) => item.category === categorySlug && item.slug === productSlug);
+  const category = categories.find((item) => item.slug === categorySlug);
   if (!product || !category) notFound();
-  const relatedProducts = products.filter((item) => item.category === categorySlug && item.slug !== product.slug).slice(0, 3);
+  const relatedProducts = catalogProducts.filter((item) => item.category === categorySlug && item.slug !== product.slug).slice(0, 3);
   const relatedNews = (await getPublishedPosts(locale))
     .filter((post) => post.relatedProducts?.some((related) => related.slug === product.slug || related.category === product.category))
     .slice(0, 3);
   const copy = productCopy[locale] ?? productCopy["es-cl"];
-  const categoryDisplay = getCategoryDisplay(category, locale);
+  const categoryDisplay = productCategories.some((item) => item.slug === category.slug) ? getCategoryDisplay(category as (typeof productCategories)[number], locale) : { title: category.title, summary: category.summary };
   const productSummary = getProductSummary(product, locale);
   const gallery = product.imageGallery?.length ? product.imageGallery : [product.image];
   const productSchema = {
@@ -116,9 +125,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <p>{copy.imagesText}</p>
         </div>
         <div className="page-grid">
-          <article className="content-card"><img src={gallery[0]} alt={`${product.title} main image`} /><div className="content-card-body"><h3>{copy.mainView}</h3><p>{copy.mainViewText}</p></div></article>
-          <article className="content-card"><img src={gallery[1] ?? gallery[0]} alt={`${product.title} gallery image`} /><div className="content-card-body"><h3>{copy.galleryView}</h3><p>{copy.galleryViewText}</p></div></article>
-          <article className="content-card"><img src={gallery[2] ?? gallery[0]} alt={`${product.title} installation reference`} /><div className="content-card-body"><h3>{copy.installationView}</h3><p>{copy.installationViewText}</p></div></article>
+          <article className="content-card"><CatalogImage src={gallery[0]} alt={`${product.title} main image`} /><div className="content-card-body"><h3>{copy.mainView}</h3><p>{copy.mainViewText}</p></div></article>
+          <article className="content-card"><CatalogImage src={gallery[1] ?? gallery[0]} alt={`${product.title} gallery image`} /><div className="content-card-body"><h3>{copy.galleryView}</h3><p>{copy.galleryViewText}</p></div></article>
+          <article className="content-card"><CatalogImage src={gallery[2] ?? gallery[0]} alt={`${product.title} installation reference`} /><div className="content-card-body"><h3>{copy.installationView}</h3><p>{copy.installationViewText}</p></div></article>
         </div>
       </section>
       <section className="band">
@@ -151,12 +160,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </section>
       <section className="band muted">
         <div className="section-heading"><p className="eyebrow">{copy.related}</p><h2>{copy.relatedTitle}</h2></div>
-        <div className="page-grid">{relatedProducts.map((item) => <article className="content-card" key={item.slug}><img src={item.image} alt={item.title} /><div className="content-card-body"><h3>{item.title}</h3><p>{getProductSummary(item, locale)}</p><Link href={localizedPath(locale, `products/${item.category}/${item.slug}`)}>{copy.viewProduct}</Link></div></article>)}</div>
+        <div className="page-grid">{relatedProducts.map((item) => <article className="content-card" key={item.slug}><CatalogImage src={item.image} alt={item.title} /><div className="content-card-body"><h3>{item.title}</h3><p>{getProductSummary(item, locale)}</p><Link href={localizedPath(locale, `products/${item.category}/${item.slug}`)}>{copy.viewProduct}</Link></div></article>)}</div>
       </section>
       {relatedNews.length ? (
         <section className="band">
           <div className="section-heading"><p className="eyebrow">News</p><h2>Related industry news</h2></div>
-          <div className="page-grid">{relatedNews.map((post) => <article className="content-card" key={post.slug}>{post.image ? <img src={post.image} alt={post.title} /> : null}<div className="content-card-body"><h3>{post.title}</h3><p>{post.summary}</p><Link href={localizedPath(locale, `news/${post.slug}`)}>Read news</Link></div></article>)}</div>
+          <div className="page-grid">{relatedNews.map((post) => <article className="content-card" key={post.slug}>{post.image ? <CatalogImage src={post.image} alt={post.title} /> : null}<div className="content-card-body"><h3>{post.title}</h3><p>{post.summary}</p><Link href={localizedPath(locale, `news/${post.slug}`)}>Read news</Link></div></article>)}</div>
         </section>
       ) : null}
       <section className="band">

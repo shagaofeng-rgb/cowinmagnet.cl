@@ -6,17 +6,19 @@ import { FAQAccordion } from "@/components/FAQAccordion";
 import { HeroBanner } from "@/components/HeroBanner";
 import { getProductSummary, industries, products, solutions } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
+import { localizedAlternates } from "@/lib/seo";
 
 export function generateStaticParams() {
   return industries.flatMap((item) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, slug: item.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
+  const { locale, slug } = await params;
   const industry = industries.find((item) => item.slug === slug);
   return {
     title: industry ? industry.title : "Industry",
-    description: industry?.summary
+    description: industry?.summary,
+    alternates: localizedAlternates(locale, `industries/${slug}`)
   };
 }
 

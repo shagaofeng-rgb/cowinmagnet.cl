@@ -3,6 +3,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContentCard } from "@/components/ContentCard";
 import { HeroBanner } from "@/components/HeroBanner";
 import { categoryImages, getCategoryDisplay, getProductSummary, productCategories, productCopy, products } from "@/data/catalog";
+import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath } from "@/data/site";
 import type { Metadata } from "next";
 
@@ -12,8 +13,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; category: string }> }): Promise<Metadata> {
   const { locale, category: categorySlug } = await params;
-  const category = productCategories.find((item) => item.slug === categorySlug);
-  const display = category ? getCategoryDisplay(category, locale) : null;
+  const categories = await getPublishedCatalogCategories();
+  const category = categories.find((item) => item.slug === categorySlug);
+  const display = category ? (productCategories.some((item) => item.slug === category.slug) ? getCategoryDisplay(category as (typeof productCategories)[number], locale) : { title: category.title, summary: category.summary }) : null;
   return {
     title: display ? display.title : "Product Category",
     description: display?.summary,
@@ -32,11 +34,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function ProductCategoryPage({ params }: { params: Promise<{ locale: Locale; category: string }> }) {
   const { locale, category: categorySlug } = await params;
-  const category = productCategories.find((item) => item.slug === categorySlug);
+  const [categories, catalogProducts] = await Promise.all([getPublishedCatalogCategories(), getPublishedCatalogProducts()]);
+  const category = categories.find((item) => item.slug === categorySlug);
   if (!category) notFound();
-  const list = products.filter((item) => item.category === categorySlug);
+  const list = catalogProducts.filter((item) => item.category === categorySlug);
   const copy = productCopy[locale] ?? productCopy["es-cl"];
-  const display = getCategoryDisplay(category, locale);
+  const display = productCategories.some((item) => item.slug === category.slug) ? getCategoryDisplay(category as (typeof productCategories)[number], locale) : { title: category.title, summary: category.summary };
   return (
     <>
       <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: display.title }]} />

@@ -62,7 +62,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <html lang="es-cl">
+    <html lang="es-CL" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `(function(){var m=location.pathname.match(/^\\/(es-cl|es|pt-br|en)(?:\\/|$)/);var map={"es-cl":"es-CL","es":"es","pt-br":"pt-BR","en":"en"};if(m)document.documentElement.lang=map[m[1]]||"es-CL";}());` }} />
+      </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <Suspense fallback={null}>

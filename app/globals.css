@@ -225,6 +225,34 @@ body {
   font-weight: 800;
 }
 
+.sitemap-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.sitemap-actions button {
+  border: 0;
+  border-radius: 6px;
+  padding: 11px 14px;
+  background: #ffd325;
+  color: #081018;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sitemap-actions button:disabled {
+  cursor: wait;
+  opacity: .62;
+}
+
+.sitemap-actions p {
+  flex-basis: 100%;
+  margin: 4px 0 0;
+  color: #c8f8df;
+}
+
 .admin-alert {
   margin: 14px 0;
   padding: 12px;

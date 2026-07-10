@@ -21,6 +21,7 @@ const links = [
   { href: "/admin/enquiries", label: "\u5ba2\u6237\u8868\u5355" },
   { href: "/admin/analytics", label: "\u8bbf\u95ee\u5206\u6790" },
   { href: "/admin/search-console", label: "SEO \u6570\u636e" },
+  { href: "/admin/sitemap", label: "Sitemap \u7ba1\u7406" },
   { href: "/admin/media", label: "\u5a92\u4f53\u5e93" },
   { href: "/admin/users", label: "\u7528\u6237\u4e0e\u6743\u9650" },
   { href: "/admin/audit-logs", label: "\u64cd\u4f5c\u65e5\u5fd7" },

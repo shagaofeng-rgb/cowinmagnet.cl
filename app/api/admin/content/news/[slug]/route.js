@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { deleteCmsItem, getCmsItem, saveCmsItem, updateCmsItemStatus } from "@/lib/cmsStore";
 import { requireAdminApi } from "@/lib/adminApi";
+import { queueSitemapRefresh } from "@/lib/sitemapHooks";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,11 +42,13 @@ export async function PATCH(request, context) {
   if (body.status) {
     await updateCmsItemStatus("news", slug, String(body.status));
     revalidateNews(slug);
+    queueSitemapRefresh("news-status-changed");
     return Response.json({ success: true });
   }
 
   const next = await saveCmsItem({ ...item, ...body, type: "news", slug: body.slug || slug });
   revalidateNews(next.slug);
+  queueSitemapRefresh("news-updated");
   return Response.json({ success: true, item: next });
 }
 
@@ -60,5 +63,6 @@ export async function DELETE(request, context) {
   const slug = await slugFromContext(context);
   await deleteCmsItem("news", slug);
   revalidateNews(slug);
+  queueSitemapRefresh("news-deleted");
   return Response.json({ success: true });
 }

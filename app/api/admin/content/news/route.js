@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { requireAdminApi } from "@/lib/adminApi";
 import { saveCmsItem, slugify } from "@/lib/cmsStore";
+import { queueSitemapRefresh } from "@/lib/sitemapHooks";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,5 +35,8 @@ export async function POST(request) {
 
   revalidatePath("/admin/news");
   revalidatePath("/es-cl/news");
+  revalidatePath("/news-sitemap.xml");
+  revalidatePath("/sitemap.xml");
+  queueSitemapRefresh("news-created");
   redirect("/admin/news?saved=news");
 }

@@ -4,17 +4,19 @@ import { ContentCard } from "@/components/ContentCard";
 import { HeroBanner } from "@/components/HeroBanner";
 import { chileRegions, getProductSummary, markets, products } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
+import { localizedAlternates } from "@/lib/seo";
 
 export function generateStaticParams() {
   return markets.flatMap((item) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, country: item.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ country: string }> }) {
-  const { country } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; country: string }> }) {
+  const { locale, country } = await params;
   const market = markets.find((item) => item.slug === country);
   return {
     title: market ? `Market ${market.title}` : "Market",
-    description: market?.summary
+    description: market?.summary,
+    alternates: localizedAlternates(locale, `markets/${country}`)
   };
 }
 

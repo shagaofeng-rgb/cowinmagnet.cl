@@ -6,6 +6,7 @@ import { HeroBanner } from "@/components/HeroBanner";
 import { getPostBySlug, posts } from "@/data/blog";
 import { getProductSummary, productCopy, products } from "@/data/catalog";
 import { Locale, localizedPath } from "@/data/site";
+import { localizedAlternates } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return {
     title: post ? post.title : "News",
     description: post?.summary,
-    alternates: post ? { canonical: `https://cowinmagnet.cl/${locale}/news/${post.slug}` } : undefined,
+    alternates: post ? localizedAlternates(locale, `news/${post.slug}`) : undefined,
     openGraph: post ? {
       title: post.title,
       description: post.summary,
@@ -101,7 +102,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
           {post.topicClusterId ? <p className="news-meta-line">Topic cluster: {post.topicClusterId} | Information gain score: {post.informationGainScore} | Duplication score: {post.duplicationScore}</p> : null}
         </article>
       </section>
-      <section className="band muted"><div className="section-heading"><p className="eyebrow">Related Products</p><h2>{copy.relatedTitle}</h2></div><div className="page-grid">{relatedProducts.map((product) => product ? <article className="content-card" key={product.slug}><img src={product.image} alt={product.title} /><div className="content-card-body"><h3>{product.title}</h3><p>{getProductSummary(product, locale)}</p><Link href={localizedPath(locale, `products/${product.category}/${product.slug}`)}>{copy.viewProduct}</Link></div></article> : null)}</div></section>
+      <section className="band muted"><div className="section-heading"><p className="eyebrow">Related Products</p><h2>{copy.relatedTitle}</h2></div><div className="page-grid">{relatedProducts.map((product) => product ? <article className="content-card" key={product.slug}><Image src={product.image} alt={product.title} width={720} height={540} sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw" /><div className="content-card-body"><h3>{product.title}</h3><p>{getProductSummary(product, locale)}</p><Link href={localizedPath(locale, `products/${product.category}/${product.slug}`)}>{copy.viewProduct}</Link></div></article> : null)}</div></section>
       <section className="band"><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>Solicitar cotizacion</Link></section>
     </>
   );

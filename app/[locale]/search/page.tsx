@@ -9,7 +9,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return {
     title: t(locale, "Buscar", "Buscar", "Search"),
     description: t(locale, "Busqueda de productos, industrias, soluciones, mercados y recursos tecnicos de Cowinmagnet LATAM.", "Busca de produtos, industrias, solucoes, mercados e recursos tecnicos da Cowinmagnet LATAM.", "Search Cowinmagnet LATAM products, industries, solutions, markets and technical resources."),
-    alternates: localizedAlternates(locale, "search")
+    alternates: localizedAlternates(locale, "search"),
+    robots: { index: false, follow: true }
   };
 }
 

@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { deleteCmsItem, getCmsItem, saveCmsItem, updateCmsItemStatus } from "@/lib/cmsStore";
 import { requireAdminApi } from "@/lib/adminApi";
 import { queueSitemapRefresh } from "@/lib/sitemapHooks";
@@ -18,6 +18,7 @@ function revalidateProduct(item, slug) {
   revalidatePath(`/es-cl/products/${categoryId}/${slug}`);
   revalidatePath(`/en/products/${categoryId}/${slug}`);
   revalidatePath("/sitemap.xml");
+  revalidateTag("public-products", { expire: 0 });
 }
 
 export async function GET(request, context) {

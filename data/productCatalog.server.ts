@@ -1,6 +1,6 @@
 import "server-only";
 import { productCategories as staticCategories, products as staticProducts } from "./catalog";
-import { getCmsItems } from "@/lib/cmsStore";
+import { getCachedCatalogProducts } from "@/lib/publicCms";
 
 function normalizeCmsProduct(item: any) {
   return {
@@ -20,7 +20,7 @@ function normalizeCmsProduct(item: any) {
 }
 
 export async function getPublishedCatalogProducts() {
-  const cmsItems = await getCmsItems("product", { includeInactive: true });
+  const cmsItems = await getCachedCatalogProducts();
   const published = cmsItems.filter((item: any) => item.status === "published").map(normalizeCmsProduct);
   const bySlug = new Map(staticProducts.map((item) => [item.slug, item]));
   for (const item of published) bySlug.set(item.slug, { ...bySlug.get(item.slug), ...item });

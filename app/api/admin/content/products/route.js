@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdminApi } from "@/lib/adminApi";
 import { fileToDataUrl, parseLines, parseSpecifications, saveCmsItem, slugify } from "@/lib/cmsStore";
 import { queueSitemapRefresh } from "@/lib/sitemapHooks";
@@ -47,6 +47,7 @@ export async function POST(request) {
   revalidatePath("/es-cl/products");
   revalidatePath(`/es-cl/products/${categoryId}/${slug}`);
   revalidatePath("/sitemap.xml");
+  revalidateTag("public-products", { expire: 0 });
   queueSitemapRefresh("product-created");
   redirect("/admin/products?saved=product");
 }

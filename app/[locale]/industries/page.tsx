@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
-import { focusMarkets, industryMarketRows } from "@/data/brief";
+import { briefIndustryCards } from "@/data/brief";
 import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -10,65 +10,41 @@ import type { Metadata } from "next";
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   return {
-    title: t(locale, "Aplicaciones e industrias", "Aplicacoes e industrias", "Applications and industries"),
-    description: t(locale, "Aplicaciones industriales para separadores magneticos en mineria, cemento, agregados, reciclaje y manejo de graneles.", "Aplicacoes industriais para separadores magneticos em mineracao, cimento, agregados, reciclagem e manuseio de granels.", "Industrial applications for magnetic separators in mining, cement, aggregates, recycling and bulk handling."),
+    title: t(locale, "Soluciones por industria", "Solucoes por industria", "Solutions by industry"),
+    description: t(locale, "Soluciones de separacion magnetica para mineria, reciclaje, cemento, carbon, alimentos y procesamiento industrial en Sudamerica.", "Solucoes de separacao magnetica para mineracao, reciclagem, cimento, carvao, alimentos e processamento industrial na America do Sul.", "Magnetic separation solutions for mining, recycling, cement, coal, food and industrial processing in South America."),
     alternates: localizedAlternates(locale, "industries")
   };
 }
 
 export default async function IndustriesPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
-
   return (
     <>
-      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Aplicaciones", "Aplicacoes", "Applications") }]} />
+      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Industrias", "Industrias", "Industries") }]} />
       <HeroBanner
-        eyebrow={t(locale, "Aplicaciones", "Aplicacoes", "Applications")}
-        title={t(locale, "Aplicaciones, industrias y mercados", "Aplicacoes, industrias e mercados", "Applications, industries and markets")}
-        summary={t(locale, "Una guia simple para relacionar problema, industria, mercado y equipo recomendado.", "Um guia simples para relacionar problema, industria, mercado e equipamento recomendado.", "A simple guide connecting the site problem, industry, market and recommended equipment.")}
-        image="/assets/markets/markets-hero.jpg"
+        eyebrow={t(locale, "Soluciones por industria", "Solucoes por industria", "Solutions by industry")}
+        title={t(locale, "Seleccione su proceso, no una lista interminable", "Selecione seu processo, nao uma lista interminavel", "Select your process, not an endless list")}
+        summary={t(locale, "Cada sector parte por sus contaminantes, material y punto de instalacion. Desde ahi conectamos la familia de equipo adecuada.", "Cada setor parte de seus contaminantes, material e ponto de instalacao. A partir dai conectamos a familia de equipamento adequada.", "Each sector starts with its contaminants, material and installation point. From there we connect the suitable equipment family.")}
+        image="/assets/brief/south-africa/industries/mining-mineral-processing.png"
       />
       <section className="band brief-page">
         <div className="brief-intro">
-          <p className="eyebrow">{t(locale, "Tabla industrial", "Tabela industrial", "Industry table")}</p>
-          <h2>{t(locale, "Aplicaciones principales por industria", "Aplicacoes principais por industria", "Main applications by industry")}</h2>
-          <p>{t(locale, "La tabla resume los problemas mas frecuentes y los equipos principales para revisar antes de solicitar cotizacion.", "A tabela resume os problemas mais frequentes e os principais equipamentos para revisar antes da cotacao.", "The table summarizes common problems and primary equipment to review before requesting a quotation.")}</p>
+          <p className="eyebrow">{t(locale, "Aplicaciones", "Aplicacoes", "Applications")}</p>
+          <h2>{t(locale, "Necesidades industriales que atendemos en Sudamerica", "Necessidades industriais que atendemos na America do Sul", "Industrial needs we support in South America")}</h2>
+          <p>{t(locale, "Use estas rutas para identificar el problema de planta. Las paginas de detalle conservan criterios de seleccion, equipos recomendados y enlaces de consulta.", "Use estas rotas para identificar o problema da planta. As paginas de detalhe mantem criterios de selecao, equipamentos recomendados e links de consulta.", "Use these paths to identify the plant problem. Detail pages retain selection criteria, recommended equipment and enquiry links.")}</p>
         </div>
-        <div className="brief-table-image">
-          <Image src="/assets/brief/industry-market-table.png" alt="Industry application table" width={850} height={402} />
+        <div className="industry-card-grid">
+          {briefIndustryCards.map((card) => (
+            <Link className="industry-visual-card" href={localizedPath(locale, `industries/${card.slug}`)} key={`${card.slug}-${card.image}`}>
+              <Image src={card.image} alt={card.title[locale]} width={720} height={500} />
+              <div><h2>{card.title[locale]}</h2><p>{card.summary[locale]}</p><span>{t(locale, "Ver solucion", "Ver solucao", "View solution")}</span></div>
+            </Link>
+          ))}
         </div>
-        <div className="brief-table-wrap">
-          <table className="brief-table">
-            <thead>
-              <tr>
-                <th>{t(locale, "Industria", "Industria", "Industry")}</th>
-                <th>{t(locale, "Problemas que resolvemos", "Problemas que resolvemos", "Problems solved")}</th>
-                <th>{t(locale, "Equipos principales", "Equipamentos principais", "Main equipment")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {industryMarketRows.map((row) => (
-                <tr key={row.industry}>
-                  <th>{row.industry}</th>
-                  <td>{row.problem}</td>
-                  <td>{row.equipment}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <section className="brief-group">
-          <div className="brief-group-head">
-            <p className="eyebrow">{t(locale, "Mercados", "Mercados", "Markets")}</p>
-            <h2>{t(locale, "Mercados principales en Sudamerica", "Mercados principais na America do Sul", "Main markets in South America")}</h2>
-            <p>{t(locale, "Enfoque inicial para Chile y paises cercanos con demanda minera, aridos, reciclaje, cemento y manejo de graneles.", "Foco inicial no Chile e paises proximos com demanda em mineracao, agregados, reciclagem, cimento e manuseio de granels.", "Initial focus on Chile and nearby countries with demand in mining, aggregates, recycling, cement and bulk handling.")}</p>
-          </div>
-          <div className="brief-chip-list">
-            {focusMarkets.map((market) => (
-              <Link href={localizedPath(locale, `markets/${market.toLowerCase()}`)} key={market}>{market}</Link>
-            ))}
-          </div>
-        </section>
+      </section>
+      <section className="band muted selection-cta">
+        <div><p className="eyebrow">{t(locale, "Soporte de aplicacion", "Suporte de aplicacao", "Application support")}</p><h2>{t(locale, "Indique el material y el punto donde necesita separar o proteger", "Informe o material e o ponto onde precisa separar ou proteger", "Tell us the material and the point where you need separation or protection")}</h2><p>{t(locale, "Con una descripcion breve, capacidad aproximada y pais podemos orientar la familia de equipo y los datos que vale la pena confirmar.", "Com uma breve descricao, capacidade aproximada e pais podemos orientar a familia de equipamento e os dados que vale a pena confirmar.", "With a short description, approximate capacity and country, we can point you to the equipment family and the details worth confirming.")}</p></div>
+        <Link className="button primary" href={localizedPath(locale, "contact")}>{t(locale, "Contactar", "Entrar em contato", "Contact us")}</Link>
       </section>
     </>
   );

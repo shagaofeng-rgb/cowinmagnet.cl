@@ -31,10 +31,9 @@ export function Footer({ locale }: { locale: Locale }) {
             <ul>
               <li><Link href={base("products")}>{copy.nav.products}</Link></li>
               <li><Link href={base("industries")}>{copy.nav.industries}</Link></li>
-              <li><Link href={base("solutions")}>{copy.nav.solutions}</Link></li>
-              <li><Link href={base("markets")}>{copy.nav.markets}</Link></li>
-              <li><Link href={base("technical-support")}>{copy.nav.support}</Link></li>
+              <li><Link href={base("about")}>{copy.nav.about}</Link></li>
               <li><Link href={base("news")}>{copy.nav.news}</Link></li>
+              <li><Link href={base("contact")}>{locale === "en" ? "Contact" : locale === "pt-br" ? "Contato" : "Contacto"}</Link></li>
             </ul>
           </div>
           <div className="footer-column footer-contact-card">

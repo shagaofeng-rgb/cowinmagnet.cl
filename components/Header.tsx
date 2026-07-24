@@ -5,56 +5,39 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Locale, localeLabels, locales, localizedPath, siteConfig, uiText } from "@/data/site";
-import { getCategoryDisplay, productCategories } from "@/data/catalog";
 
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mega, setMega] = useState<string | null>(null);
+  const [languageOpen, setLanguageOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
   const base = (path = "") => localizedPath(locale, path);
   const copy = uiText[locale] ?? uiText["es-cl"];
-  const featuredProducts = [
-    {
-      href: "products/suspended-self-unloading-iron-removers/rcyd-type-permanent-magnet-self-dumping-iron-remover",
-      title: "RCYD permanent iron remover",
-      text: locale === "pt-br" ? "Remocao autolimpante de ferro tramp sobre correias." : locale === "en" ? "Self-unloading tramp iron removal above conveyor belts." : "Retiro autolimpiante de hierro trampa sobre cintas."
-    },
-    {
-      href: "products/magnetic-separation-equipment/wet-drum-magnetic-separator",
-      title: "Wet Drum Magnetic Separator",
-      text: locale === "pt-br" ? "Separacao magnetica umida para minerais e polpas." : locale === "en" ? "Wet mineral and slurry magnetic separation." : "Separacion magnetica humeda para minerales y pulpas."
-    },
-    {
-      href: "products/metal-detection-recycling-sorting/permanent-overband-magnetic-separator",
-      title: "Permanent Overband Magnetic Separator",
-      text: locale === "pt-br" ? "Captura continua de metais ferrosos para reciclagem e granels." : locale === "en" ? "Continuous ferrous metal capture for recycling and bulk handling." : "Captura continua de metales ferrosos para reciclaje y graneles."
-    }
-  ];
+
   useEffect(() => {
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setMega(null);
-        setMobileOpen(false);
-      }
-    }
-    function onPointer(event: MouseEvent) {
+    function closeOnOutsideClick(event: MouseEvent) {
       if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
-        setMega(null);
         setMobileOpen(false);
+        setLanguageOpen(false);
       }
     }
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onPointer);
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        setLanguageOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
     return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onPointer);
+      document.removeEventListener("mousedown", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
     };
   }, []);
 
   useEffect(() => {
-    setMega(null);
     setMobileOpen(false);
+    setLanguageOpen(false);
   }, [pathname]);
 
   function switchLocale(target: Locale) {
@@ -63,69 +46,30 @@ export function Header({ locale }: { locale: Locale }) {
     return `/${parts.join("/")}`;
   }
 
+  const links = [
+    { href: "", label: copy.nav.home },
+    { href: "products", label: copy.nav.products },
+    { href: "industries", label: copy.nav.industries },
+    { href: "about", label: copy.nav.about },
+    { href: "news", label: copy.nav.news },
+    { href: "contact", label: locale === "en" ? "Contact" : locale === "pt-br" ? "Contato" : "Contacto" }
+  ];
+
   return (
-    <header className="site-header" ref={headerRef}>
-      <Link className="brand" href={base()}>
-        <span className="brand-logo-wrap">
-          <Image src="/assets/logo.jpg" alt={siteConfig.brand} width={48} height={48} />
-        </span>
-        <span className="brand-copy">
-          <strong>Cowinmagnet.cl</strong>
-          <small>Chile & LATAM</small>
-        </span>
+    <header className="site-header site-header-compact" ref={headerRef}>
+      <Link className="brand" href={base()} aria-label={`${siteConfig.brand} home`}>
+        <span className="brand-logo-wrap"><Image src="/assets/logo.jpg" alt="" width={48} height={48} priority /></span>
+        <span className="brand-copy"><strong>Cowinmagnet.cl</strong><small>Chile & LATAM</small></span>
       </Link>
-      <button className="menu-button" type="button" aria-controls="site-nav" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>
-        Menu
-      </button>
-      <nav id="site-nav" className={`site-nav ${mobileOpen ? "open" : ""}`} aria-label="Main navigation">
-        <Link className={pathname === base() ? "active" : ""} href={base()}>{copy.nav.home}</Link>
-        <div className={`nav-item has-mega ${mega === "products" ? "mega-open" : ""}`} onMouseEnter={() => setMega("products")} onMouseLeave={() => setMega(null)}>
-          <button className="nav-trigger" type="button" aria-expanded={mega === "products"} onClick={() => setMega(mega === "products" ? null : "products")}>
-            {copy.nav.products}
-          </button>
-          <div className="mega-menu" role="region" aria-label="Products">
-            <div className="mega-feature">
-              <span className="eyebrow">{copy.nav.productCenter}</span>
-              <h3>{copy.nav.productTitle}</h3>
-              <p>{copy.nav.productText}</p>
-              <Link className="mega-cta" href={base("products")}>{copy.nav.viewProducts}</Link>
-            </div>
-            <div className="mega-columns">
-              <div>
-                <h4>{copy.nav.categories}</h4>
-                {productCategories.map((category) => (
-                  <Link key={category.slug} href={base(`products/${category.slug}`)}>{getCategoryDisplay(category, locale).title}</Link>
-                ))}
-              </div>
-              <div>
-                <h4>{copy.nav.buyerPaths}</h4>
-                {featuredProducts.map((item) => (
-                  <Link className="mega-rich-link" key={item.href} href={base(item.href)}>
-                    <strong>{item.title}</strong>
-                    <span>{item.text}</span>
-                  </Link>
-                ))}
-              </div>
-              <div>
-                <h4>{copy.nav.beforeQuote}</h4>
-                <p className="mega-note">{copy.nav.beforeQuoteText}</p>
-                <Link href={base("request-a-quote")}>{copy.nav.sendRequirement}</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <Link className={pathname === base("news") ? "active" : ""} href={base("news")}>{copy.nav.news}</Link>
-        <Link className={pathname === base("about") ? "active" : ""} href={base("about")}>{copy.nav.about}</Link>
-
+      <button className="menu-button" type="button" aria-controls="site-nav" aria-expanded={mobileOpen} onClick={() => setMobileOpen((open) => !open)}>Menu</button>
+      <nav id="site-nav" className={`site-nav site-nav-compact ${mobileOpen ? "open" : ""}`} aria-label="Main navigation">
+        {links.map((item) => (
+          <Link className={pathname === base(item.href) ? "active" : ""} href={base(item.href)} key={item.href}>{item.label}</Link>
+        ))}
         <div className="language-switcher">
-          <button className="nav-trigger" type="button" aria-label="Language" aria-expanded={mega === "lang"} onClick={() => setMega(mega === "lang" ? null : "lang")}>
-            {localeLabels[locale]}
-          </button>
-          <div className={`language-menu ${mega === "lang" ? "open" : ""}`}>
-            {locales.map((item) => (
-              <Link key={item} href={switchLocale(item)}>{localeLabels[item]}</Link>
-            ))}
+          <button className="nav-trigger" type="button" aria-label="Language" aria-expanded={languageOpen} onClick={() => setLanguageOpen((open) => !open)}>{localeLabels[locale]}</button>
+          <div className={`language-menu ${languageOpen ? "open" : ""}`}>
+            {locales.map((item) => <Link key={item} href={switchLocale(item)}>{localeLabels[item]}</Link>)}
           </div>
         </div>
         <Link className="quote-link" href={base("request-a-quote")}>{copy.nav.quote}</Link>

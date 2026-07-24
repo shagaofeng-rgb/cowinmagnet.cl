@@ -14,10 +14,12 @@ export type BriefProductGroup = {
   id: string;
   title: CopySet;
   summary: CopySet;
+  image: string;
   products: BriefProduct[];
 };
 
 const productBase = "/assets/brief";
+const southAfricaAssetBase = "/assets/brief/south-africa";
 
 export const briefProductGroups: BriefProductGroup[] = [
   {
@@ -34,15 +36,16 @@ export const briefProductGroups: BriefProductGroup[] = [
       "pt-br": "Solucoes para instalacao sobre correias, chutes e pontos de transferencia.",
       en: "Solutions for installation above conveyors, chutes and transfer points."
     },
+    image: `${southAfricaAssetBase}/products/rcyd-permanent-self-cleaning.jpg`,
     products: [
-      { model: "RCYB", title: "Permanent suspended magnetic separator", image: `${productBase}/rcyb-permanent-suspended-magnet.png`, summary: "Manual-cleaning permanent magnet for low to medium tramp iron content.", href: "products/suspended-self-unloading-iron-removers/rcyb-type-permanent-magnet-manual-iron-remover" },
-      { model: "RCYD", title: "Self-cleaning permanent magnetic separator", image: `${productBase}/rcyd-self-cleaning-permanent-magnet.jpg`, summary: "Automatic iron discharge for continuous conveyor operation.", href: "products/suspended-self-unloading-iron-removers/rcyd-type-permanent-magnet-self-dumping-iron-remover" },
-      { model: "RCDB", title: "Suspended electromagnetic separator", image: `${productBase}/rcdb-suspended-electromagnetic-separator.png`, summary: "Electromagnetic iron removal for powder or block non-magnetic material.", href: "products/suspended-self-unloading-iron-removers/rcdb-type-self-cooling-plate-electromagnetic-iron-remover" },
-      { model: "RCDD", title: "Self-cleaning electromagnetic separator", image: `${productBase}/rcdd-self-cleaning-electromagnetic-separator.png`, summary: "Self-discharging electromagnetic separator for demanding conveyor lines.", href: "products/suspended-self-unloading-iron-removers/rcdd-type-self-cooling-self-dumping-electromagnetic-iron-remover" },
-      { model: "RCDA", title: "Air-cooled suspended electromagnetic separator", image: `${productBase}/rcda-air-cooled-suspended-electromagnetic-separator.png`, summary: "Air-cooled design for outdoor and light-dust operating environments.", href: "products/suspended-self-unloading-iron-removers/rcda-type-air-cooled-electromagnetic-iron-remover" },
-      { model: "RCDE", title: "Oil-cooled suspended electromagnetic separator", image: `${productBase}/rcde-oil-cooled-suspended-electromagnetic-separator.png`, summary: "Oil-cooled electromagnetic design for stable long-running magnetic force.", href: "products/suspended-self-unloading-iron-removers/rcde-type-oil-cooled-electromagnetic-iron-remover" },
-      { model: "RCDC", title: "Air-cooled self-cleaning electromagnetic separator", image: `${productBase}/rcdc-air-cooled-self-cleaning-electromagnetic-separator.png`, summary: "Air-cooled self-discharging unit for automatic tramp iron removal.", href: "products/suspended-self-unloading-iron-removers/rcdc-type-air-cooled-self-dumping-electromagnetic-iron-remover" },
-      { model: "RCDF", title: "Oil-cooled self-cleaning electromagnetic separator", image: `${productBase}/rcdf-oil-cooled-self-cleaning-electromagnetic-separator.png`, summary: "Oil-cooled self-discharging separator for high-duty conveyor systems.", href: "products/suspended-self-unloading-iron-removers/rcdf-oil-cooled-self-dumping-electromagnetic-iron-remover" }
+      { model: "RCYB", title: "Permanent suspended magnetic separator", image: `${southAfricaAssetBase}/products/rcyb-permanent-suspended.png`, summary: "Manual-cleaning permanent magnet for low to medium tramp iron content.", href: "products/suspended-self-unloading-iron-removers/rcyb-type-permanent-magnet-manual-iron-remover" },
+      { model: "RCYD", title: "Self-cleaning permanent magnetic separator", image: `${southAfricaAssetBase}/products/rcyd-permanent-self-cleaning.jpg`, summary: "Automatic iron discharge for continuous conveyor operation.", href: "products/suspended-self-unloading-iron-removers/rcyd-type-permanent-magnet-self-dumping-iron-remover" },
+      { model: "RCDB", title: "Suspended electromagnetic separator", image: `${southAfricaAssetBase}/products/rcdb-suspended-electromagnet.png`, summary: "Electromagnetic iron removal for powder or block non-magnetic material.", href: "products/suspended-self-unloading-iron-removers/rcdb-type-self-cooling-plate-electromagnetic-iron-remover" },
+      { model: "RCDD", title: "Self-cleaning electromagnetic separator", image: `${southAfricaAssetBase}/products/rcdd-self-cleaning.png`, summary: "Self-discharging electromagnetic separator for demanding conveyor lines.", href: "products/suspended-self-unloading-iron-removers/rcdd-type-self-cooling-self-dumping-electromagnetic-iron-remover" },
+      { model: "RCDA", title: "Air-cooled suspended electromagnetic separator", image: `${southAfricaAssetBase}/products/rcda-air-cooled.png`, summary: "Air-cooled design for outdoor and light-dust operating environments.", href: "products/suspended-self-unloading-iron-removers/rcda-type-air-cooled-electromagnetic-iron-remover" },
+      { model: "RCDE", title: "Oil-cooled suspended electromagnetic separator", image: `${southAfricaAssetBase}/products/rcde-oil-cooled.png`, summary: "Oil-cooled electromagnetic design for stable long-running magnetic force.", href: "products/suspended-self-unloading-iron-removers/rcde-type-oil-cooled-electromagnetic-iron-remover" },
+      { model: "RCDC", title: "Air-cooled self-cleaning electromagnetic separator", image: `${southAfricaAssetBase}/products/rcdc-self-cleaning.png`, summary: "Air-cooled self-discharging unit for automatic tramp iron removal.", href: "products/suspended-self-unloading-iron-removers/rcdc-type-air-cooled-self-dumping-electromagnetic-iron-remover" },
+      { model: "RCDF", title: "Oil-cooled self-cleaning electromagnetic separator", image: `${southAfricaAssetBase}/products/rcdf-oil-cooled.png`, summary: "Oil-cooled self-discharging separator for high-duty conveyor systems.", href: "products/suspended-self-unloading-iron-removers/rcdf-oil-cooled-self-dumping-electromagnetic-iron-remover" }
     ]
   },
   {
@@ -59,9 +62,10 @@ export const briefProductGroups: BriefProductGroup[] = [
       "pt-br": "Equipamentos para pre-concentracao, separacao umida, separacao seca e recuperacao mineral.",
       en: "Equipment for pre-concentration, wet separation, dry separation and mineral recovery."
     },
+    image: `${southAfricaAssetBase}/products/ctb-wet-separator.png`,
     products: [
-      { model: "CT", title: "Permanent magnetic drum", image: `${productBase}/ct-permanent-magnetic-drum.png`, summary: "Drum-type magnetic separation for bulk solids and mineral processing.", href: "products/magnetic-separation-equipment/rct-type-fully-magnetic-drum" },
-      { model: "CTB", title: "Wet magnetic separator", image: `${productBase}/ctb-wet-magnetic-separator.png`, summary: "Wet magnetic separation for slurry and fine magnetic minerals.", href: "products/magnetic-separation-equipment/ctb-wet-semi-countercurrent-magnetic-separator" },
+      { model: "CT", title: "Permanent magnetic drum", image: `${southAfricaAssetBase}/products/ct-magnetic-drum.png`, summary: "Drum-type magnetic separation for bulk solids and mineral processing.", href: "products/magnetic-separation-equipment/rct-type-fully-magnetic-drum" },
+      { model: "CTB", title: "Wet magnetic separator", image: `${southAfricaAssetBase}/products/ctb-wet-separator.png`, summary: "Wet magnetic separation for slurry and fine magnetic minerals.", href: "products/magnetic-separation-equipment/ctb-wet-semi-countercurrent-magnetic-separator" },
       { model: "CTDG", title: "Dry magnetic separator", image: `${productBase}/ctdg-dry-magnetic-separator.jpg`, summary: "Dry pre-selection for bulk ore and waste rock separation.", href: "products/magnetic-separation-equipment/ctdg-type-permanent-magnet-bulk-dry-magnetic-separator" },
       { model: "CTZ", title: "Permanent magnetic pulley", image: `${productBase}/ctz-permanent-magnetic-pulley.png`, summary: "Magnetic pulley for conveyor head-end iron removal and recovery.", href: "products/magnetic-separation-equipment/ctz-type-midfield-strong-semi-magnetic-drum" },
       { model: "CXG", title: "Strong magnetic roll separator", image: `${productBase}/cxg-strong-magnetic-roll-separator.jpg`, summary: "High-intensity roll separation for fine particles and weak magnetic minerals.", href: "products/magnetic-separation-equipment/dhj-type-strong-roller-automatic-magnetic-separator" },
@@ -82,9 +86,10 @@ export const briefProductGroups: BriefProductGroup[] = [
       "pt-br": "Equipamentos para proteger britadores, detectar metais e separar metais nao ferrosos.",
       en: "Equipment for crusher protection, metal detection and non-ferrous recovery."
     },
+    image: `${southAfricaAssetBase}/products/ecs-eddy-current.png`,
     products: [
-      { model: "GJT", title: "Metal detector", image: `${productBase}/gjt-metal-detector.png`, summary: "Window-type detector for belt conveyors and process protection.", href: "products/metal-detection-recycling-sorting/gjt-type-window-metal-detector" },
-      { model: "ECS", title: "Eddy current separator", image: `${productBase}/ecs-eddy-current-separator.png`, summary: "Non-ferrous metal recovery from recycling and waste processing lines.", href: "products/metal-detection-recycling-sorting/hecs-type-eddy-current-metal-sorting-machine" }
+      { model: "GJT", title: "Metal detector", image: `${southAfricaAssetBase}/products/gjt-metal-detector.png`, summary: "Window-type detector for belt conveyors and process protection.", href: "products/metal-detection-recycling-sorting/gjt-type-window-metal-detector" },
+      { model: "ECS", title: "Eddy current separator", image: `${southAfricaAssetBase}/products/ecs-eddy-current.png`, summary: "Non-ferrous metal recovery from recycling and waste processing lines.", href: "products/metal-detection-recycling-sorting/hecs-type-eddy-current-metal-sorting-machine" }
     ]
   },
   {
@@ -101,11 +106,12 @@ export const briefProductGroups: BriefProductGroup[] = [
       "pt-br": "Barras, grades, gavetas, filtros de tubulacao e placas magneticas para controle de contaminacao metalica.",
       en: "Bars, grids, drawers, pipeline filters and plates for metal contamination control."
     },
+    image: `${southAfricaAssetBase}/products/gls-pipeline.png`,
     products: [
       { model: "CG", title: "Magnetic bar", image: `${productBase}/cg-magnetic-bar.jpg`, summary: "Magnetic rod for powder, granule and liquid contact points.", href: "products/magnetic-components-filters/magnetic-rod" },
       { model: "GG", title: "Magnetic grid", image: `${productBase}/gg-magnetic-grid.jpg`, summary: "Grid magnet for hoppers and gravity-fed material streams.", href: "products/magnetic-components-filters/magnetic-grid" },
       { model: "CXC", title: "Drawer magnetic separator", image: `${productBase}/cxc-drawer-magnetic-separator.jpg`, summary: "Drawer-style magnetic filter for dry powder and granular materials.", href: "products/magnetic-components-filters/cbs-drawer-type-magnetic-filter" },
-      { model: "GLS", title: "Pipeline magnetic separator", image: `${productBase}/gls-pipeline-magnetic-separator.png`, summary: "Pipeline-style separator for enclosed material flow.", href: "products/magnetic-components-filters/gls-type-integral-channel-metal-separator" },
+      { model: "GLS", title: "Pipeline magnetic separator", image: `${southAfricaAssetBase}/products/gls-pipeline.png`, summary: "Pipeline-style separator for enclosed material flow.", href: "products/magnetic-components-filters/gls-type-integral-channel-metal-separator" },
       { model: "CPB", title: "Permanent magnetic plate", image: `${productBase}/cpb-permanent-magnetic-plate.png`, summary: "Magnetic plate for chutes, ducts and simple iron removal points." }
     ]
   }
@@ -141,6 +147,64 @@ export const industryMarketRows = [
     industry: "Industria de la Madera",
     problem: "Eliminacion de clavos, tornillos y piezas metalicas para proteger trituradoras, astilladoras y molinos.",
     equipment: "RCYD, CT, CTZ, CPB"
+  }
+];
+
+export type BriefIndustryCard = {
+  slug: string;
+  image: string;
+  title: CopySet;
+  summary: CopySet;
+};
+
+export const briefIndustryCards: BriefIndustryCard[] = [
+  {
+    slug: "mineria-de-cobre",
+    image: `${southAfricaAssetBase}/industries/mining-mineral-processing.png`,
+    title: { "es-cl": "Mineria y beneficio", es: "Mineria y beneficio", "pt-br": "Mineracao e beneficiamento", en: "Mining and mineral processing" },
+    summary: { "es-cl": "Proteccion de chancadores, recuperacion magnetica y separacion de minerales.", es: "Proteccion de chancadores, recuperacion magnetica y separacion de minerales.", "pt-br": "Protecao de britadores, recuperacao magnetica e separacao mineral.", en: "Crusher protection, magnetic recovery and mineral separation." }
+  },
+  {
+    slug: "reciclaje",
+    image: `${southAfricaAssetBase}/industries/recycling.png`,
+    title: { "es-cl": "Reciclaje", es: "Reciclaje", "pt-br": "Reciclagem", en: "Recycling" },
+    summary: { "es-cl": "Recuperacion de metales ferrosos y no ferrosos en lineas de residuos.", es: "Recuperacion de metales ferrosos y no ferrosos en lineas de residuos.", "pt-br": "Recuperacao de metais ferrosos e nao ferrosos em linhas de residuos.", en: "Ferrous and non-ferrous metal recovery in waste lines." }
+  },
+  {
+    slug: "cemento",
+    image: `${southAfricaAssetBase}/industries/cement-aggregates.png`,
+    title: { "es-cl": "Cemento y aridos", es: "Cemento y aridos", "pt-br": "Cimento e agregados", en: "Cement and aggregates" },
+    summary: { "es-cl": "Eliminacion de hierro trampa para proteger chancado, molienda y transporte.", es: "Eliminacion de hierro trampa para proteger chancado, molienda y transporte.", "pt-br": "Remocao de ferro tramp para proteger britagem, moagem e transporte.", en: "Tramp iron removal for crushing, milling and conveying protection." }
+  },
+  {
+    slug: "sistemas-de-transporte",
+    image: `${southAfricaAssetBase}/industries/coal-power.png`,
+    title: { "es-cl": "Carbon y energia", es: "Carbon y energia", "pt-br": "Carvao e energia", en: "Coal and power" },
+    summary: { "es-cl": "Separacion continua de contaminantes ferrosos en manejo de graneles.", es: "Separacion continua de contaminantes ferrosos en manejo de graneles.", "pt-br": "Separacao continua de contaminantes ferrosos em granéis.", en: "Continuous ferrous contaminant removal in bulk handling." }
+  },
+  {
+    slug: "reciclaje",
+    image: `${southAfricaAssetBase}/industries/plastics-rubber.png`,
+    title: { "es-cl": "Plasticos y caucho", es: "Plasticos y caucho", "pt-br": "Plasticos e borracha", en: "Plastics and rubber" },
+    summary: { "es-cl": "Proteccion de trituracion y recuperacion de metales en materiales regenerados.", es: "Proteccion de trituracion y recuperacion de metales en materiales regenerados.", "pt-br": "Protecao de trituracao e recuperacao de metais em materiais regenerados.", en: "Size-reduction protection and metal recovery for regenerated materials." }
+  },
+  {
+    slug: "sistemas-de-transporte",
+    image: `${southAfricaAssetBase}/industries/wood-processing.png`,
+    title: { "es-cl": "Madera", es: "Madera", "pt-br": "Madeira", en: "Wood processing" },
+    summary: { "es-cl": "Retiro de clavos y piezas metalicas antes de astillado o trituracion.", es: "Retiro de clavos y piezas metalicas antes de astillado o trituracion.", "pt-br": "Remocao de pregos e metais antes da trituracao ou picagem.", en: "Nail and metal removal before shredding or chipping." }
+  },
+  {
+    slug: "mineria-de-hierro",
+    image: `${southAfricaAssetBase}/industries/ceramics-glass-minerals.png`,
+    title: { "es-cl": "Ceramica, vidrio y minerales", es: "Ceramica, vidrio y minerales", "pt-br": "Ceramica, vidro e minerais", en: "Ceramics, glass and minerals" },
+    summary: { "es-cl": "Control de hierro fino y separacion de minerales debilmente magneticos.", es: "Control de hierro fino y separacion de minerales debilmente magneticos.", "pt-br": "Controle de ferro fino e separacao de minerais fracamente magneticos.", en: "Fine iron control and weakly magnetic mineral separation." }
+  },
+  {
+    slug: "sistemas-de-transporte",
+    image: `${southAfricaAssetBase}/industries/food-powder-processing.png`,
+    title: { "es-cl": "Alimentos y polvos", es: "Alimentos y polvos", "pt-br": "Alimentos e pos", en: "Food and powder processing" },
+    summary: { "es-cl": "Filtracion magnetica para polvos, granulos y flujos cerrados.", es: "Filtracion magnetica para polvos, granulos y flujos cerrados.", "pt-br": "Filtracao magnetica para pos, granulos e fluxos fechados.", en: "Magnetic filtration for powders, granules and enclosed flows." }
   }
 ];
 

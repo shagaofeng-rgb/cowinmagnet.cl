@@ -2,20 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
-import { briefProductGroups, getBriefProductHref } from "@/data/brief";
+import { briefProductGroups } from "@/data/brief";
 import { productCopy } from "@/data/catalog";
-import { Locale, t } from "@/data/site";
+import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
+
+const familyLinks: Record<string, string> = {
+  suspended: "products/suspended-self-unloading-iron-removers",
+  separation: "products/magnetic-separation-equipment",
+  recycling: "products/metal-detection-recycling-sorting",
+  components: "products/magnetic-components-filters"
+};
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const copy = productCopy[locale] ?? productCopy["es-cl"];
-  return {
-    title: copy.productCenterTitle,
-    description: copy.productCenterSummary,
-    alternates: localizedAlternates(locale, "products")
-  };
+  return { title: copy.productCenterTitle, description: copy.productCenterSummary, alternates: localizedAlternates(locale, "products") };
 }
 
 export default async function ProductsPage({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -27,52 +30,33 @@ export default async function ProductsPage({ params }: { params: Promise<{ local
       <Breadcrumbs locale={locale} items={[{ label: copy.products }]} />
       <HeroBanner
         eyebrow={copy.products}
-        title={t(locale, "Productos principales de separacion magnetica", "Produtos principais de separacao magnetica", "Main magnetic separation products")}
-        summary={t(
-          locale,
-          "Una vista clara por familias: equipos suspendidos, separadores magneticos, reciclaje y componentes de filtracion.",
-          "Uma visao clara por familias: equipamentos suspensos, separadores magneticos, reciclagem e componentes de filtracao.",
-          "A clear view by family: suspended equipment, magnetic separators, recycling systems and filtration components."
-        )}
-        image="/assets/brief/rcyd-self-cleaning-permanent-magnet.jpg"
+        title={t(locale, "Cuatro familias para seleccionar el equipo correcto", "Quatro familias para selecionar o equipamento certo", "Four families to select the right equipment")}
+        summary={t(locale, "Parta por la aplicacion. Cada familia mantiene sus fichas tecnicas y detalles disponibles sin sobrecargar esta pagina.", "Comece pela aplicacao. Cada familia mantem fichas tecnicas e detalhes disponiveis sem sobrecarregar esta pagina.", "Start with the application. Each family keeps its technical pages available without overloading this page.")}
+        image="/assets/brief/south-africa/products/rcyd-permanent-self-cleaning.jpg"
       />
-      <section className="band brief-page">
+      <section className="band brief-page compact-catalog">
         <div className="brief-intro">
-          <p className="eyebrow">{t(locale, "Catalogo simple", "Catalogo simples", "Simple catalog")}</p>
-          <h2>{t(locale, "Productos clave para cotizacion tecnica", "Produtos chave para cotacao tecnica", "Key products for technical quotation")}</h2>
-          <p>{t(
-            locale,
-            "La seleccion final depende del material, ancho de cinta, capacidad, altura de instalacion, ambiente y energia disponible. Esta pagina deja solo las familias utiles para revisar rapido.",
-            "A selecao final depende do material, largura da correia, capacidade, altura de instalacao, ambiente e energia disponivel. Esta pagina mostra somente as familias uteis para revisao rapida.",
-            "Final selection depends on material, belt width, capacity, installation height, environment and available power. This page keeps the useful product families easy to scan."
-          )}</p>
+          <p className="eyebrow">{t(locale, "Catalogo esencial", "Catalogo essencial", "Essential catalog")}</p>
+          <h2>{t(locale, "Elija una familia y revise solo lo necesario", "Escolha uma familia e revise somente o necessario", "Choose a family and review only what is needed")}</h2>
+          <p>{t(locale, "Los modelos, fichas y opciones de instalacion siguen disponibles dentro de cada familia. Para recomendar una configuracion, revisamos material, capacidad y condiciones de operacion.", "Os modelos, fichas e opcoes de instalacao continuam disponiveis dentro de cada familia. Para recomendar uma configuracao, analisamos material, capacidade e condicoes de operacao.", "Models, datasheets and installation options remain available inside each family. To recommend a configuration, we review material, capacity and operating conditions.")}</p>
         </div>
-        <div className="brief-stack">
+        <div className="family-grid">
           {briefProductGroups.map((group) => (
-            <section className="brief-group" id={group.id} key={group.id}>
-              <div className="brief-group-head">
-                <p className="eyebrow">{group.products.length} {t(locale, "productos", "produtos", "products")}</p>
+            <Link className="family-card" href={localizedPath(locale, familyLinks[group.id])} key={group.id}>
+              <Image src={group.image} alt={group.title[locale]} width={720} height={520} />
+              <div>
+                <span>{group.products.length} {t(locale, "modelos clave", "modelos principais", "core models")}</span>
                 <h2>{group.title[locale]}</h2>
                 <p>{group.summary[locale]}</p>
+                <strong>{t(locale, "Ver familia", "Ver familia", "View family")}</strong>
               </div>
-              <div className="brief-product-list">
-                {group.products.map((product) => (
-                  <article className="brief-product-row" key={product.model}>
-                    <Image src={product.image} alt={`${product.model} ${product.title}`} width={260} height={190} />
-                    <div>
-                      <span>{product.model}</span>
-                      <h3>{product.title}</h3>
-                      <p>{product.summary}</p>
-                    </div>
-                    <Link className="text-link" href={getBriefProductHref(locale, product)}>
-                      {product.href ? copy.viewProduct : copy.fullQuote}
-                    </Link>
-                  </article>
-                ))}
-              </div>
-            </section>
+            </Link>
           ))}
         </div>
+      </section>
+      <section className="band muted selection-cta">
+        <div><p className="eyebrow">{t(locale, "Seleccion tecnica", "Selecao tecnica", "Technical selection")}</p><h2>{t(locale, "No necesita completar todos los datos para empezar", "Voce nao precisa preencher todos os dados para comecar", "You do not need every detail to start")}</h2><p>{t(locale, "Indique material, capacidad aproximada, pais y el equipo o problema que desea resolver. El resto se confirma con su equipo tecnico.", "Informe material, capacidade aproximada, pais e o equipamento ou problema que deseja resolver. O restante e confirmado com sua equipe tecnica.", "Share the material, approximate capacity, country and the equipment or problem to solve. The rest is confirmed with your technical team.")}</p></div>
+        <Link className="button primary" href={localizedPath(locale, "request-a-quote")}>{copy.fullQuote}</Link>
       </section>
     </>
   );

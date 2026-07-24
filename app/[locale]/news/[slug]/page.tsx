@@ -9,6 +9,8 @@ import { Locale, localizedPath } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+// Automated CMS news is not known at build time, so published slugs must render on demand.
+export const dynamicParams = true;
 export const revalidate = 0;
 
 function displayImage(src = "") {

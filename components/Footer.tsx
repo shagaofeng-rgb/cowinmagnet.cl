@@ -21,7 +21,7 @@ export function Footer({ locale }: { locale: Locale }) {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link className="footer-brand-mark" href={base()}>
-              <Image src="/assets/logo.jpg" alt="Cowinmagnet" width={44} height={44} />
+              <Image src="/assets/cowinmagnet-logo.png" alt="Cowinmagnet" width={44} height={44} />
               <span>COWIN MAGNET LATAM</span>
             </Link>
             <p>{copy.footer.description}</p>

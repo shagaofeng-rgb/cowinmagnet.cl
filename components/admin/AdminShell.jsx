@@ -47,7 +47,7 @@ export default function AdminShell({ children, email }) {
     <div className="admin-dashboard">
       <aside className="admin-sidebar">
         <Link className="admin-logo" href="/admin">
-          <Image src="/assets/logo.jpg" alt="Cowinmagnet.cl" width={138} height={42} priority />
+          <Image src="/assets/cowinmagnet-logo.png" alt="Cowinmagnet.cl" width={42} height={42} priority />
           <strong>{text.brand}</strong>
         </Link>
         <nav aria-label={text.navLabel}>

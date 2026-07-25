@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getConfiguredAdminEmail } from "@/lib/adminAccountStore";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ export default async function ForgotPasswordPage({ searchParams }) {
   return (
     <main className="admin-login-page">
       <section className="admin-login-card">
-        <Link className="admin-login-brand" href="/es-cl"><span>CY</span><strong>Cowinmagnet.cl</strong></Link>
+        <Link className="admin-login-brand" href="/es-cl"><Image src="/assets/cowinmagnet-logo.png" alt="Cowinmagnet.cl" width={38} height={38} priority /><strong>Cowinmagnet.cl</strong></Link>
         <p className="eyebrow">Admin security</p>
         <h1>Reset admin password</h1>
         <p className="admin-login-copy">Enter the configured admin email. If SMTP is configured, a reset link will be sent.</p>

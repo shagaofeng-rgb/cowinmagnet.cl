@@ -146,8 +146,14 @@ body {
 }
 
 .admin-logo img {
-  width: 138px;
-  height: auto;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.admin-login-brand img {
+  width: 38px;
+  height: 38px;
   object-fit: contain;
 }
 

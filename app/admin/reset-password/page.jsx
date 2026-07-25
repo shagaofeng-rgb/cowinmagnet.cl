@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import AdminPasswordField from "@/components/admin/AdminPasswordField";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +18,7 @@ export default async function ResetPasswordPage({ searchParams }) {
   return (
     <main className="admin-login-page">
       <section className="admin-login-card">
-        <Link className="admin-login-brand" href="/es-cl"><span>CY</span><strong>Cowinmagnet.cl</strong></Link>
+        <Link className="admin-login-brand" href="/es-cl"><Image src="/assets/cowinmagnet-logo.png" alt="Cowinmagnet.cl" width={38} height={38} priority /><strong>Cowinmagnet.cl</strong></Link>
         <p className="eyebrow">Admin security</p>
         <h1>Set a new password</h1>
         {params?.error ? <div className="admin-alert">{messages[params.error] || "Reset failed."}</div> : null}

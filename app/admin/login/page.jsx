@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import AdminPasswordField from "@/components/admin/AdminPasswordField";
 import { getConfiguredAdminEmail } from "@/lib/adminAccountStore";
 import { isAdminAuthConfigured } from "@/lib/adminAuth";
@@ -21,7 +22,7 @@ export default async function AdminLoginPage({ searchParams }) {
     <main className="admin-login-page">
       <section className="admin-login-card">
         <Link className="admin-login-brand" href="/es-cl">
-          <span>CY</span>
+          <Image src="/assets/cowinmagnet-logo.png" alt="Cowinmagnet.cl" width={38} height={38} priority />
           <strong>Cowinmagnet LATAM</strong>
         </Link>
         <p className="eyebrow">海外 B2B 网站管理后台</p>

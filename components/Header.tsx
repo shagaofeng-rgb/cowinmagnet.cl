@@ -56,12 +56,15 @@ export function Header({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <header className="site-header site-header-compact" ref={headerRef}>
+    <header className={`site-header site-header-compact ${mobileOpen ? "mobile-open" : ""}`} ref={headerRef}>
       <Link className="brand" href={base()} aria-label={`${siteConfig.brand} home`}>
         <span className="brand-logo-wrap"><Image src="/assets/cowinmagnet-logo.png" alt="" width={48} height={48} priority /></span>
         <span className="brand-copy"><strong>Cowinmagnet.cl</strong><small>Chile & LATAM</small></span>
       </Link>
-      <button className="menu-button" type="button" aria-controls="site-nav" aria-expanded={mobileOpen} onClick={() => setMobileOpen((open) => !open)}>Menu</button>
+      <button className="menu-button" type="button" aria-controls="site-nav" aria-expanded={mobileOpen} onClick={() => setMobileOpen((open) => !open)}>
+        <span className="menu-icon" aria-hidden="true"><i /><i /><i /></span>
+        <span>Menu</span>
+      </button>
       <nav id="site-nav" className={`site-nav site-nav-compact ${mobileOpen ? "open" : ""}`} aria-label="Main navigation">
         {links.map((item) => (
           <Link className={pathname === base(item.href) ? "active" : ""} href={base(item.href)} key={item.href}>{item.label}</Link>

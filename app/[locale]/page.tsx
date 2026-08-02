@@ -309,7 +309,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
           <h2>{t(locale, "Ventajas que impactan en tus resultados", "Vantagens que impactam seus resultados", "Advantages that impact your results")}</h2>
         </div>
         <div className="home-benefit-grid">
-          {benefitCards.map((item) => <article key={item}><span aria-hidden="true" /> <h3>{item}</h3></article>)}
+          {benefitCards.map((item) => <article key={item}><h3>{item}</h3></article>)}
         </div>
       </section>
 

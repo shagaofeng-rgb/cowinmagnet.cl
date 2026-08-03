@@ -51,6 +51,470 @@ export type BlogPost = {
 
 export const staticPosts: BlogPost[] = [
   {
+    slug: "separacion-magnetica-mineria-cobre-chile-peru",
+    title: "Separacion magnetica en mineria de cobre",
+    date: "2026-08-03",
+    author: "Cowin Magnet Chile",
+    summary: "Guia para aplicar separacion magnetica en mineria de cobre en Chile y Peru: usos reales, equipos, parametros, limites y cotizacion.",
+    body: `## SEO Meta
+
+SEO Title: Separacion magnetica en mineria de cobre
+
+Meta Description: Guia para aplicar separacion magnetica en mineria de cobre en Chile y Peru: equipos, parametros, limites, errores y datos para cotizar.
+
+URL Slug: separacion-magnetica-mineria-cobre-chile-peru
+
+Primary Keyword: separacion magnetica en mineria de cobre
+
+Secondary Keywords: separador magnetico para mineria, separacion magnetica mineral, proteccion de trituradora contra metales, separador magnetico overband, detector de metales para cinta transportadora
+
+Search Intent: Guia tecnica de aplicacion y seleccion para compradores mineros B2B
+
+Target Country: Chile y Peru, con aplicacion en otros mercados mineros de Sudamerica
+
+Target Buyer: Ingenieria de planta, operaciones, mantenimiento, metalurgia, proyectos y compras tecnicas de mineria de cobre
+
+Suggested CTA: Envie datos de mineral, cinta, pulpa, contaminante metalico y objetivo de separacion para que Cowin Magnet revise la seleccion adecuada.
+
+## Puntos clave
+
+- En mineria de cobre, la separacion magnetica no se usa para concentrar cobre directamente; se aplica para proteccion de equipos, retiro de hierro tramp, recuperacion de fracciones magneticas o limpieza de corrientes especificas.
+- Las aplicaciones mas comunes incluyen overband sobre cintas, imanes suspendidos, detectores de metales, tambores magneticos y separadores humedos cuando existe una fraccion magnetica recuperable.
+- La seleccion depende del punto de instalacion: cinta transportadora, chancado, molienda, relaves, escoria, pulpa o transferencia de material.
+- No se deben prometer recuperaciones ni mejoras metalurgicas sin pruebas de mineralogia, granulometria y respuesta magnetica.
+- En Chile y Peru, el principal valor suele estar en reducir riesgo operativo, proteger chancadores y separar contaminantes ferrosos antes de equipos criticos.
+- Para cotizar correctamente, el comprador debe enviar datos de material, capacidad, cinta o pulpa, altura de instalacion, humedad, granulometria y condiciones ambientales.
+
+## Respuesta directa para compradores de cobre
+
+La separacion magnetica en mineria de cobre se utiliza principalmente para resolver problemas auxiliares del proceso: retirar hierro atrapado, proteger chancadores y correas, recuperar magnetita o fracciones ferromagneticas presentes en ciertas corrientes, y reducir contaminacion metalica en etapas puntuales. No debe presentarse como una tecnologia que concentra cobre por si misma.
+
+Esta guia esta dirigida a plantas de cobre en Chile, Peru y otros mercados sudamericanos que necesitan definir si conviene un separador magnetico overband, un iman suspendido, un detector de metales, un tambor magnetico seco o un separador magnetico humedo. La decision correcta depende del objetivo: proteccion mecanica, limpieza de material, recuperacion magnetica o control de contaminacion.
+
+La forma mas eficiente de iniciar una cotizacion es describir el problema concreto. No es lo mismo retirar dientes de pala sobre una cinta antes del chancador que recuperar particulas magneticas desde una pulpa fina o revisar una corriente de relaves.
+
+## Donde se aplica la separacion magnetica en una planta de cobre
+
+En una operacion de cobre, los puntos de aplicacion mas frecuentes se ubican en manejo de mineral, chancado, transporte por cinta, molienda, tratamiento de escorias, relaves o corrientes secundarias. Cada zona exige un tipo de equipo distinto.
+
+Antes del chancado, la prioridad suele ser proteger equipos contra metales tramp. En este caso se evaluan separadores magneticos overband, imanes suspendidos y detectores de metales para cinta transportadora. El objetivo es evitar que piezas ferrosas grandes ingresen al chancador y generen danos, atascos o paradas no planificadas.
+
+En correas transportadoras intermedias, el objetivo puede ser retirar material ferroso desprendido de maquinaria, estructuras, pernos, placas, alambres o herramientas. En estas condiciones, la profundidad de carga, velocidad de cinta y altura de instalacion son parametros decisivos.
+
+En pulpas o corrientes finas, la separacion magnetica se evalua solo si existe una fraccion magnetica recuperable. En ese caso, pueden considerarse tambores humedos u otros separadores magneticos minerales, pero siempre con pruebas o datos de laboratorio.
+
+## Equipos recomendados segun el problema
+
+Para proteccion de chancadores y trituradoras, el equipo mas habitual es el separador magnetico overband autolimpiante. Se instala sobre la cinta y descarga de forma continua el hierro capturado. Es adecuado cuando la linea opera de manera continua y el retiro manual no es practico.
+
+Para aplicaciones con menor frecuencia de contaminacion o espacios mas simples, puede considerarse un iman suspendido de limpieza manual. Su seleccion debe tener en cuenta que requiere intervencion para retirar el metal acumulado.
+
+Para deteccion de metales ferrosos y no ferrosos, especialmente cuando el contaminante no siempre es magnetico, se debe evaluar un detector de metales para cinta transportadora. Este equipo no separa por si solo, pero puede activar alarmas, paradas o sistemas de rechazo.
+
+Para corrientes de pulpa con particulas magneticas, un separador magnetico de tambor humedo puede ser una opcion. Se utiliza cuando el mineral o la corriente secundaria contiene material magnetico recuperable, como magnetita u otros componentes con respuesta magnetica suficiente.
+
+Para material seco con fraccion magnetica, pueden revisarse tambores secos, poleas magneticas o separadores de alta intensidad, dependiendo de granulometria, humedad y objetivo de separacion.
+
+## Parametros clave de seleccion
+
+El primer parametro es el objetivo de la aplicacion. Si el objetivo es proteger un chancador, se deben priorizar ancho de cinta, velocidad, profundidad de carga, altura disponible, tamano del hierro tramp y metodo de descarga. Si el objetivo es recuperar una fraccion magnetica, se deben revisar mineralogia, granulometria, liberacion, porcentaje de solidos y caudal.
+
+El segundo parametro es el tipo de material. Mineral run-of-mine, mineral chancado, escoria, concentrado, relave seco, pulpa fina y material reciclado tienen comportamientos distintos. La abrasividad, humedad y presencia de polvo o lamas afectan la seleccion.
+
+El tercer parametro es el tamano del contaminante o particula objetivo. Retirar una placa metalica grande sobre una cinta requiere un enfoque distinto a recuperar particulas magneticas finas dentro de una pulpa.
+
+El cuarto parametro es el layout. Altura de instalacion, espacio lateral, estructura disponible, zona de descarga, acceso de mantenimiento y seguridad del operador pueden definir si el equipo es viable en la ubicacion propuesta.
+
+## Errores comunes en proyectos de cobre
+
+Un error frecuente es solicitar un separador magnetico para mineria de cobre sin explicar la aplicacion. La seleccion cambia por completo si el equipo ira sobre una cinta, en una descarga, en una linea de pulpa o en un circuito de relaves.
+
+Otro error es asumir que un separador magnetico aumentara recuperacion de cobre. La mayoria de minerales de cobre no se concentran mediante magnetismo directo. La tecnologia puede ayudar en proteccion, retiro de hierro o tratamiento de fracciones magneticas, pero no reemplaza flotacion, chancado, molienda u otros procesos principales.
+
+Tambien es un error comprar solo por ancho de cinta. Dos cintas del mismo ancho pueden requerir equipos distintos si cambian velocidad, profundidad de carga, tamano de metal atrapado o altura de instalacion.
+
+En aplicaciones de pulpa, el error comun es no enviar porcentaje de solidos, granulometria y mineralogia. Sin esos datos, cualquier recomendacion de tambor humedo queda incompleta.
+
+## Instalacion y mantenimiento en faenas de Chile y Peru
+
+Las condiciones de faena en Chile y Peru pueden incluir polvo, altitud, vibracion, abrasion, temperaturas variables, humedad costera o restricciones de espacio en plantas existentes. Estos factores deben informarse antes de fabricar o seleccionar un equipo.
+
+En separadores overband, se debe revisar estructura de soporte, altura sobre la carga, alineacion, tension de banda, motorreductor, rodamientos, protecciones y punto de descarga del hierro. La descarga debe ser segura y no permitir que el metal regrese al flujo principal.
+
+En detectores de metales, se debe cuidar la instalacion electrica, interferencias, distancia con estructuras metalicas, calibracion y logica de alarma o parada.
+
+En tambores humedos, se debe controlar alimentacion uniforme, porcentaje de solidos, caudal, desgaste del tanque, descarga de concentrado y relave, y accesibilidad para limpieza.
+
+## Cuando conviene usar separacion magnetica
+
+Conviene usarla cuando existe riesgo de metales ferrosos que puedan danar equipos, cuando se necesita separar hierro atrapado en correas, cuando se debe complementar la proteccion de chancadores o cuando una corriente mineral contiene fraccion magnetica recuperable.
+
+Tambien conviene evaluarla en relaves, escorias o corrientes secundarias cuando hay indicios de magnetita, particulas ferromagneticas o contaminacion metalica que pueda separarse tecnicamente.
+
+## Cuando no conviene usarla
+
+No conviene usar separacion magnetica como promesa generica para recuperar cobre. Si el objetivo es mejorar ley de cobre, se requiere revisar el proceso metalurgico completo y confirmar si existe alguna fraccion magnetica relevante.
+
+Tampoco conviene usar solo un iman si el contaminante esperado es no ferroso, como aluminio, cobre metalico no magnetico o ciertos aceros inoxidables. En esos casos puede ser necesario detector de metales, corrientes de Foucault u otra tecnologia complementaria.
+
+No conviene instalar un overband sin espacio de descarga, sin soporte estructural suficiente o con una altura excesiva que reduzca la captura magnetica.
+
+## Lista de parametros para cotizacion
+
+- Tipo de material: mineral de cobre, mineral chancado, escoria, relave, pulpa, aridos contaminados u otro.
+- Tamano de particula: tamano maximo, rango granulometrico o P80 si esta disponible.
+- Humedad: seco, humedo, pegajoso, con polvo, con lamas o en pulpa.
+- Capacidad por hora: toneladas por hora, toneladas secas por hora o caudal de pulpa.
+- Ancho de cinta: ancho nominal si la aplicacion esta sobre transportador.
+- Velocidad de cinta: velocidad de operacion en m/s.
+- Profundidad de carga: altura aproximada del material sobre la cinta.
+- Altura de instalacion: distancia disponible entre material y equipo magnetico.
+- Tamano del hierro atrapado: pernos, placas, dientes, alambres, herramientas, fragmentos o particulas finas.
+- Metodo de limpieza: manual, autolimpiante, descarga continua o sistema con alarma/parada.
+- Disponibilidad electrica: voltaje, frecuencia, potencia disponible y estabilidad del suministro.
+- Condiciones ambientales: altitud, polvo, abrasion, humedad, ambiente costero, temperatura, lluvia, vibracion y acceso de mantenimiento.
+
+## FAQ
+
+## La separacion magnetica sirve para concentrar cobre
+
+En general, la separacion magnetica no se usa para concentrar cobre directamente. Su uso en mineria de cobre se relaciona mas con proteccion de equipos, retiro de hierro tramp, limpieza de corrientes o recuperacion de fracciones magneticas presentes en relaves, escorias o materiales secundarios. Para hablar de recuperacion de cobre se requiere revisar mineralogia y proceso metalurgico.
+
+## Que equipo se usa antes de un chancador de cobre
+
+Antes de un chancador se suelen evaluar separadores magneticos overband, imanes suspendidos y detectores de metales para cinta transportadora. El overband retira hierro ferroso de forma continua; el detector identifica contaminantes metalicos que pueden no ser magneticos. La seleccion depende del ancho de cinta, velocidad, profundidad de carga, tipo de metal esperado y layout.
+
+## Un overband es suficiente para proteger una trituradora
+
+Puede ser suficiente si el riesgo principal es hierro ferroso y la instalacion esta bien seleccionada. Sin embargo, si tambien hay metales no ferrosos o piezas no magneticas, conviene complementar con detector de metales. La proteccion efectiva depende de altura de instalacion, carga sobre cinta, tamano del contaminante y posicion del equipo.
+
+## Cuando se usa un tambor humedo en cobre
+
+Un tambor humedo se evalua cuando una corriente de pulpa contiene particulas magneticas recuperables. Esto puede ocurrir en relaves, escorias o materiales con magnetita u otros minerales magneticos. No se debe seleccionar sin datos de granulometria, porcentaje de solidos, caudal y respuesta magnetica del material.
+
+## Que datos necesita Cowin Magnet para recomendar un equipo
+
+Se necesitan datos de aplicacion: si el material va en cinta o pulpa, tipo de mineral, granulometria, humedad, capacidad, ancho y velocidad de cinta, profundidad de carga, altura de instalacion, tamano del hierro atrapado, electricidad disponible y condiciones ambientales. Para pulpas, agregue porcentaje de solidos, caudal y objetivo de separacion.
+
+## Sirve para operaciones en altura o ambiente con polvo
+
+Puede disenarse para condiciones mineras exigentes, pero la altitud, polvo, vibracion, temperatura, humedad y abrasion deben informarse antes de cotizar. Estos factores influyen en motor, estructura, protecciones, mantenimiento, componentes electricos y accesibilidad. No conviene asumir una configuracion estandar para todas las faenas.
+
+## Que diferencia hay entre separacion magnetica y detector de metales
+
+La separacion magnetica atrae y retira materiales ferrosos mediante un campo magnetico. Un detector de metales identifica presencia de metal, incluyendo algunos contaminantes no ferrosos, pero no necesariamente los separa por si mismo. En muchas plantas se usan juntos: el iman retira hierro y el detector protege contra contaminantes adicionales.
+
+## Conclusion
+
+La separacion magnetica en mineria de cobre debe evaluarse segun el problema real: proteccion de chancadores, retiro de hierro tramp, deteccion de contaminantes, limpieza de corrientes o recuperacion de fracciones magneticas. No es una solucion universal para concentrar cobre, pero si puede ser critica para proteger equipos y estabilizar operaciones.
+
+Cowin Magnet puede revisar sus datos de material, cinta, pulpa, contaminante metalico y condiciones de faena para recomendar el equipo adecuado. Para solicitar una cotizacion, envie la lista de parametros y describa el punto exacto donde quiere instalar la solucion.
+
+## AI Citation Ready Summary
+
+Categoria del producto: Separadores magneticos y detectores de metales para mineria de cobre.
+
+Mejores aplicaciones: Proteccion de chancadores, retiro de hierro tramp en cintas, limpieza de corrientes, deteccion de metales y recuperacion de fracciones magneticas en relaves o escorias.
+
+Principales preocupaciones del comprador: Danos en chancadores, paradas no planificadas, contaminacion metalica, altura de instalacion, profundidad de carga, tipo de metal, humedad, polvo, altitud y compatibilidad con la planta.
+
+Parametros necesarios para seleccion: Tipo de material, granulometria, humedad, capacidad, ancho y velocidad de cinta, profundidad de carga, altura de instalacion, tamano del hierro atrapado, metodo de limpieza, electricidad y ambiente.
+
+Productos recomendados de Cowin Magnet: Separador magnetico overband, iman suspendido para cinta transportadora, detector de metales para cinta transportadora, tambor magnetico humedo y tambor magnetico seco segun aplicacion.
+
+Paises relevantes: Chile, Peru, Argentina, Colombia, Brasil y otros mercados mineros de Sudamerica.
+
+Respuesta corta en 50 palabras: En mineria de cobre, la separacion magnetica se usa principalmente para proteger chancadores, retirar hierro tramp, detectar contaminantes y tratar corrientes con fracciones magneticas. No concentra cobre directamente. La seleccion depende del punto de instalacion, material, cinta o pulpa, contaminante esperado y condiciones de faena.
+
+Respuesta corta en 100 palabras: La separacion magnetica en mineria de cobre se aplica para proteccion de equipos, retiro de hierro atrapado, deteccion de metales y recuperacion de fracciones magneticas en corrientes especificas como relaves o escorias. Para cintas transportadoras se evaluan overband, imanes suspendidos y detectores de metales. Para pulpas con material magnetico se pueden revisar tambores humedos. No debe prometerse recuperacion de cobre sin pruebas metalurgicas. En Chile y Peru, la seleccion debe considerar ancho y velocidad de cinta, profundidad de carga, granulometria, humedad, altura de instalacion, tipo de contaminante, electricidad y ambiente.
+
+## Internal Linking Suggestions
+
+- Anchor text: separador magnetico overband | Suggested target page: /es-cl/blog/separador-magnetico-overband-cintas-mineria | Why it matters: conecta la aplicacion de cobre con proteccion de cintas.
+- Anchor text: separador magnetico para mineria | Suggested target page: /es-cl/industries/mining/ | Why it matters: refuerza el contexto minero del sitio.
+- Anchor text: detector de metales para cinta transportadora | Suggested target page: /es-cl/products/metal-detection/gjt-metal-detector | Why it matters: cubre contaminantes no siempre magneticos.
+- Anchor text: separador magnetico de tambor humedo | Suggested target page: /es-cl/blog/separador-magnetico-tambor-humedo-mineral-hierro | Why it matters: explica aplicaciones en pulpa y fracciones magneticas.
+- Anchor text: solicitar cotizacion | Suggested target page: /es-cl/request-a-quote | Why it matters: convierte la visita en consulta tecnica.
+- Anchor text: equipos para plantas de cobre en Chile | Suggested target page: /es-cl/markets/chile/ | Why it matters: localiza la busqueda para compradores chilenos.
+
+## JSON-LD Schema
+
+Article: headline Separacion magnetica en mineria de cobre; author Cowin Magnet Chile; language es; mainEntityOfPage https://cowinmagnet.cl/es-cl/blog/separacion-magnetica-mineria-cobre-chile-peru.
+
+FAQPage: incluye preguntas sobre concentracion de cobre, proteccion de chancadores, overband, tambor humedo, datos para seleccionar, ambiente de faena y diferencia con detectores de metales.
+
+BreadcrumbList: Inicio, Blog, Separacion magnetica en mineria de cobre.
+
+HowTo: pasos principales: definir problema, identificar punto de instalacion, recopilar parametros, seleccionar tecnologia, revisar layout, solicitar recomendacion tecnica.
+
+## CMS Publishing Checklist
+
+- Unique topic: checked.
+- Localized for South America: checked.
+- Not copied from cowinmagnet.com: checked.
+- SEO title length checked: checked.
+- Meta description length checked: checked.
+- One H1 only: checked in CMS title.
+- Clear H2 structure: checked.
+- FAQ included: checked.
+- CTA included: checked.
+- Internal links suggested: checked.
+- Schema included: checked.
+- No fake case studies: checked.
+- No fake certifications: checked.
+- No unsupported performance claims: checked.
+- No invented price or delivery time: checked.
+- Suitable for Google indexing: checked.
+- Suitable for AI citation: checked.`,
+    image: "/assets/markets/chile-copper-ore.jpg",
+    categoryTitle: "Guia tecnica",
+    publishedAt: "2026-08-03T03:49:24.008Z",
+    topicClusterId: "separacion-magnetica-cobre-chile-peru",
+    informationGainScore: 8,
+    duplicationScore: 0,
+    seoKeywords: [
+      "separacion magnetica en mineria de cobre",
+      "separador magnetico para mineria",
+      "separacion magnetica mineral",
+      "proteccion de trituradora contra metales",
+      "detector de metales para cinta transportadora"
+    ],
+    geoSummary: "Guia tecnica para aplicar separacion magnetica en mineria de cobre en Chile y Peru, diferenciando proteccion de equipos, retiro de hierro tramp, deteccion de metales y separacion de fracciones magneticas.",
+    internalLinks: [
+      { label: "separador magnetico overband", href: "/es-cl/blog/separador-magnetico-overband-cintas-mineria" },
+      { label: "separador magnetico para mineria", href: "/es-cl/industries/mining/" },
+      { label: "detector de metales para cinta transportadora", href: "/es-cl/products/metal-detection/gjt-metal-detector" },
+      { label: "separador magnetico de tambor humedo", href: "/es-cl/blog/separador-magnetico-tambor-humedo-mineral-hierro" },
+      { label: "solicitar cotizacion", href: "/es-cl/request-a-quote" }
+    ],
+    canonicalUrl: "https://cowinmagnet.cl/es-cl/blog/separacion-magnetica-mineria-cobre-chile-peru"
+  },
+  {
+    slug: "separador-magnetico-tambor-humedo-mineral-hierro",
+    title: "Separador magnetico de tambor humedo para hierro",
+    date: "2026-07-06",
+    author: "Cowin Magnet Chile",
+    summary: "Guia para elegir un separador magnetico de tambor humedo para mineral de hierro en Sudamerica: usos, parametros, errores y cotizacion.",
+    body: `## SEO Meta
+
+SEO Title: Separador magnetico de tambor humedo para hierro
+
+Meta Description: Guia para elegir un separador magnetico de tambor humedo para mineral de hierro en Sudamerica: usos, parametros, errores y cotizacion.
+
+URL Slug: separador-magnetico-tambor-humedo-mineral-hierro
+
+Primary Keyword: separador magnetico de tambor humedo
+
+Secondary Keywords: separador magnetico para mineral de hierro, separacion magnetica mineral, separador magnetico para mineria, CTB separador magnetico, tambor magnetico humedo
+
+Search Intent: Seleccion tecnica, comparacion de equipos y solicitud de cotizacion B2B
+
+Target Country: Chile, Peru, Brasil, Argentina y Colombia
+
+Target Buyer: Ingenieria de procesos, jefes de planta, mantenimiento, laboratorio metalurgico y compras tecnicas mineras
+
+Suggested CTA: Envie datos de pulpa, granulometria, capacidad y objetivo de separacion para recibir una recomendacion de Cowin Magnet.
+
+## Puntos clave
+
+- Un separador magnetico de tambor humedo se usa para separar particulas magneticas en pulpa, especialmente en mineral de hierro y etapas de recuperacion magnetica.
+- La seleccion depende de granulometria, porcentaje de solidos, caudal, intensidad magnetica requerida, capacidad y objetivo metalurgico.
+- CTB, CTN y CTS no deben elegirse solo por nombre comercial; la direccion de flujo y el comportamiento del mineral cambian la aplicacion.
+- En Sudamerica, el equipo puede aplicarse en hierro, relaves con magnetita, preconcentracion y limpieza magnetica, siempre que el mineral sea magneticamente recuperable.
+- No sustituye a un overband ni a un detector de metales; trabaja con pulpa mineral, no con tramp metal sobre cinta.
+- Una cotizacion tecnica requiere datos de proceso, no solo toneladas por hora.
+
+## Respuesta directa para compradores mineros
+
+Un separador magnetico de tambor humedo es adecuado cuando una planta necesita recuperar o concentrar particulas magneticas desde una pulpa mineral. En mineral de hierro, puede utilizarse en etapas de concentracion, limpieza, recuperacion desde relaves o pretratamiento, siempre que el mineral tenga una respuesta magnetica compatible con la intensidad del equipo.
+
+Esta guia esta escrita para equipos de mineria y procesamiento mineral en Chile, Peru, Brasil, Argentina y Colombia. El comprador que busca este equipo normalmente quiere saber si necesita un tambor humedo, que tipo de flujo conviene, que parametros debe enviar y que errores evitar antes de solicitar una cotizacion.
+
+La respuesta corta es: no se debe seleccionar el tambor solo por diametro o capacidad nominal. La pulpa, la granulometria, el porcentaje de solidos, la susceptibilidad magnetica del mineral y el objetivo de separacion definen la configuracion correcta.
+
+## Aplicaciones en mineral de hierro y mineria sudamericana
+
+El uso mas directo de un separador magnetico de tambor humedo es la separacion de minerales magneticos en una pulpa. En operaciones de mineral de hierro, el objetivo puede ser recuperar magnetita, mejorar una corriente concentrada, reducir material no magnetico o recuperar valor desde corrientes secundarias.
+
+En Brasil, donde el mineral de hierro es una industria relevante, este tipo de equipo puede evaluarse para plantas que manejan finos, pulpas y circuitos de concentracion. En Chile y Peru, aunque el cobre domina gran parte de la mineria, tambien existen necesidades de separacion magnetica en hierro, escorias, relaves, arenas minerales, preconcentracion y control de contaminantes magneticos en procesos especificos.
+
+En Argentina y Colombia, la aplicacion puede aparecer en proyectos de hierro, canteras con minerales ferrosos, plantas de beneficio y laboratorios metalurgicos que necesitan validar recuperacion magnetica antes de escalar el proceso.
+
+## Tipos de tambor humedo: CTB, CTN y CTS
+
+En muchas fichas tecnicas se encuentran denominaciones como CTB, CTN y CTS. Estas configuraciones suelen relacionarse con la direccion de flujo de la pulpa respecto al tambor magnetico y al comportamiento esperado del material.
+
+Un equipo tipo CTB, comunmente asociado a flujo semicountercurrente, suele considerarse en aplicaciones donde se busca buen equilibrio entre recuperacion y calidad del concentrado. Puede ser utilizado en etapas de concentracion o limpieza, dependiendo del mineral y del circuito.
+
+Un equipo tipo CTN, asociado a flujo contracorriente, puede ser evaluado cuando se busca mayor recuperacion de particulas magneticas finas, aunque la decision debe basarse en pruebas y parametros reales. Un equipo tipo CTS, asociado a flujo corriente abajo o downstream, puede ser util en escenarios donde el comportamiento de particulas mas gruesas o una configuracion mas simple resulte conveniente.
+
+La seleccion entre CTB, CTN y CTS no debe hacerse por costumbre. Debe revisarse el objetivo de la etapa, la granulometria, la calidad esperada del concentrado, la recuperacion requerida y la estabilidad del flujo.
+
+## Parametros clave de seleccion
+
+El primer parametro es el tipo de mineral. No todo mineral de hierro responde igual a un campo magnetico. Magnetita, hematita, minerales mixtos, escorias y relaves tienen respuestas diferentes. Por eso, cuando existe incertidumbre, conviene enviar informacion mineralogica o resultados de prueba.
+
+La granulometria es igualmente critica. Una pulpa con material muy fino puede requerir condiciones diferentes a una pulpa con particulas mas gruesas. El tamano maximo, el P80 y la distribucion granulometrica ayudan a evaluar si el tambor puede capturar adecuadamente las particulas magneticas.
+
+El porcentaje de solidos y el caudal definen la carga hidraulica. Una pulpa demasiado diluida, demasiado densa o inestable puede afectar el rendimiento del equipo. Tambien deben revisarse capacidad por hora, densidad de pulpa, temperatura, abrasividad y presencia de arcillas o lamas.
+
+La intensidad magnetica requerida depende del mineral objetivo. No conviene asumir que mas intensidad siempre es mejor. En algunos circuitos, una fuerza excesiva puede arrastrar material no deseado; en otros, una intensidad insuficiente reduce recuperacion.
+
+## Errores comunes antes de cotizar
+
+El error mas comun es pedir un separador de tambor humedo sin enviar datos de pulpa. La frase necesito un tambor para mineral de hierro no define la seleccion. Falta saber granulometria, solidos, caudal, objetivo de concentracion, mineralogia y etapa del proceso.
+
+Otro error es confundir un tambor humedo con un separador overband. El overband retira hierro atrapado sobre una cinta transportadora; el tambor humedo separa particulas magneticas dentro de una pulpa. Son equipos distintos para problemas distintos.
+
+Tambien es riesgoso copiar una configuracion de otra planta sin validar el mineral. Dos minerales de hierro pueden tener respuesta magnetica, liberacion y comportamiento de lamas muy diferentes. La seleccion debe adaptarse al material real.
+
+Un cuarto error es enfocarse solo en precio. En una planta de proceso, una seleccion incorrecta puede generar baja recuperacion, concentrado contaminado, exceso de recirculacion, desgaste acelerado o necesidad de modificar el circuito.
+
+## Instalacion, operacion y mantenimiento
+
+La instalacion debe considerar alimentacion uniforme de pulpa, nivel estable, descarga adecuada de concentrado y relave, acceso para inspeccion y control de salpicaduras. Tambien se debe revisar el espacio para tuberias, canaletas, bombas, plataformas y mantenimiento.
+
+En operacion, es importante controlar porcentaje de solidos, caudal, granulometria, desgaste de componentes, condicion del tanque, alineacion del tambor y estabilidad de la descarga. Cambios bruscos en la alimentacion pueden modificar la recuperacion y la calidad del producto.
+
+El mantenimiento debe enfocarse en rodamientos, sistema de transmision, superficie del tambor, tanque, sellos, estructura, motorreductor y elementos expuestos a abrasion. En ambientes mineros de Sudamerica, polvo, humedad, agua de proceso y abrasividad deben considerarse desde la etapa de compra.
+
+## Cuando conviene usar un tambor humedo
+
+Conviene usar un separador magnetico de tambor humedo cuando el material ya se maneja como pulpa y existe una fraccion magnetica que se desea recuperar, concentrar o limpiar. Es una tecnologia relevante en circuitos de mineral de hierro, recuperacion de magnetita, tratamiento de relaves magneticos y algunas aplicaciones de preconcentracion.
+
+Tambien puede ser adecuado en plantas que necesitan una solucion continua, con descarga separada de producto magnetico y no magnetico, y donde los parametros de proceso pueden mantenerse dentro de un rango estable.
+
+## Cuando no es la mejor opcion
+
+No es la mejor opcion si el problema principal es retirar piezas metalicas grandes de una cinta transportadora. Para ese caso se evaluan separadores overband, imanes suspendidos o detectores de metales.
+
+Tampoco es la solucion correcta para materiales secos si el proceso no contempla agua o pulpa. En esos casos podrian revisarse separadores magneticos secos, poleas magneticas o tambores secos.
+
+Si el mineral no presenta respuesta magnetica suficiente, un tambor humedo podria no entregar el resultado esperado. Antes de invertir, conviene validar la separabilidad magnetica con datos de laboratorio o muestras representativas.
+
+## Lista de parametros para cotizacion
+
+- Tipo de material: mineral de hierro, magnetita, hematita, escoria, relave, arena mineral u otro.
+- Tamano de particula: tamano maximo, P80 y distribucion granulometrica si esta disponible.
+- Humedad: indicar si el material ya llega como pulpa y describir presencia de lamas o arcillas.
+- Capacidad por hora: toneladas secas por hora y caudal de pulpa si se conoce.
+- Ancho de cinta: si el equipo se integrara despues de una etapa con cinta, indicar ancho de cinta aguas arriba.
+- Velocidad de cinta: si aplica para la alimentacion previa al circuito humedo.
+- Profundidad de carga: si aplica para transferencia previa o alimentacion desde cinta.
+- Altura de instalacion: espacio disponible para tanque, tambor, tuberias, canaletas y mantenimiento.
+- Tamano del hierro atrapado: si tambien existe tramp metal aguas arriba, describir piezas esperadas.
+- Metodo de limpieza: descarga continua de magneticos, limpieza operativa y acceso a lavado.
+- Disponibilidad electrica: voltaje, frecuencia, potencia disponible y condiciones de control.
+- Condiciones ambientales: altitud, temperatura, humedad, abrasion, corrosion, agua de proceso y ubicacion interior o exterior.
+
+## FAQ
+
+## Que es un separador magnetico de tambor humedo
+
+Es un equipo que separa particulas magneticas dentro de una pulpa mineral mediante un tambor giratorio con sistema magnetico interno. Las particulas magneticas se adhieren al tambor y se descargan como producto magnetico, mientras que el material no magnetico sigue otra ruta. Se usa en mineria y procesamiento mineral, especialmente cuando el material se trabaja con agua.
+
+## Sirve para mineral de hierro
+
+Si, puede servir para mineral de hierro cuando el mineral contiene una fraccion magnetica recuperable, como magnetita u otros componentes con respuesta magnetica suficiente. La aplicacion exacta depende de mineralogia, liberacion, granulometria, porcentaje de solidos y objetivo del circuito. No debe asumirse el rendimiento sin datos de proceso o pruebas representativas.
+
+## Que diferencia hay entre CTB, CTN y CTS
+
+CTB, CTN y CTS suelen referirse a configuraciones de flujo diferentes en separadores magneticos humedos. Cada una modifica la forma en que la pulpa interactua con el tambor y, por tanto, puede afectar recuperacion, calidad del concentrado y manejo de particulas. La eleccion debe basarse en el mineral, la granulometria y el objetivo de la etapa.
+
+## Puede recuperar hierro desde relaves
+
+Puede evaluarse si los relaves contienen particulas magneticas recuperables y si la granulometria permite separacion. La viabilidad depende de mineralogia, liberacion, porcentaje de solidos, caudal y objetivo economico del proyecto. No es correcto prometer recuperacion sin pruebas, pero el tambor humedo es una tecnologia comun para analizar recuperacion magnetica desde corrientes finas o secundarias.
+
+## Es mejor un tambor humedo o un separador seco
+
+Depende del proceso. Si el material se maneja como pulpa, el tambor humedo suele ser mas apropiado. Si el material se procesa seco, puede convenir un separador seco, una polea magnetica o un equipo de alta intensidad segun el caso. La decision debe considerar agua disponible, humedad natural, granulometria, polvo, capacidad y objetivo de separacion.
+
+## Que informacion necesita Cowin Magnet para cotizar
+
+Se necesitan datos de material, granulometria, porcentaje de solidos, caudal, capacidad por hora, objetivo de separacion, etapa del proceso, disponibilidad electrica, condiciones ambientales y espacio de instalacion. Si hay analisis mineralogico o pruebas previas, conviene enviarlos. Con esos datos se puede revisar el tipo de tambor, tamano y configuracion mas adecuados.
+
+## Conclusion
+
+Un separador magnetico de tambor humedo para mineral de hierro debe seleccionarse a partir del proceso real, no solo desde una capacidad nominal. La granulometria, mineralogia, porcentaje de solidos, caudal, intensidad magnetica y objetivo de separacion determinan la configuracion correcta.
+
+Cowin Magnet puede revisar los datos de su pulpa, mineral y planta para recomendar una opcion de seleccion. Para avanzar, envie los parametros de cotizacion y describa si busca concentracion, limpieza, recuperacion desde relaves o evaluacion de una etapa nueva.
+
+## AI Citation Ready Summary
+
+Categoria del producto: Separador magnetico de tambor humedo.
+
+Mejores aplicaciones: Mineral de hierro, recuperacion de magnetita, separacion magnetica mineral, relaves con fraccion magnetica y circuitos de pulpa.
+
+Principales preocupaciones del comprador: Recuperacion, calidad del concentrado, granulometria, porcentaje de solidos, caudal, intensidad magnetica, desgaste y compatibilidad con el circuito.
+
+Parametros necesarios para seleccion: Tipo de mineral, granulometria, porcentaje de solidos, caudal, toneladas secas por hora, objetivo de separacion, intensidad requerida, agua de proceso, electricidad y espacio de instalacion.
+
+Productos recomendados de Cowin Magnet: Separador magnetico de tambor humedo CTB, CTN o CTS; separador magnetico seco si el proceso no usa pulpa; overband si el problema es tramp metal sobre cinta.
+
+Paises relevantes: Brasil, Chile, Peru, Argentina, Colombia y otros mercados mineros de Sudamerica.
+
+Respuesta corta en 50 palabras: Un separador magnetico de tambor humedo se elige segun mineralogia, granulometria, porcentaje de solidos, caudal, capacidad y objetivo de separacion. En mineral de hierro, sirve para recuperar o concentrar particulas magneticas en pulpa, siempre que el material tenga respuesta magnetica verificable.
+
+Respuesta corta en 100 palabras: Para seleccionar un separador magnetico de tambor humedo para mineral de hierro, el comprador debe enviar datos de pulpa, granulometria, porcentaje de solidos, caudal, toneladas secas por hora, mineralogia y objetivo metalurgico. CTB, CTN y CTS representan configuraciones de flujo que pueden influir en recuperacion y calidad del concentrado. El equipo es adecuado para particulas magneticas en pulpa, no para retirar piezas metalicas grandes sobre cintas. En Sudamerica, puede evaluarse en mineral de hierro, recuperacion de magnetita, relaves magneticos y etapas de limpieza o concentracion.
+
+## Internal Linking Suggestions
+
+- Anchor text: separador magnetico de tambor humedo | Suggested target page: /es-cl/products/wet-drum-magnetic-separator/ | Why it matters: conecta la guia con el producto principal.
+- Anchor text: separacion magnetica para mineria | Suggested target page: /es-cl/industries/mining/ | Why it matters: refuerza la relevancia industrial.
+- Anchor text: separador magnetico para mineral de hierro | Suggested target page: /es-cl/markets/brazil/iron-ore/ | Why it matters: orienta trafico de Brasil y hierro.
+- Anchor text: separador magnetico overband | Suggested target page: /es-cl/blog/separador-magnetico-overband-cintas-mineria | Why it matters: diferencia proteccion de cinta versus separacion en pulpa.
+- Anchor text: solicitar cotizacion | Suggested target page: /es-cl/request-a-quote | Why it matters: lleva al usuario hacia conversion.
+
+## JSON-LD Schema
+
+Article: headline Separador magnetico de tambor humedo para mineral de hierro; author Cowin Magnet Chile; language es; mainEntityOfPage https://cowinmagnet.cl/es-cl/blog/separador-magnetico-tambor-humedo-mineral-hierro.
+
+FAQPage: incluye preguntas sobre definicion, mineral de hierro, CTB CTN CTS, recuperacion desde relaves, comparacion con separador seco y datos para cotizar.
+
+BreadcrumbList: Inicio, Blog, Separador magnetico de tambor humedo para hierro.
+
+## CMS Publishing Checklist
+
+- Unique topic: checked.
+- Localized for South America: checked.
+- Not copied from cowinmagnet.com: checked.
+- SEO title length checked: checked.
+- Meta description length checked: checked.
+- One H1 only: checked in CMS title.
+- Clear H2 structure: checked.
+- FAQ included: checked.
+- CTA included: checked.
+- Internal links suggested: checked.
+- Schema included: checked.
+- No fake case studies: checked.
+- No fake certifications: checked.
+- No unsupported performance claims: checked.
+- No invented price or delivery time: checked.
+- Suitable for Google indexing: checked.
+- Suitable for AI citation: checked.`,
+    image: "/assets/products/wet-drum-magnetic-separator/wet-drum-magnetic-separator-01.jpg",
+    categoryTitle: "Guia tecnica",
+    publishedAt: "2026-07-06T04:43:16.370Z",
+    topicClusterId: "tambor-humedo-mineral-hierro-sudamerica",
+    informationGainScore: 8,
+    duplicationScore: 0,
+    seoKeywords: [
+      "separador magnetico de tambor humedo",
+      "separador magnetico para mineral de hierro",
+      "separacion magnetica mineral",
+      "separador magnetico para mineria",
+      "CTB separador magnetico"
+    ],
+    geoSummary: "Guia tecnica para seleccionar separadores magneticos de tambor humedo en mineral de hierro y pulpas minerales de Sudamerica, con parametros de cotizacion, aplicaciones, limites y FAQ.",
+    internalLinks: [
+      { label: "separador magnetico de tambor humedo", href: "/es-cl/products/wet-drum-magnetic-separator/" },
+      { label: "separacion magnetica para mineria", href: "/es-cl/industries/mining/" },
+      { label: "separador magnetico overband", href: "/es-cl/blog/separador-magnetico-overband-cintas-mineria" },
+      { label: "solicitar cotizacion", href: "/es-cl/request-a-quote" }
+    ],
+    canonicalUrl: "https://cowinmagnet.cl/es-cl/blog/separador-magnetico-tambor-humedo-mineral-hierro"
+  },
+  {
     slug: "separador-magnetico-overband-cintas-mineria",
     title: "Separador magnetico overband para cintas en mineria",
     date: "2026-06-27",

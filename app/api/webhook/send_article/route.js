@@ -63,7 +63,7 @@ function revalidateBlog(slug) {
 }
 
 export async function POST(request) {
-  const expectedSecret = process.env.WEBHOOK_ARTICLE_SIGN;
+  const expectedSecret = process.env.ARTICLE_WEBHOOK_SIGN || process.env.WEBHOOK_ARTICLE_SIGN;
   if (!expectedSecret) return response(0, "Webhook no configurado", 503);
 
   const contentType = request.headers.get("content-type") || "";

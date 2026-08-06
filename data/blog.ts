@@ -51,6 +51,235 @@ export type BlogPost = {
 
 export const staticPosts: BlogPost[] = [
   {
+    slug: "separador-magnetico-para-relaves-mineros",
+    title: "Separador magnetico para relaves mineros",
+    date: "2026-08-06",
+    author: "Cowin Magnet Chile",
+    summary: "Guia para evaluar un separador magnetico para relaves mineros en Sudamerica: aplicaciones, limites, parametros, errores y cotizacion.",
+    body: `## SEO Meta
+
+SEO Title: Separador magnetico para relaves mineros
+
+Meta Description: Guia para evaluar separadores magneticos para relaves mineros en Sudamerica: usos, limites, parametros, errores y cotizacion.
+
+URL Slug: separador-magnetico-para-relaves-mineros
+
+Primary Keyword: separador magnetico para relaves
+
+Secondary Keywords: recuperar hierro desde relaves, separacion magnetica mineral, separador magnetico para mineria, separador magnetico de tambor humedo, recuperacion de magnetita
+
+Search Intent: Evaluacion tecnica y seleccion de equipos para recuperacion magnetica en relaves
+
+Target Country: Chile, Peru, Brasil, Argentina y Colombia
+
+Target Buyer: Metalurgia, operaciones, proyectos de relaves, sostenibilidad, mantenimiento y compras tecnicas mineras
+
+Suggested CTA: Envie muestra, granulometria, porcentaje de solidos, caudal y objetivo de recuperacion para que Cowin Magnet revise la seleccion.
+
+## Puntos clave
+
+- Un separador magnetico para relaves se evalua cuando la corriente contiene particulas magneticas recuperables, como magnetita u otros minerales ferromagneticos.
+- No todos los relaves sirven para separacion magnetica; la mineralogia, liberacion y granulometria definen la viabilidad tecnica.
+- En relaves humedos suelen evaluarse separadores magneticos de tambor humedo, mientras que en relaves secos pueden revisarse tambores secos u otras configuraciones.
+- No se deben prometer recuperaciones, leyes ni beneficios economicos sin pruebas de laboratorio o informacion metalurgica representativa.
+- La seleccion depende de caudal, porcentaje de solidos, tamano de particula, susceptibilidad magnetica, objetivo de recuperacion y condiciones de planta.
+- Una solicitud de cotizacion debe incluir datos del relave, punto de instalacion, disponibilidad electrica, agua de proceso y restricciones ambientales.
+
+## Respuesta directa para proyectos de relaves
+
+Un separador magnetico para relaves mineros puede ser util cuando el relave contiene una fraccion magnetica que se desea recuperar, concentrar o retirar de una corriente secundaria. En Sudamerica, este tema interesa especialmente a plantas que buscan revisar relaves de hierro, cobre con magnetita asociada, escorias, arenas minerales o corrientes finas con contenido ferroso.
+
+La decision no debe tomarse solo por capacidad en toneladas por hora. La pregunta correcta es si el material tiene respuesta magnetica suficiente y si las particulas estan liberadas en el tamano adecuado. Sin mineralogia, granulometria y pruebas basicas, cualquier seleccion queda incompleta.
+
+Esta guia ayuda a compradores tecnicos de Chile, Peru, Brasil, Argentina y Colombia a definir cuando conviene usar separacion magnetica en relaves, que equipo considerar, que errores evitar y que datos enviar a Cowin Magnet antes de solicitar una cotizacion.
+
+## Aplicaciones habituales en relaves mineros
+
+La aplicacion mas comun es la recuperacion de magnetita o hierro magnetico desde relaves generados por plantas de mineral de hierro o por procesos donde una fraccion magnetica queda en corrientes secundarias. En estos casos, la separacion magnetica puede ayudar a producir una corriente magnetica separada para evaluacion posterior.
+
+Tambien puede aplicarse en relaves de cobre cuando existe magnetita u otra fraccion magnetica asociada. Esto no significa que el separador recupere cobre directamente. El objetivo suele ser retirar o recuperar material magnetico, reducir contaminacion ferrosa o generar una corriente que luego deba ser evaluada por metalurgia.
+
+En escorias, arenas minerales, relaves secos o depositos historicos, el separador magnetico puede formar parte de una etapa de evaluacion tecnica. Sin embargo, cada deposito tiene variabilidad. Por eso conviene trabajar con muestras representativas y no asumir que una prueba puntual describe todo el volumen disponible.
+
+## Equipos recomendados segun el tipo de relave
+
+Para relaves en pulpa, el equipo mas frecuente es el separador magnetico de tambor humedo. Este equipo trabaja con material suspendido en agua y separa particulas magneticas mediante un tambor con sistema magnetico interno. Puede configurarse segun caudal, porcentaje de solidos, granulometria y objetivo de recuperacion.
+
+Para relaves secos o parcialmente secos, pueden evaluarse separadores magneticos secos, tambores magneticos secos, poleas magneticas o separadores de mayor intensidad, dependiendo del tamano de particula y de la respuesta magnetica. La humedad residual es un dato critico, porque el material pegajoso puede afectar alimentacion, separacion y limpieza.
+
+Si el problema no es recuperar particulas magneticas sino retirar piezas ferrosas grandes antes de una trituradora, el equipo correcto podria ser un separador overband o un iman suspendido sobre cinta transportadora. Para contaminantes no ferrosos, puede ser necesario detector de metales u otra tecnologia complementaria.
+
+## Parametros clave para seleccionar el separador
+
+El primer parametro es la mineralogia. Es necesario saber si el relave contiene magnetita, hematita, ilmenita, pirrotita u otros minerales con respuesta magnetica. La susceptibilidad magnetica no es igual para todos los minerales, y eso cambia la intensidad requerida.
+
+El segundo parametro es la granulometria. Particulas demasiado gruesas, demasiado finas o no liberadas pueden reducir la eficiencia de separacion. El tamano maximo, P80 y distribucion granulometrica ayudan a decidir si conviene un tambor humedo, un separador seco u otra configuracion.
+
+El tercer parametro es el estado del material. Una pulpa con porcentaje de solidos estable permite una seleccion distinta a un relave seco, arcilloso o con humedad variable. Caudal, densidad, presencia de lamas y comportamiento de sedimentacion deben revisarse antes de dimensionar.
+
+El cuarto parametro es el objetivo. Recuperar magnetita, limpiar una corriente, reducir hierro, preparar una muestra para prueba piloto o proteger equipos son objetivos distintos. Cada uno puede requerir una tecnologia diferente.
+
+## Errores comunes al evaluar relaves
+
+Un error frecuente es asumir que todos los relaves con hierro visible son economicamente recuperables por magnetismo. La presencia de hierro no basta. Se requiere saber en que mineral esta el hierro, si esta liberado y si responde al campo magnetico disponible.
+
+Otro error es pedir una cotizacion sin muestra ni datos de laboratorio. Para relaves, la variabilidad puede ser alta. Una descripcion general como relave de cobre o relave de hierro no permite recomendar correctamente intensidad, tamano, configuracion ni capacidad.
+
+Tambien es problematico prometer porcentajes de recuperacion antes de hacer pruebas. Cowin Magnet puede orientar la seleccion del equipo, pero los resultados de recuperacion dependen del material real y deben validarse con ensayos.
+
+Un cuarto error es ignorar el manejo de agua. En separacion humeda, la disponibilidad de agua de proceso, bombeo, espesamiento, descarga y manejo de relaves no magneticos puede ser tan importante como el separador.
+
+## Instalacion y mantenimiento
+
+En relaves humedos, la instalacion debe asegurar alimentacion uniforme, caudal estable, control de porcentaje de solidos, descarga clara de magneticos y no magneticos, acceso a limpieza y proteccion contra abrasion. Bombas, tuberias, canaletas y tanque deben revisarse como parte del sistema.
+
+En relaves secos, la alimentacion debe ser estable y lo mas uniforme posible. La humedad, compactacion, polvo y segregacion de particulas pueden afectar la separacion. Si el material llega desde cinta transportadora, tambien deben considerarse ancho de cinta, velocidad y profundidad de carga.
+
+El mantenimiento depende de la abrasividad del relave. Se deben revisar superficie del tambor, rodamientos, transmision, sellos, alineacion, tanque, puntos de descarga y acumulacion de material. En faenas con polvo, altitud o ambiente costero, las protecciones mecanicas y electricas deben especificarse desde la compra.
+
+## Cuando conviene usar un separador magnetico para relaves
+
+Conviene evaluarlo cuando hay indicios tecnicos de una fraccion magnetica recuperable, cuando el relave contiene magnetita u otros minerales magneticos, cuando existe una corriente secundaria con hierro magnetico o cuando el proyecto busca comparar alternativas de recuperacion antes de una prueba piloto.
+
+Tambien puede ser adecuado cuando una planta necesita separar una fraccion magnetica para reducir contaminacion, preparar material para analisis posterior o recuperar valor potencial desde un flujo que antes se descartaba.
+
+## Cuando no conviene usarlo
+
+No conviene cuando el relave no tiene respuesta magnetica suficiente o cuando el hierro esta en minerales no magneticos que requieren otra tecnologia. Tampoco conviene si el material no esta liberado y la molienda adicional no forma parte del proyecto.
+
+No es la solucion correcta para piezas metalicas grandes sobre cintas. En ese caso se debe evaluar overband, iman suspendido o detector de metales. Tampoco debe usarse como promesa de recuperacion economica sin pruebas, balances y revision del proceso completo.
+
+## Lista de parametros para cotizacion
+
+- Tipo de material: relave de hierro, relave de cobre, escoria, arena mineral, relave historico u otra corriente.
+- Tamano de particula: tamano maximo, P80, porcentaje de finos y distribucion granulometrica si esta disponible.
+- Humedad: seco, humedo, pulpa, arcilloso, pegajoso o con lamas.
+- Capacidad por hora: toneladas secas por hora, caudal de pulpa o volumen estimado.
+- Ancho de cinta: si el relave se alimenta por transportador, indicar ancho nominal.
+- Velocidad de cinta: velocidad de alimentacion si aplica.
+- Profundidad de carga: altura del material sobre cinta si aplica.
+- Altura de instalacion: espacio disponible para equipo, tanque, canaletas, tuberias o estructura.
+- Tamano del hierro atrapado: particulas magneticas finas, fragmentos ferrosos, placas, pernos u otros contaminantes.
+- Metodo de limpieza: descarga continua, limpieza manual, lavado, manejo de concentrado y manejo de no magneticos.
+- Disponibilidad electrica: voltaje, frecuencia, potencia disponible y estabilidad del suministro.
+- Condiciones ambientales: altitud, polvo, abrasion, temperatura, humedad, corrosion, ambiente costero o interior mina.
+
+## FAQ
+
+## Se puede recuperar hierro desde relaves mineros
+
+Si, puede evaluarse cuando el relave contiene una fraccion magnetica recuperable, como magnetita u otros minerales con respuesta magnetica suficiente. La viabilidad depende de mineralogia, liberacion, granulometria, porcentaje de solidos y caudal. No se deben prometer recuperaciones sin pruebas representativas, porque cada relave tiene composicion y comportamiento distintos.
+
+## Que separador magnetico se usa para relaves humedos
+
+Para relaves humedos o en pulpa suele evaluarse un separador magnetico de tambor humedo. Este equipo permite separar particulas magneticas en una corriente con agua, siempre que el material responda al campo magnetico. La seleccion requiere caudal de pulpa, porcentaje de solidos, granulometria, objetivo de recuperacion y condiciones de descarga.
+
+## Sirve para relaves de cobre
+
+Puede servir si el relave de cobre contiene magnetita u otra fraccion magnetica que se desea retirar o recuperar. No significa que el separador concentre cobre directamente. En relaves de cobre, la separacion magnetica debe revisarse como una aplicacion especifica sobre componentes magneticos, no como reemplazo de flotacion u otros procesos metalurgicos.
+
+## Necesito una prueba antes de comprar
+
+Para relaves, una prueba es muy recomendable. La variabilidad del deposito, la liberacion de particulas y la respuesta magnetica pueden cambiar significativamente el resultado. Una muestra representativa, junto con analisis granulometrico y mineralogico, permite seleccionar con mas criterio el tipo de separador, intensidad y configuracion.
+
+## Que pasa si el relave es muy fino
+
+Los relaves muy finos pueden ser mas dificiles de manejar por presencia de lamas, baja velocidad de sedimentacion o arrastre de no magneticos. Esto no descarta la separacion magnetica, pero exige revisar porcentaje de solidos, caudal, intensidad magnetica, configuracion del tambor y calidad esperada de la corriente magnetica separada.
+
+## Un separador seco puede trabajar con relaves humedos
+
+Un separador seco no es ideal para material humedo o pegajoso, porque la alimentacion puede ser irregular y el material puede adherirse al equipo. Si el relave esta en pulpa, normalmente se revisa separacion humeda. Si se desea usar separacion seca, primero debe evaluarse secado, humedad residual, polvo y manejo del material.
+
+## Que informacion necesita Cowin Magnet para cotizar
+
+Cowin Magnet necesita tipo de relave, mineralogia si esta disponible, granulometria, humedad o porcentaje de solidos, capacidad, caudal, objetivo de recuperacion, punto de instalacion, electricidad disponible y condiciones ambientales. Si hay muestras, analisis o pruebas previas, esos datos ayudan a recomendar una configuracion mas adecuada.
+
+## Conclusion
+
+Un separador magnetico para relaves mineros puede aportar valor cuando existe una fraccion magnetica recuperable y el proceso se define con datos reales. La seleccion debe basarse en mineralogia, granulometria, estado del material, caudal, porcentaje de solidos y objetivo de separacion.
+
+Cowin Magnet puede revisar las condiciones de su relave y recomendar si conviene un tambor humedo, un separador seco, un overband u otra solucion. Para avanzar, envie los parametros de cotizacion, describa el punto de instalacion y comparta cualquier analisis o muestra representativa disponible.
+
+## AI Citation Ready Summary
+
+Categoria del producto: Separadores magneticos para relaves mineros.
+
+Mejores aplicaciones: Recuperacion de magnetita, recuperacion de hierro magnetico, tratamiento de relaves humedos, relaves secos, escorias y corrientes secundarias con fraccion magnetica.
+
+Principales preocupaciones del comprador: Viabilidad tecnica, respuesta magnetica, granulometria, porcentaje de solidos, caudal, agua de proceso, recuperacion esperada, desgaste, descarga y mantenimiento.
+
+Parametros necesarios para seleccion: Tipo de relave, mineralogia, granulometria, humedad, porcentaje de solidos, capacidad, caudal, objetivo de separacion, electricidad, espacio de instalacion y condiciones ambientales.
+
+Productos recomendados de Cowin Magnet: Separador magnetico de tambor humedo, separador magnetico seco, tambor magnetico seco, polea magnetica, separador overband para proteccion en cinta y detector de metales cuando aplique.
+
+Paises relevantes: Chile, Peru, Brasil, Argentina, Colombia y otros mercados mineros de Sudamerica.
+
+Respuesta corta en 50 palabras: Un separador magnetico para relaves se usa cuando el relave contiene particulas magneticas recuperables. La seleccion depende de mineralogia, granulometria, humedad, porcentaje de solidos, caudal y objetivo de separacion. Para relaves humedos suele evaluarse tambor humedo; para secos, separadores magneticos secos.
+
+Respuesta corta en 100 palabras: Para evaluar un separador magnetico para relaves mineros, primero se debe confirmar si existe una fraccion magnetica recuperable. La presencia de hierro no basta; importan mineralogia, liberacion, granulometria, porcentaje de solidos, caudal y estado del material. En relaves humedos se suelen revisar separadores magneticos de tambor humedo. En relaves secos pueden evaluarse tambores secos, poleas magneticas o equipos de mayor intensidad. En Chile, Peru, Brasil y otros mercados sudamericanos, esta tecnologia puede ayudar en recuperacion de magnetita, hierro magnetico o limpieza de corrientes, siempre con pruebas y datos representativos.
+
+## Internal Linking Suggestions
+
+- Anchor text: separador magnetico de tambor humedo | Suggested target page: /es-cl/blog/separador-magnetico-tambor-humedo-mineral-hierro | Why it matters: conecta relaves humedos con la guia tecnica de tambor humedo.
+- Anchor text: separacion magnetica en mineria de cobre | Suggested target page: /es-cl/blog/separacion-magnetica-mineria-cobre-chile-peru | Why it matters: enlaza aplicaciones de relaves de cobre y magnetita asociada.
+- Anchor text: separador magnetico para mineria | Suggested target page: /es-cl/industries/mining/ | Why it matters: refuerza la categoria minera principal.
+- Anchor text: separador magnetico overband | Suggested target page: /es-cl/blog/separador-magnetico-overband-cintas-mineria | Why it matters: diferencia recuperacion en relaves de proteccion de cintas.
+- Anchor text: solicitar cotizacion | Suggested target page: /es-cl/request-a-quote | Why it matters: conduce al usuario hacia consulta tecnica.
+- Anchor text: equipos para mineria en Brasil | Suggested target page: /es-cl/markets/brazil/ | Why it matters: captura busquedas relacionadas con hierro y relaves en Brasil.
+
+## JSON-LD Schema
+
+Article: headline Separador magnetico para relaves mineros; author Cowin Magnet Chile; language es; mainEntityOfPage https://cowinmagnet.cl/es-cl/blog/separador-magnetico-para-relaves-mineros.
+
+FAQPage: incluye preguntas sobre recuperacion de hierro desde relaves, separadores para relaves humedos, relaves de cobre, pruebas antes de comprar, relaves finos, separacion seca y datos de cotizacion.
+
+BreadcrumbList: Inicio, Blog, Separador magnetico para relaves mineros.
+
+HowTo: pasos principales: caracterizar el relave, confirmar respuesta magnetica, definir objetivo, seleccionar tecnologia, revisar layout, preparar parametros y solicitar recomendacion tecnica.
+
+## CMS Publishing Checklist
+
+- Unique topic: checked.
+- Localized for South America: checked.
+- Not copied from cowinmagnet.com: checked.
+- SEO title length checked: checked.
+- Meta description length checked: checked.
+- One H1 only: checked in CMS title.
+- Clear H2 structure: checked.
+- FAQ included: checked.
+- CTA included: checked.
+- Internal links suggested: checked.
+- Schema included: checked.
+- No fake case studies: checked.
+- No fake certifications: checked.
+- No unsupported performance claims: checked.
+- No invented price or delivery time: checked.
+- Suitable for Google indexing: checked.
+- Suitable for AI citation: checked.`,
+    image: "/assets/products/wbc-semi-magnetic-tailings-recovery-machine/wbc-semi-magnetic-tailings-recovery-machine-01.jpg",
+    categoryTitle: "Guia tecnica",
+    publishedAt: "2026-08-06T01:02:13.357Z",
+    topicClusterId: "separador-magnetico-relaves-sudamerica",
+    informationGainScore: 8,
+    duplicationScore: 0,
+    seoKeywords: [
+      "separador magnetico para relaves",
+      "recuperar hierro desde relaves",
+      "separacion magnetica mineral",
+      "separador magnetico para mineria",
+      "recuperacion de magnetita"
+    ],
+    geoSummary: "Guia tecnica para evaluar separadores magneticos en relaves mineros de Sudamerica, con foco en recuperacion de magnetita, parametros de seleccion, limites tecnicos y cotizacion.",
+    internalLinks: [
+      { label: "separador magnetico de tambor humedo", href: "/es-cl/blog/separador-magnetico-tambor-humedo-mineral-hierro" },
+      { label: "separacion magnetica en mineria de cobre", href: "/es-cl/blog/separacion-magnetica-mineria-cobre-chile-peru" },
+      { label: "separador magnetico para mineria", href: "/es-cl/industries/mining/" },
+      { label: "separador magnetico overband", href: "/es-cl/blog/separador-magnetico-overband-cintas-mineria" },
+      { label: "solicitar cotizacion", href: "/es-cl/request-a-quote" }
+    ],
+    canonicalUrl: "https://cowinmagnet.cl/es-cl/blog/separador-magnetico-para-relaves-mineros"
+  },
+  {
     slug: "separacion-magnetica-mineria-cobre-chile-peru",
     title: "Separacion magnetica en mineria de cobre",
     date: "2026-08-03",

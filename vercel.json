@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/sitemap?submit=true",
-      "schedule": "23 9 * * *"
+      "schedule": "23 9 */3 * *"
     },
     {
       "path": "/api/cron/news?limit=1&slot=1",

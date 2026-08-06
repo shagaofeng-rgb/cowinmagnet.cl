@@ -29,6 +29,29 @@ function plainText(value = "") {
     .trim();
 }
 
+function articleBody(value = "") {
+  return String(value)
+    .replace(/\r\n/g, "\n")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<\s*br\s*\/?>/gi, "\n")
+    .replace(/<\/\s*p\s*>/gi, "\n\n")
+    .replace(/<\s*h[1-6][^>]*>/gi, "\n\n## ")
+    .replace(/<\/\s*h[1-6]\s*>/gi, "\n\n")
+    .replace(/<\s*li[^>]*>/gi, "\n- ")
+    .replace(/<\/\s*li\s*>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, "\"")
+    .replace(/&#39;/gi, "'")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 function summaryFrom(content) {
   const text = plainText(content);
   return text.length > 280 ? `${text.slice(0, 277).trim()}...` : text;
@@ -82,6 +105,7 @@ export async function POST(request) {
 
   const title = String(form.get("title") || "").trim();
   const content = String(form.get("content") || "").trim();
+  const body = articleBody(content);
   if (!title && !content) return response(1, "验证成功");
   if (!isCompleteArticle(title, content)) return response(1, "验证成功");
   if (title.length > MAX_TITLE_LENGTH || content.length > MAX_CONTENT_LENGTH) return response(0, "Contenido excede el limite", 413);
@@ -98,7 +122,7 @@ export async function POST(request) {
       slug,
       title,
       summary: summaryFrom(content),
-      body: plainText(content),
+      body,
       author: String(form.get("author_id") || "Cowinmagnet LATAM").trim().slice(0, 120) || "Cowinmagnet LATAM",
       categoryId: "blog",
       categoryTitle: "Blog",

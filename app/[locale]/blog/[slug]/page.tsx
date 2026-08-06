@@ -47,7 +47,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
         <article className="news-article">
           <p className="news-meta-line">{(post.publishedAt || post.createdAt || "").slice(0, 10)} | {post.author}</p>
           {image ? <img className="news-article-image" src={image} alt={post.title} loading="lazy" /> : null}
-          {body.map((block) => <p key={block}>{block}</p>)}
+          {body.map((block) => {
+            if (block.startsWith("## ")) return <h2 key={block}>{block.replace(/^## /, "")}</h2>;
+            if (block.startsWith("- ")) {
+              return <ul key={block}>{block.split(/\n/).map((line) => <li key={line}>{line.replace(/^- /, "")}</li>)}</ul>;
+            }
+            return <p key={block}>{block}</p>;
+          })}
         </article>
       </section>
     </>

@@ -21,6 +21,7 @@ Copy `.env.example` and configure production secrets in Vercel:
 - `ADMIN_DEFAULT_PASSWORD` or `ADMIN_PASSWORD_HASH`: initial admin password source.
 - `ADMIN_JWT_SECRET`: session signing secret.
 - `CRON_SECRET`: cron route protection secret.
+- `WEBHOOK_ARTICLE_SIGN`: high-entropy secret for `POST /api/webhook/send_article` and root-path Blog publishing validation.
 - `INQUIRY_TO_EMAIL`: receiver email for form submissions.
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_SECURE`: outbound email.
 - `GOOGLE_SEARCH_CONSOLE_SITE_URL`: for example `sc-domain:cowinmagnet.cl`.
@@ -106,7 +107,7 @@ Cron jobs are configured in `vercel.json` for news automation, analytics sync an
 
 The public Sitemap index is `https://cowinmagnet.cl/sitemap.xml`. It references UTF-8 child files under `/sitemaps/` for pages, categories, products and posts. URL fingerprints preserve real `lastmod` values until significant content changes. PostgreSQL transactions and advisory locks protect production generation; local development uses atomic file replacement and a stale-safe lock.
 
-Content mutations queue a Sitemap refresh. Vercel also checks it daily at `09:23 UTC`. The authenticated admin page is `/admin/sitemap`.
+Content mutations queue a Sitemap refresh. Vercel submits the Sitemap to Google every three days at `09:23 UTC`. The authenticated admin page is `/admin/sitemap`.
 
 ```bash
 npm run sitemap:generate -- --dry-run --verbose

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { products, productCategories } from "@/data/catalog";
-import { getPublishedPosts } from "@/data/blog";
 import { cmsStorageMode, getCmsItems } from "@/lib/cmsStore";
 
 const t = {
@@ -14,7 +13,7 @@ const t = {
   cmsNews: "News \u65b0\u95fb",
   newsNote: "\u81ea\u52a8\u91c7\u7f16\u548c\u4eba\u5de5\u53d1\u5e03",
   blog: "Blog \u6587\u7ae0",
-  blogNote: "\u9759\u6001\u5185\u5bb9\u5e93",
+  blogNote: "\u771f\u5b9e CMS \u53d1\u5e03\u5185\u5bb9",
   storage: "CMS \u5b58\u50a8",
   storageNote: "\u4ea7\u54c1\u3001\u65b0\u95fb\u3001\u8be2\u76d8\u548c\u7edf\u8ba1\u6570\u636e\u6309\u751f\u4ea7\u73af\u5883\u914d\u7f6e\u5199\u5165\u6570\u636e\u5e93\u3002"
 };
@@ -23,17 +22,17 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminContentPage() {
-  const [cmsProducts, cmsNews, posts] = await Promise.all([
+  const [cmsProducts, cmsNews, cmsBlogs] = await Promise.all([
     getCmsItems("product", { includeInactive: true }),
     getCmsItems("news", { includeInactive: true }),
-    getPublishedPosts("es-cl")
+    getCmsItems("blog", { includeInactive: true })
   ]);
 
   const cards = [
     { label: t.staticProducts, value: products.length, note: `${productCategories.length} ${t.categories}`, href: "/admin/products" },
     { label: t.cmsProducts, value: cmsProducts.length, note: t.productNote, href: "/admin/products" },
     { label: t.cmsNews, value: cmsNews.length, note: t.newsNote, href: "/admin/news" },
-    { label: t.blog, value: posts.length, note: t.blogNote, href: "/admin/news" }
+    { label: t.blog, value: cmsBlogs.length, note: t.blogNote, href: "/admin/blog" }
   ];
 
   return (

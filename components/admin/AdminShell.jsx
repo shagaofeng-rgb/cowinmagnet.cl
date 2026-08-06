@@ -18,6 +18,7 @@ const links = [
   { href: "/admin/product-categories", label: "\u4ea7\u54c1\u5206\u7c7b" },
   { href: "/admin/news", label: "\u65b0\u95fb\u7ba1\u7406" },
   { href: "/admin/news-categories", label: "\u65b0\u95fb\u5206\u7c7b" },
+  { href: "/admin/blog", label: "Blog \u6587\u7ae0" },
   { href: "/admin/enquiries", label: "\u5ba2\u6237\u8868\u5355" },
   { href: "/admin/analytics", label: "\u8bbf\u95ee\u5206\u6790" },
   { href: "/admin/search-console", label: "SEO \u6570\u636e" },

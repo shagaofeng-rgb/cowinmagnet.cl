@@ -1,5 +1,4 @@
 import { products, productCategories } from "@/data/catalog";
-import { getPublishedPosts } from "@/data/blog";
 import { adminAccountStorageMode } from "@/lib/adminAccountStore";
 import { getAdminDateRange } from "@/lib/adminDateRange";
 import { getAnalyticsSnapshot, getLatestSyncStatus } from "@/lib/analyticsStore";
@@ -33,7 +32,7 @@ export default async function AdminDashboardPage({ searchParams }) {
     getEnquiries(),
     getAnalyticsSnapshot(range),
     getLatestSyncStatus(),
-    getPublishedPosts("es-cl")
+    getCmsItems("blog", { includeInactive: true })
   ]);
 
   return (

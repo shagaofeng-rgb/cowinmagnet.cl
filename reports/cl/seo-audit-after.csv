@@ -1,0 +1,6 @@
+"priority","surface","verification","result"
+"P0","Product JSON-LD","source inspection","supplier isRelatedTo removed; only verified properties emitted"
+"P0","Spanish product identity","runtime presentation","8 reviewed truth cards; remaining products use safe engineering-review copy"
+"P0","News public fields","source inspection","internal SEO/GEO labels suppressed"
+"P1","Canonical/hreflang","shared metadata helpers","self-canonical plus es-CL/es/pt-BR/en/x-default"
+"P1","Search Console indexing","authenticated observation required","pending verification"

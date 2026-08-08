@@ -1,0 +1,27 @@
+{
+  "slug": "qjz-mining-explosion-proof-permanent-magnet-iron-remover-control-box",
+  "source_name": "QJZ mining explosion-proof permanent magnet iron remover control box",
+  "model_or_series": "QJZ",
+  "equipment_category": "Industry Application Equipment",
+  "verified_identity": false,
+  "verified_parameters": [],
+  "pending_parameters": [
+    "verified_specifications",
+    "installation",
+    "faq",
+    "product_truth_review"
+  ],
+  "allowed_claims": [
+    "Soporte para proyectos en Chile y Latinoamerica",
+    "Seleccion y configuracion sujetas a validacion tecnica"
+  ],
+  "prohibited_claims": [
+    "stock local",
+    "oficina local",
+    "fabrica propia",
+    "rendimiento no ensayado",
+    "certificacion no verificada"
+  ],
+  "evidence_status": "legacy upstream reference; not approved for public attribution",
+  "reviewed_at": null
+}

@@ -17,6 +17,22 @@ function displayImage(src = "") {
   return src || "/assets/markets/chile-copper-ore.jpg";
 }
 
+const internalSectionHeadings = new Set(["seo meta", "primary keyword", "search intent", "target country", "target buyer", "suggested cta", "cms checklist"]);
+
+function publicArticleBlocks(body = "") {
+  const blocks = body.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
+  const visible: string[] = [];
+  let hideSection = false;
+  for (const block of blocks) {
+    if (block.startsWith("## ")) {
+      hideSection = internalSectionHeadings.has(block.slice(3).trim().toLowerCase());
+      if (hideSection) continue;
+    }
+    if (!hideSection && !/^(SEO Title|Meta Description|URL Slug|Primary Keyword|Secondary Keywords|Search Intent|Target Country|Target Buyer|Suggested CTA):/i.test(block)) visible.push(block);
+  }
+  return visible;
+}
+
 export function generateStaticParams() {
   return posts.flatMap((post) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, slug: post.slug })));
 }
@@ -42,7 +58,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
   const post = await getPostBySlug(slug, locale);
   if (!post) notFound();
   const copy = productCopy[locale] ?? productCopy["es-cl"];
-  const articleBody = post.body ? post.body.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean) : [];
+  const articleBody = publicArticleBlocks(post.body || "");
   const image = displayImage(post.image);
   const relatedProducts = post.relatedProducts?.length
     ? post.relatedProducts
@@ -87,7 +103,6 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
             {post.imageCredit ? <p><strong>Imagen:</strong> {post.imageCredit}. Politica: {post.imagePolicy || "remote source image with credit"}.</p> : null}
           </div>
           {post.image ? <Image className="news-article-image" src={post.image} alt={post.title} width={1080} height={640} unoptimized /> : null}
-          {post.geoSummary ? <section className="geo-answer-box"><p className="eyebrow">AI / GEO Summary</p><p>{post.geoSummary}</p></section> : null}
           {articleBody.length ? articleBody.map((block) => {
             if (block.startsWith("## ")) return <h2 key={block}>{block.replace(/^## /, "")}</h2>;
             if (block.startsWith("- ")) {
@@ -101,10 +116,9 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
               <ul>{post.citations.map((item) => <li key={item.url}><a href={item.url} target="_blank" rel="nofollow noopener noreferrer">{item.title || item.domain}</a></li>)}</ul>
             </section>
           ) : null}
-          {post.topicClusterId ? <p className="news-meta-line">Topic cluster: {post.topicClusterId} | Information gain score: {post.informationGainScore} | Duplication score: {post.duplicationScore}</p> : null}
         </article>
       </section>
-      <section className="band muted"><div className="section-heading"><p className="eyebrow">Related Products</p><h2>{copy.relatedTitle}</h2></div><div className="page-grid">{relatedProducts.map((product) => product ? <article className="content-card" key={product.slug}><Image src={product.image} alt={product.title} width={720} height={540} sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw" /><div className="content-card-body"><h3>{product.title}</h3><p>{getProductSummary(product, locale)}</p><Link href={localizedPath(locale, `products/${product.category}/${product.slug}`)}>{copy.viewProduct}</Link></div></article> : null)}</div></section>
+      <section className="band muted"><div className="section-heading"><p className="eyebrow">Productos relacionados</p><h2>{copy.relatedTitle}</h2></div><div className="page-grid">{relatedProducts.map((product) => product ? <article className="content-card" key={product.slug}><Image src={product.image} alt={product.title} width={720} height={540} sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw" /><div className="content-card-body"><h3>{product.title}</h3><p>{getProductSummary(product, locale)}</p><Link href={localizedPath(locale, `products/${product.category}/${product.slug}`)}>{copy.viewProduct}</Link></div></article> : null)}</div></section>
       <section className="band"><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>Solicitar cotizacion</Link></section>
     </>
   );

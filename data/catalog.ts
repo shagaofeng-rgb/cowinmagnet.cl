@@ -22,8 +22,8 @@ const categoryMeta: Record<string, { slug: string; key: CategoryKey; labels: Rec
       en: "Suspended & Self-Unloading Iron Removers"
     },
     summaries: {
-      "es-cl": "Categoria sincronizada desde cowinmagnet.com para retiro de hierro trampa sobre cintas transportadoras.",
-      es: "Categoria sincronizada desde cowinmagnet.com para retiro de hierro trampa sobre cintas transportadoras.",
+      "es-cl": "Equipos suspendidos para retirar hierro trampa sobre cintas transportadoras.",
+      es: "Equipos suspendidos para retirar hierro trampa sobre cintas transportadoras.",
       "pt-br": "Categoria sincronizada de cowinmagnet.com para remocao de ferro tramp sobre correias transportadoras.",
       en: "Synced from cowinmagnet.com for conveyor tramp iron removal above belt lines."
     }
@@ -149,7 +149,7 @@ export function getProductSummary(product: (typeof products)[number], locale: Lo
   const categoryLabel = category ? getCategoryDisplay(category, locale).title : product.sourceCategory;
   if (locale === "en") return product.summary;
   if (locale === "pt-br") return `${product.title} faz parte da categoria ${categoryLabel} sincronizada do catalogo principal da Cowinmagnet. A selecao final deve confirmar material, capacidade, instalacao, ambiente e parametros eletricos.`;
-  return `${product.title} pertenece a la categoria ${categoryLabel} sincronizada desde el catalogo principal de Cowinmagnet. La seleccion final debe confirmar material, capacidad, instalacion, ambiente y parametros electricos.`;
+  return `${product.title} pertenece a la categoria ${categoryLabel}. La seleccion final debe confirmar material, capacidad, instalacion y condiciones de operacion con ingenieria de COWIN.`;
 }
 
 export const productCopy: Record<Locale, {
@@ -213,15 +213,15 @@ export const productCopy: Record<Locale, {
   "es-cl": {
     products: "Productos",
     productCenterTitle: "Centro de productos magneticos",
-    productCenterSummary: "Categorias y productos sincronizados desde cowinmagnet.com, adaptados para consultas tecnicas en Chile y LATAM.",
+    productCenterSummary: "Equipos para proyectos de separacion magnetica, proteccion de procesos y recuperacion de metales en Chile y Latinoamerica.",
     productCategory: "Categoria de producto",
     productDetail: "Detalle de producto",
     overview: "Descripcion general",
     features: "Caracteristicas principales",
     applications: "Aplicaciones principales",
     images: "Imagenes del producto",
-    imagesTitle: "Imagenes reales sincronizadas del catalogo principal",
-    imagesText: "Las fotos vienen del catalogo principal de Cowinmagnet. La configuracion final se valida por proyecto.",
+    imagesTitle: "Galeria del producto",
+    imagesText: "Las imagenes permiten revisar la configuracion general. El alcance final se valida por proyecto.",
     mainView: "Vista principal",
     mainViewText: "Referencia visual principal del equipo.",
     galleryView: "Vista adicional",
@@ -233,7 +233,7 @@ export const productCopy: Record<Locale, {
     installation: "Opciones de instalacion",
     installationText: "Puede revisarse instalacion transversal, en linea, sobre chute o en punto de transferencia. La estructura, acceso de limpieza y seguridad se validan antes de cotizar.",
     options: "Configuraciones opcionales",
-    optionsText: "Gabinete de control, proteccion exterior, tratamiento anticorrosion, autolimpieza, sensores, enfriamiento y tension/frecuencia se confirman por proyecto.",
+    optionsText: "Las opciones disponibles dependen de la serie y se confirman con los datos reales del proyecto.",
     technicalParameters: "Parametros tecnicos",
     technicalParametersTitle: "Parametros tecnicos a confirmar",
     technicalParametersText: "No se publican valores inventados. Estos campos definen la hoja tecnica y la cotizacion.",
@@ -251,7 +251,7 @@ export const productCopy: Record<Locale, {
     downloads: "Descargas",
     downloadsText: "Use los cuestionarios descargables para preparar datos tecnicos antes de solicitar seleccion.",
     downloadQuestionnaire: "Descargar cuestionario",
-    faq: [["Hay stock local?", "No se declara stock local sin evidencia."], ["Se puede adaptar OEM/ODM?", "Se puede coordinar segun alcance y validacion tecnica."], ["Que datos necesito?", "Material, cinta, altura, capacidad, contaminante y condiciones ambientales."]],
+    faq: [["Como se confirma la configuracion?", "Ingenieria de COWIN revisa el material, el proceso, el punto de instalacion y las condiciones ambientales."], ["Se puede coordinar OEM/ODM?", "Puede evaluarse segun el alcance y la validacion tecnica."], ["Que datos necesito?", "Material, cinta o tuberia, capacidad, contaminante y condiciones ambientales."]],
     related: "Relacionados",
     relatedTitle: "Productos relacionados",
     viewProduct: "Ver producto",
@@ -391,12 +391,16 @@ productCopy.es = productCopy["es-cl"];
 
 export const industries = [
   "mineria-de-cobre",
+  "mineria-de-litio-y-minerales-industriales",
   "mineria-de-hierro",
   "reciclaje",
   "cantera-y-aridos",
   "cemento",
   "sistemas-de-transporte",
   "puertos-y-terminales"
+  ,"aridos-canteras-y-cemento"
+  ,"reciclaje-y-recuperacion-de-metales"
+  ,"manejo-de-materiales-a-granel-y-puertos"
 ].map((slug) => ({
   slug,
   title: slug.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join(" "),
@@ -416,7 +420,9 @@ export const solutions = [
   "eliminacion-de-hierro-trampa",
   "proteccion-de-chancadores",
   "proteccion-de-cintas",
+  "proteccion-de-cintas-transportadoras",
   "recuperacion-de-metales-ferrosos",
+  "recuperacion-de-metales-ferrosos-y-no-ferrosos",
   "auto-limpieza",
   "aplicaciones-mineria-pesada",
   "altas-altitudes",

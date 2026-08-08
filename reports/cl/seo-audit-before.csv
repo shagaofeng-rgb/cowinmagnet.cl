@@ -1,0 +1,6 @@
+"priority","surface","finding","status"
+"P0","product pages","English identity and generic mixed parameters","fixed in rendering; 80 truth reviews remain"
+"P0","Product JSON-LD","supplier isRelatedTo and placeholder properties","fixed"
+"P0","news detail","internal SEO/GEO fields visible","fixed"
+"P1","product source records","legacy supplier references and scraped fragments","quarantined from public rendering; migration pending"
+"P1","Search Console","live indexing data requires authenticated production access","pending verification"

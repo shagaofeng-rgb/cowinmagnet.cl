@@ -9,6 +9,7 @@
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/*.test.mjs",
+    "audit:cl": "node scripts/audit-cl.mjs",
     "sitemap:generate": "node scripts/sitemap.mjs"
   },
   "dependencies": {

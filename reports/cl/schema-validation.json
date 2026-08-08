@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-08-08T06:20:52.668Z",
+  "product": {
+    "status": "implemented",
+    "prohibitedFields": [
+      "offers",
+      "aggregateRating",
+      "review",
+      "isRelatedTo"
+    ],
+    "verifiedAdditionalPropertiesOnly": true
+  },
+  "breadcrumbList": {
+    "productPages": "implemented",
+    "newsPages": "existing"
+  },
+  "article": {
+    "status": "implemented",
+    "sourceEvidenceRequiredByNewGate": true
+  },
+  "externalRichResultsTest": "pending production URL validation"
+}

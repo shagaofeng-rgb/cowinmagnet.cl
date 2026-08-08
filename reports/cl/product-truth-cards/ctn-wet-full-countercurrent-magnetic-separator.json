@@ -1,0 +1,26 @@
+{
+  "slug": "ctn-wet-full-countercurrent-magnetic-separator",
+  "source_name": "CTN wet full countercurrent magnetic separator",
+  "model_or_series": "CTN",
+  "equipment_category": "Magnetic Separation Equipment",
+  "verified_identity": false,
+  "verified_parameters": [],
+  "pending_parameters": [
+    "installation",
+    "faq",
+    "product_truth_review"
+  ],
+  "allowed_claims": [
+    "Soporte para proyectos en Chile y Latinoamerica",
+    "Seleccion y configuracion sujetas a validacion tecnica"
+  ],
+  "prohibited_claims": [
+    "stock local",
+    "oficina local",
+    "fabrica propia",
+    "rendimiento no ensayado",
+    "certificacion no verificada"
+  ],
+  "evidence_status": "legacy upstream reference; not approved for public attribution",
+  "reviewed_at": null
+}

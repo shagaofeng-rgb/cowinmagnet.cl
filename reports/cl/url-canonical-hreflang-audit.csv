@@ -1,0 +1,5 @@
+"route_pattern","canonical","hreflang_set","status"
+"/[locale]/products/[category]/[slug]","self","es-cl|es|pt-br|en","implemented"
+"/[locale]/industries/[slug]","self","es-cl|es|pt-br|en","implemented"
+"/[locale]/solutions/[slug]","self","es-cl|es|pt-br|en","implemented"
+"/[locale]/news/[slug]","self","es-cl|es|pt-br|en","implemented"

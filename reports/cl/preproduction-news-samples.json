@@ -1,0 +1,46 @@
+[
+  {
+    "id": "sample-01", "status": "evidence_review", "topic": "cobre-mineria-procesamiento", "country": "Chile",
+    "working_title": "Volatilidad del cobre y continuidad operacional: datos que debe revisar una planta antes de seleccionar proteccion magnetica",
+    "product_slug": "rcyd-type-permanent-magnet-self-dumping-iron-remover",
+    "sources": [
+      { "url": "https://www.cochilco.cl/web/informe-del-mercado-internacional-del-cobre-semana-del-13-al-17-de-julio-de-2026/", "published_at": "2026-07-17", "accessed_at": "2026-08-08", "fact": "COCHILCO informo el cierre semanal y los factores de volatilidad del mercado del cobre." },
+      { "url": "https://www.sernageomin.cl/comision-sectorial-minera-reune-al-gobierno-empresas-y-trabajadores-para-fortalecer-la-seguridad-laboral/", "published_at": "2026-07-15", "accessed_at": "2026-08-08", "fact": "Sernageomin reporto una mesa tripartita centrada en salud y seguridad minera." }
+    ],
+    "qa_note": "No publicar hasta confirmar que el angulo conecta hechos de mercado y seguridad con decisiones operacionales sin insinuar causalidad ni resultados de producto."
+  },
+  {
+    "id": "sample-02", "status": "evidence_review", "topic": "relaves-y-condiciones-climaticas", "country": "Chile",
+    "working_title": "Relaves bajo condiciones de lluvia: que datos de proceso hacen falta antes de evaluar separacion magnetica",
+    "product_slug": "wet-drum-magnetic-separator",
+    "sources": [
+      { "url": "https://www.sernageomin.cl/sernageomin-verifica-en-terreno-el-estado-de-relaves-y-del-socavon-de-tierra-amarilla-en-atacama/", "published_at": "2026-07-19", "accessed_at": "2026-08-08", "fact": "Sernageomin informo inspecciones de depositos de relaves en Atacama durante un sistema frontal." },
+      { "url": "https://www.sernageomin.cl/sernageomin-refuerza-monitoreo-geologico-y-minero-ante-sistema-frontal/", "published_at": "2026-07-17", "accessed_at": "2026-08-08", "fact": "Sernageomin describio monitoreo geologico y minero entre Atacama y Los Lagos." }
+    ],
+    "qa_note": "Rechazado provisionalmente: ambos documentos pertenecen al mismo dominio. Se necesita una segunda fuente independiente antes de generar."
+  },
+  {
+    "id": "sample-03", "status": "discovery", "topic": "litio-y-minerales-industriales", "country": "Argentina",
+    "working_title": "Pureza en minerales industriales: cuando corresponde probar separacion magnetica de alto gradiente",
+    "product_slug": "belt-high-gradient-magnetic-separator", "sources": [],
+    "qa_note": "Bloqueado: faltan dos hechos recientes y fuentes independientes de Argentina."
+  },
+  {
+    "id": "sample-04", "status": "discovery", "topic": "aridos-canteras-cemento", "country": "Peru",
+    "working_title": "Proteccion de chancadores en canteras: lista de datos para evaluar un separador suspendido",
+    "product_slug": "rcyb-type-permanent-magnet-manual-iron-remover", "sources": [],
+    "qa_note": "Bloqueado: falta evidencia reciente de Peru y una segunda fuente independiente."
+  },
+  {
+    "id": "sample-05", "status": "discovery", "topic": "reciclaje-metales", "country": "Brazil",
+    "working_title": "Separacion ferrosa antes de corrientes de Foucault: como ordenar una linea de reciclaje",
+    "product_slug": "dry-drum-magnetic-separator", "sources": [],
+    "qa_note": "Bloqueado: el producto objetivo debe revisarse y faltan fuentes recientes de Brasil."
+  },
+  {
+    "id": "sample-06", "status": "discovery", "topic": "puertos-y-graneles", "country": "Colombia",
+    "working_title": "Correas portuarias y hierro trampa: variables de seleccion en ambientes salinos",
+    "product_slug": "rcyd-type-permanent-magnet-self-dumping-iron-remover", "sources": [],
+    "qa_note": "Bloqueado: faltan fuentes colombianas recientes y evidencia especifica del ambiente de operacion."
+  }
+]

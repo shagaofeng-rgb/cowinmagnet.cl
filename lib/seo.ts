@@ -10,6 +10,10 @@ export const htmlLanguageByLocale: Record<Locale, string> = {
 
 const entityTitles: Record<string, Partial<Record<Locale, string>>> = {
   "mineria-de-cobre": { "es-cl": "Mineria de cobre", es: "Mineria de cobre", "pt-br": "Mineracao de cobre", en: "Copper mining" },
+  "mineria-de-litio-y-minerales-industriales": { "es-cl": "Mineria de litio y minerales industriales", es: "Mineria de litio y minerales industriales", "pt-br": "Mineracao de litio e minerais industriais", en: "Lithium and industrial minerals" },
+  "aridos-canteras-y-cemento": { "es-cl": "Aridos, canteras y cemento", es: "Aridos, canteras y cemento", "pt-br": "Agregados, pedreiras e cimento", en: "Aggregates, quarries and cement" },
+  "reciclaje-y-recuperacion-de-metales": { "es-cl": "Reciclaje y recuperacion de metales", es: "Reciclaje y recuperacion de metales", "pt-br": "Reciclagem e recuperacao de metais", en: "Recycling and metal recovery" },
+  "manejo-de-materiales-a-granel-y-puertos": { "es-cl": "Manejo de materiales a granel y puertos", es: "Manejo de materiales a granel y puertos", "pt-br": "Manuseio de granéis e portos", en: "Bulk handling and ports" },
   "mineria-de-hierro": { "es-cl": "Mineria de hierro", es: "Mineria de hierro", "pt-br": "Mineracao de ferro", en: "Iron ore mining" },
   reciclaje: { "es-cl": "Reciclaje", es: "Reciclaje", "pt-br": "Reciclagem", en: "Recycling" },
   "cantera-y-aridos": { "es-cl": "Canteras y aridos", es: "Canteras y aridos", "pt-br": "Pedreiras e agregados", en: "Quarries and aggregates" },
@@ -19,7 +23,9 @@ const entityTitles: Record<string, Partial<Record<Locale, string>>> = {
   "eliminacion-de-hierro-trampa": { "es-cl": "Eliminacion de hierro trampa", es: "Eliminacion de hierro trampa", "pt-br": "Remocao de ferro contaminante", en: "Tramp iron removal" },
   "proteccion-de-chancadores": { "es-cl": "Proteccion de chancadores", es: "Proteccion de chancadores", "pt-br": "Protecao de britadores", en: "Crusher protection" },
   "proteccion-de-cintas": { "es-cl": "Proteccion de cintas", es: "Proteccion de cintas", "pt-br": "Protecao de correias", en: "Conveyor belt protection" },
+  "proteccion-de-cintas-transportadoras": { "es-cl": "Proteccion de cintas transportadoras", es: "Proteccion de cintas transportadoras", "pt-br": "Protecao de correias transportadoras", en: "Conveyor belt protection" },
   "recuperacion-de-metales-ferrosos": { "es-cl": "Recuperacion de metales ferrosos", es: "Recuperacion de metales ferrosos", "pt-br": "Recuperacao de metais ferrosos", en: "Ferrous metal recovery" },
+  "recuperacion-de-metales-ferrosos-y-no-ferrosos": { "es-cl": "Recuperacion de metales ferrosos y no ferrosos", es: "Recuperacion de metales ferrosos y no ferrosos", "pt-br": "Recuperacao de metais ferrosos e nao ferrosos", en: "Ferrous and non-ferrous metal recovery" },
   "auto-limpieza": { "es-cl": "Separacion magnetica autolimpiante", es: "Separacion magnetica autolimpiante", "pt-br": "Separacao magnetica autolimpante", en: "Self-cleaning magnetic separation" },
   "aplicaciones-mineria-pesada": { "es-cl": "Aplicaciones de mineria pesada", es: "Aplicaciones de mineria pesada", "pt-br": "Aplicacoes de mineracao pesada", en: "Heavy mining applications" },
   "altas-altitudes": { "es-cl": "Equipos para altas altitudes", es: "Equipos para altas altitudes", "pt-br": "Equipamentos para grandes altitudes", en: "High-altitude equipment" },

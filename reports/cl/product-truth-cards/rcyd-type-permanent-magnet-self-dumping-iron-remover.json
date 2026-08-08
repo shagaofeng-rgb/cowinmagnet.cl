@@ -1,0 +1,25 @@
+{
+  "slug": "rcyd-type-permanent-magnet-self-dumping-iron-remover",
+  "source_name": "RCYD type permanent magnet self dumping iron remover",
+  "model_or_series": "RCYD",
+  "equipment_category": "Suspended & Self-Unloading Iron Removers",
+  "verified_identity": true,
+  "verified_parameters": "See runtime ProductTruthCard",
+  "pending_parameters": [
+    "installation",
+    "faq"
+  ],
+  "allowed_claims": [
+    "Soporte para proyectos en Chile y Latinoamerica",
+    "Seleccion y configuracion sujetas a validacion tecnica"
+  ],
+  "prohibited_claims": [
+    "stock local",
+    "oficina local",
+    "fabrica propia",
+    "rendimiento no ensayado",
+    "certificacion no verificada"
+  ],
+  "evidence_status": "legacy upstream reference; not approved for public attribution",
+  "reviewed_at": "2026-08-08"
+}

@@ -9,8 +9,9 @@ import { QuoteForm } from "@/components/QuoteForm";
 import { getPublishedPosts } from "@/data/blog";
 import { getCategoryDisplay, getProductSummary, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
-import { Locale, localizedPath } from "@/data/site";
+import { Locale, localizedPath, siteConfig } from "@/data/site";
 import { localizedProductSeo } from "@/lib/seo";
+import { getProductTruthCard, safeSpanishProductPresentation } from "@/data/productTruth";
 
 export const dynamic = "force-dynamic";
 
@@ -24,8 +25,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const catalogProducts = await getPublishedCatalogProducts();
   const product = catalogProducts.find((item) => item.slug === productSlug);
   const canonical = `/${locale}/products/${category}/${productSlug}`;
-  const title = product ? localizedProductSeo(locale, product.title) : "Product";
-  const description = product ? getProductSummary(product, locale).slice(0, 155) : undefined;
+  const presentation = product && (locale === "es-cl" || locale === "es") ? safeSpanishProductPresentation(product) : null;
+  const title = product ? localizedProductSeo(locale, presentation?.title || product.title) : "Product";
+  const description = product ? (presentation?.summary || getProductSummary(product, locale)).slice(0, 155) : undefined;
   return {
     title,
     description,
@@ -67,55 +69,47 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     .filter((post) => post.relatedProducts?.some((related) => related.slug === product.slug || related.category === product.category))
     .slice(0, 3);
   const copy = productCopy[locale] ?? productCopy["es-cl"];
+  const truth = getProductTruthCard(product.slug);
   const categoryDisplay = productCategories.some((item) => item.slug === category.slug) ? getCategoryDisplay(category as (typeof productCategories)[number], locale) : { title: category.title, summary: category.summary };
-  const productSummary = getProductSummary(product, locale);
+  const spanishPresentation = (locale === "es-cl" || locale === "es") ? safeSpanishProductPresentation(product) : null;
+  const displayTitle = spanishPresentation?.title || product.title;
+  const productSummary = spanishPresentation?.summary || getProductSummary(product, locale);
   const gallery = product.imageGallery?.length ? product.imageGallery : [product.image];
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: product.title,
+    name: displayTitle,
     description: productSummary,
     image: gallery.map((item) => item.startsWith("http") ? item : `https://cowinmagnet.cl${item}`),
     brand: { "@type": "Brand", name: "Cowinmagnet" },
     category: categoryDisplay.title,
     url: `https://cowinmagnet.cl/${locale}/products/${product.category}/${product.slug}`,
-    additionalProperty: (product.parameters || []).slice(0, 12).map((item) => ({
+    additionalProperty: (truth?.verifiedSpecifications || []).map((item) => ({
       "@type": "PropertyValue",
-      name: item,
-      value: copy.confirm
-    })),
-    isRelatedTo: product.sourceUrl
+      name: item.label,
+      value: item.value
+    }))
   };
-  const technicalRows = [
-    "Tipo de sistema magnetico",
-    "Intensidad del campo",
-    "Altura de suspension",
-    "Ancho y velocidad de la cinta",
-    "Espesor de la capa",
-    "Tamano del material",
-    "Instalacion transversal o en linea",
-    "Limpieza manual o automatica",
-    "Potencia del motor y electroiman",
-    "Metodo de enfriamiento",
-    "Voltaje y frecuencia",
-    "Numero de fases",
-    "Grado de proteccion",
-    "Temperatura ambiente",
-    "Altitud del sitio",
-    "Dimensiones y peso",
-    "Gabinete de control",
-    "Opciones exteriores y anticorrosion"
-  ];
+  const breadcrumbSchema = {
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: copy.products, item: `https://cowinmagnet.cl/${locale}/products` },
+      { "@type": "ListItem", position: 2, name: categoryDisplay.title, item: `https://cowinmagnet.cl/${locale}/products/${category.slug}` },
+      { "@type": "ListItem", position: 3, name: displayTitle }
+    ]
+  };
   return (
     <>
-      <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: product.title }]} />
+      <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: displayTitle }]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
-      <HeroBanner eyebrow={copy.productDetail} title={product.title} summary={productSummary} image={product.image} imageMode="product" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <HeroBanner eyebrow={truth?.model || copy.productDetail} title={displayTitle} summary={productSummary} image={product.image} imageMode="product" />
+      <section className="band product-actions"><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>{copy.fullQuote}</Link><a className="button light" href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer nofollow">Hablar con un especialista</a></section>
       <section className="band">
         <div className="geo-grid">
           <article><h3>{copy.overview}</h3><p>{productSummary}</p></article>
-          <article><h3>{copy.features}</h3><ul>{product.features.map((item) => <li key={item}>{item}</li>)}</ul></article>
-          <article><h3>{copy.applications}</h3><ul>{product.applications.map((item) => <li key={item}>{item}</li>)}</ul></article>
+          <article><h3>{copy.features}</h3><ul>{truth ? [truth.equipmentType, `Fuente magnetica: ${truth.magnetType}`, `Descarga: ${truth.discharge}`].map((item) => <li key={item}>{item}</li>) : <li>Configuracion disponible bajo solicitud y sujeta a validacion tecnica.</li>}</ul></article>
+          <article><h3>{copy.applications}</h3><ul>{(truth?.applications || product.applications).map((item) => <li key={item}>{item}</li>)}</ul></article>
         </div>
       </section>
       <section className="band muted">
@@ -125,25 +119,25 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <p>{copy.imagesText}</p>
         </div>
         <div className="page-grid">
-          <article className="content-card"><CatalogImage src={gallery[0]} alt={`${product.title} main image`} /><div className="content-card-body"><h3>{copy.mainView}</h3><p>{copy.mainViewText}</p></div></article>
-          <article className="content-card"><CatalogImage src={gallery[1] ?? gallery[0]} alt={`${product.title} gallery image`} /><div className="content-card-body"><h3>{copy.galleryView}</h3><p>{copy.galleryViewText}</p></div></article>
-          <article className="content-card"><CatalogImage src={gallery[2] ?? gallery[0]} alt={`${product.title} installation reference`} /><div className="content-card-body"><h3>{copy.installationView}</h3><p>{copy.installationViewText}</p></div></article>
+          <article className="content-card"><CatalogImage src={gallery[0]} alt={`${displayTitle} - vista principal`} /><div className="content-card-body"><h3>{copy.mainView}</h3><p>{copy.mainViewText}</p></div></article>
+          <article className="content-card"><CatalogImage src={gallery[1] ?? gallery[0]} alt={`${displayTitle} - vista adicional`} /><div className="content-card-body"><h3>{copy.galleryView}</h3><p>{copy.galleryViewText}</p></div></article>
+          <article className="content-card"><CatalogImage src={gallery[2] ?? gallery[0]} alt={`${displayTitle} - referencia de instalacion`} /><div className="content-card-body"><h3>{copy.installationView}</h3><p>{copy.installationViewText}</p></div></article>
         </div>
       </section>
       <section className="band">
         <div className="geo-grid">
-          <article><h3>{copy.principle}</h3><p>{copy.principleText}</p></article>
-          <article><h3>{copy.installation}</h3><p>{copy.installationText}</p></article>
-          <article><h3>{copy.options}</h3><p>{copy.optionsText}</p></article>
+          <article><h3>{copy.principle}</h3><p>{truth?.principle || "El principio y el circuito magnetico se describen en la ficha tecnica disponible bajo solicitud para evitar atribuir caracteristicas de otra serie."}</p></article>
+          <article><h3>{copy.installation}</h3><p>{truth?.installation.join(" ") || copy.installationText}</p></article>
+          <article><h3>{copy.options}</h3><p>{truth?.options.join(" ") || "Las opciones reales se confirman por modelo y por las condiciones del proyecto."}</p></article>
         </div>
       </section>
       <section className="band muted">
         <div className="section-heading"><p className="eyebrow">{copy.technicalParameters}</p><h2>{copy.technicalParametersTitle}</h2><p>{copy.technicalParametersText}</p></div>
-        <table className="spec-table"><tbody>{(product.parameters?.length ? product.parameters : technicalRows).map((item) => <tr key={item}><th>{item}</th><td>{copy.confirm}</td></tr>)}</tbody></table>
+        <table className="spec-table"><tbody>{truth?.verifiedSpecifications.length ? truth.verifiedSpecifications.map((item) => <tr key={item.label}><th>{item.label}</th><td>{item.value}</td></tr>) : <tr><th>Ficha tecnica</th><td>Disponible bajo solicitud</td></tr>}</tbody></table>
       </section>
       <section className="band">
         <div className="geo-grid">
-          <article><h3>{copy.selectionGuide}</h3><p>{copy.selectionGuideText}</p></article>
+          <article><h3>{copy.selectionGuide}</h3><ul>{(truth?.selectionInputs || []).map((item) => <li key={item}>{item}</li>)}</ul>{!truth ? <p>{copy.selectionGuideText}</p> : null}</article>
           <article><h3>{copy.operatingConditions}</h3><p>{copy.operatingConditionsText}</p></article>
           <article><h3>{copy.maintenance}</h3><p>{copy.maintenanceText}</p></article>
         </div>
@@ -156,11 +150,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         </div>
       </section>
       <section className="band">
-        <FAQAccordion items={copy.faq} />
+        <FAQAccordion items={truth ? truth.faqs.map((item) => [item.question, item.answer] as [string, string]) : copy.faq} />
       </section>
       <section className="band muted">
         <div className="section-heading"><p className="eyebrow">{copy.related}</p><h2>{copy.relatedTitle}</h2></div>
-        <div className="page-grid">{relatedProducts.map((item) => <article className="content-card" key={item.slug}><CatalogImage src={item.image} alt={item.title} /><div className="content-card-body"><h3>{item.title}</h3><p>{getProductSummary(item, locale)}</p><Link href={localizedPath(locale, `products/${item.category}/${item.slug}`)}>{copy.viewProduct}</Link></div></article>)}</div>
+        <div className="page-grid">{relatedProducts.map((item) => { const relatedPresentation = (locale === "es-cl" || locale === "es") ? safeSpanishProductPresentation(item) : null; return <article className="content-card" key={item.slug}><CatalogImage src={item.image} alt={relatedPresentation?.title || item.title} /><div className="content-card-body"><h3>{relatedPresentation?.title || item.title}</h3><p>{relatedPresentation?.summary || getProductSummary(item, locale)}</p><Link href={localizedPath(locale, `products/${item.category}/${item.slug}`)}>{copy.viewProduct}</Link></div></article>; })}</div>
       </section>
       {relatedNews.length ? (
         <section className="band">

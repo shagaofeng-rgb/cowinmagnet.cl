@@ -1,0 +1,27 @@
+{
+  "slug": "magnetic-rod",
+  "source_name": "Magnetic Rod",
+  "model_or_series": "Por confirmar por ingenieria de COWIN",
+  "equipment_category": "Magnetic Components & Filters",
+  "verified_identity": false,
+  "verified_parameters": [],
+  "pending_parameters": [
+    "verified_specifications",
+    "installation",
+    "faq",
+    "product_truth_review"
+  ],
+  "allowed_claims": [
+    "Soporte para proyectos en Chile y Latinoamerica",
+    "Seleccion y configuracion sujetas a validacion tecnica"
+  ],
+  "prohibited_claims": [
+    "stock local",
+    "oficina local",
+    "fabrica propia",
+    "rendimiento no ensayado",
+    "certificacion no verificada"
+  ],
+  "evidence_status": "legacy upstream reference; not approved for public attribution",
+  "reviewed_at": null
+}

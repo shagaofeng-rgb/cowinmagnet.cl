@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { ArticleContent } from "@/components/ArticleContent";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
 import { getPostBySlug, posts } from "@/data/blog";
@@ -15,22 +16,6 @@ export const revalidate = 0;
 
 function displayImage(src = "") {
   return src || "/assets/markets/chile-copper-ore.jpg";
-}
-
-const internalSectionHeadings = new Set(["seo meta", "primary keyword", "search intent", "target country", "target buyer", "suggested cta", "cms checklist"]);
-
-function publicArticleBlocks(body = "") {
-  const blocks = body.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
-  const visible: string[] = [];
-  let hideSection = false;
-  for (const block of blocks) {
-    if (block.startsWith("## ")) {
-      hideSection = internalSectionHeadings.has(block.slice(3).trim().toLowerCase());
-      if (hideSection) continue;
-    }
-    if (!hideSection && !/^(SEO Title|Meta Description|URL Slug|Primary Keyword|Secondary Keywords|Search Intent|Target Country|Target Buyer|Suggested CTA):/i.test(block)) visible.push(block);
-  }
-  return visible;
 }
 
 export function generateStaticParams() {
@@ -58,7 +43,6 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
   const post = await getPostBySlug(slug, locale);
   if (!post) notFound();
   const copy = productCopy[locale] ?? productCopy["es-cl"];
-  const articleBody = publicArticleBlocks(post.body || "");
   const image = displayImage(post.image);
   const relatedProducts = post.relatedProducts?.length
     ? post.relatedProducts
@@ -103,13 +87,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
             {post.imageCredit ? <p><strong>Imagen:</strong> {post.imageCredit}. Politica: {post.imagePolicy || "remote source image with credit"}.</p> : null}
           </div>
           {post.image ? <Image className="news-article-image" src={post.image} alt={post.title} width={1080} height={640} unoptimized /> : null}
-          {articleBody.length ? articleBody.map((block) => {
-            if (block.startsWith("## ")) return <h2 key={block}>{block.replace(/^## /, "")}</h2>;
-            if (block.startsWith("- ")) {
-              return <ul key={block}>{block.split(/\n/).map((line) => <li key={line}>{line.replace(/^- /, "")}</li>)}</ul>;
-            }
-            return <p key={block}>{block}</p>;
-          }) : null}
+          <ArticleContent body={post.body || ""} />
           {post.citations?.length ? (
             <section>
               <h2>Fuentes utilizadas</h2>

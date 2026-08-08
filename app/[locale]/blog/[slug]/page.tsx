@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
+import { ArticleContent } from "@/components/ArticleContent";
 import { getPublishedBlogArticle } from "@/lib/blogContent";
 import { Locale, localizedPath } from "@/data/site";
 
@@ -23,7 +24,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const { locale, slug } = await params;
   const post = await getPublishedBlogArticle(slug, locale);
   if (!post) notFound();
-  const body = post.body.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
   const image = post.image;
   const schema = {
     "@context": "https://schema.org",
@@ -47,13 +47,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
         <article className="news-article">
           <p className="news-meta-line">{(post.publishedAt || post.createdAt || "").slice(0, 10)} | {post.author}</p>
           {image ? <img className="news-article-image" src={image} alt={post.title} loading="lazy" /> : null}
-          {body.map((block) => {
-            if (block.startsWith("## ")) return <h2 key={block}>{block.replace(/^## /, "")}</h2>;
-            if (block.startsWith("- ")) {
-              return <ul key={block}>{block.split(/\n/).map((line) => <li key={line}>{line.replace(/^- /, "")}</li>)}</ul>;
-            }
-            return <p key={block}>{block}</p>;
-          })}
+          <ArticleContent body={post.body || ""} />
         </article>
       </section>
     </>

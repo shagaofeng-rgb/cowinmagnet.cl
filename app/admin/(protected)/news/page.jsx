@@ -14,7 +14,12 @@ const t = {
   save: "\u4fdd\u5b58\u65b0\u95fb",
   status: "\u72b6\u6001",
   updated: "\u66f4\u65b0\u65f6\u95f4",
-  empty: "\u6682\u65e0\u65b0\u95fb\u3002"
+  empty: "\u6682\u65e0\u65b0\u95fb\u3002",
+  candidateTitle: "待审 News 候选",
+  generateCandidate: "生成候选",
+  approve: "审核通过",
+  sources: "来源",
+  cluster: "主题"
 };
 
 export const dynamic = "force-dynamic";
@@ -22,7 +27,10 @@ export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminNewsPage({ searchParams }) {
   const params = await searchParams;
-  const news = await getCmsItems("news", { includeInactive: true });
+  const [news, candidates] = await Promise.all([
+    getCmsItems("news", { includeInactive: true }),
+    getCmsItems("news-candidate", { includeInactive: true })
+  ]);
 
   return (
     <section className="admin-panel">
@@ -34,6 +42,7 @@ export default async function AdminNewsPage({ searchParams }) {
         </div>
       </div>
       {params?.saved ? <div className="admin-alert good">{t.saved}</div> : null}
+      {params?.candidate ? <div className="admin-alert good">候选状态：{params.candidate}</div> : null}
       {params?.error ? <div className="admin-alert">{t.error}</div> : null}
       <section>
         <form className="admin-form admin-form-split" action="/api/admin/content/news" method="post">
@@ -59,6 +68,24 @@ export default async function AdminNewsPage({ searchParams }) {
           </tbody>
         </table>
       </div>
+      <section className="admin-table-wrap">
+        <div className="admin-page-head compact">
+          <div><h2>{t.candidateTitle}</h2></div>
+          <form action="/api/admin/editorial-candidates/generate" method="post"><button type="submit">{t.generateCandidate}</button></form>
+        </div>
+        <table className="admin-table">
+          <thead><tr><th>{t.titleLabel}</th><th>{t.cluster}</th><th>{t.sources}</th><th>{t.status}</th><th>{t.updated}</th><th>操作</th></tr></thead>
+          <tbody>
+            {candidates.map((item) => (
+              <tr key={item.slug}>
+                <td>{item.title}</td><td>{item.topicClusterId || "-"}</td><td>{item.sources?.length || 0}</td><td>{item.status}</td><td>{item.updatedAt || item.createdAt}</td>
+                <td>{item.status === "evidence_review" ? <form action={`/api/admin/editorial-candidates/${item.slug}/approve`} method="post"><button type="submit">{t.approve}</button></form> : "-"}</td>
+              </tr>
+            ))}
+            {!candidates.length ? <tr><td colSpan="6">暂无候选。</td></tr> : null}
+          </tbody>
+        </table>
+      </section>
     </section>
   );
 }

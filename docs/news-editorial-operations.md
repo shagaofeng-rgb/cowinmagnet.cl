@@ -1,12 +1,12 @@
 # News editorial operations
 
-The production scheduler calls `/api/cron/editorial-news` once per day. The cloud-side job discovers recent evidence from approved regional sources, generates a Spanish draft through Vercel AI Gateway, applies the editorial quality gate and publishes at most one qualified News item every 48 hours. It runs on Vercel and does not depend on a local computer.
+The production scheduler calls `/api/cron/editorial-news` once per day. The cloud-side job discovers recent evidence from approved regional sources, creates a source-led Spanish industry bulletin without an AI model or paid content API, applies the editorial quality gate and publishes at most one qualified News item every 48 hours. It runs on Vercel and does not depend on a local computer.
 
 ## Production switch
 
 `NEWS_AUTOPUBLISH_ENABLED=false` is the repository-safe default. Production may set it to `true` after an authenticated preview has passed evidence, copyright, product-truth, similarity and rendering checks. A Vercel redeployment is required after changing the variable.
 
-`NEWS_AI_MODEL` optionally selects the AI Gateway model. Production uses `openai/gpt-5.4` by default and authenticates with Vercel's runtime OIDC token; no AI credential is exposed to the browser or committed to Git.
+The bulletin generator does not require an AI Gateway key, third-party model account or paid API. It records two cited source links, source dates, a reviewed product-truth card and a clearly labelled general technical reading.
 
 ## Execution modes
 

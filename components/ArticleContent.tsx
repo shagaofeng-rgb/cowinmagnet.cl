@@ -7,7 +7,11 @@ const internalSectionHeadings = new Set([
   "target country",
   "target buyer",
   "suggested cta",
-  "cms checklist"
+  "cms checklist",
+  "ai citation ready summary",
+  "internal linking suggestions",
+  "json-ld schema",
+  "cms publishing checklist"
 ]);
 
 const internalFieldPattern = /^(SEO Title|Meta Description|URL Slug|Primary Keyword|Secondary Keywords|Search Intent|Target Country|Target Buyer|Suggested CTA):/i;

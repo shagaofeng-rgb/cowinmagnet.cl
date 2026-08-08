@@ -1,5 +1,7 @@
 # Production System Audit - 2026-08-06
 
+> Superseded on 2026-08-08: the News collection and automatic publishing system described in this historical report was decommissioned. Existing News content and manual CMS publishing remain available.
+
 ## Scope and release
 
 - Production site: `https://cowinmagnet.cl/es-cl`
@@ -35,20 +37,14 @@ Rollback options:
 | News sitemap | Production response was 4,622 bytes with 8 `<url>` elements. | Confirmed |
 | SEO discovery | `robots.txt` and the sitemap index both returned `200`; the sitemap index responds in 836 ms in the final check. | Confirmed |
 | Blog automatic publishing | Legacy `/api/webhook/send_article` returned `404`. The final build route manifest contains no such route. Historical Blog URLs remain routed to News and were not deleted. | Confirmed closed |
-| Cron access control | Unauthenticated `GET /api/cron/news` returned `401`. A forged `x-vercel-cron` header was also tested before this release and returned `401`. | Confirmed protected |
 
 ## Active production jobs
 
 | Job | Trigger / frequency | Input and output | Current implementation status |
 | --- | --- | --- | --- |
-| News slot 1 | Vercel cron, 11:17 UTC | RSS/source pool -> dedupe/score -> CMS News -> sitemap refresh | Enabled |
-| News slot 2 | Vercel cron, 14:43 UTC | Same pipeline | Enabled |
-| News slot 3 | Vercel cron, 18:09 UTC | Same pipeline | Enabled |
-| News slot 4 | Vercel cron, 22:31 UTC | Same pipeline | Enabled |
-| News catch-up | Vercel cron, 23:49 UTC | Fills only the remaining daily quota | Enabled; daily quota is capped at 4 |
 | Analytics sync | Vercel cron, every 30 minutes | Analytics events -> aggregate/sync status | Enabled |
 | Website monitor | Vercel cron, every 6 hours | Read-only CMS, inquiries, analytics and sitemap health checks -> sanitized log/result | Enabled |
-| Sitemap refresh | CMS mutation and News publication | Content state -> XML snapshot | Enabled; refresh only, no immediate Google submission |
+| Sitemap refresh | CMS mutation | Content state -> XML snapshot | Enabled; refresh only, no immediate Google submission |
 | Google Search Console sitemap submission | Vercel cron, `23 9 */3 * *` | Sitemap index -> Search Console API -> run log | Enabled every 3 days |
 
 There is no configured message queue in this application. No Blog publishing cron, webhook, queue consumer, or alternate automatic publishing entrypoint remains in the checked source.
@@ -60,7 +56,7 @@ There is no configured message queue in this application. No Blog publishing cro
 | Production data could hide a CMS database failure by falling back to local files | CMS read path allowed a production fallback | Production reads now retry transient database faults and surface failures instead of silently using local fallback data. |
 | Transient Neon pool disconnects | Prior Vercel error history contained `Connection terminated unexpectedly` | PostgreSQL pools now use a bounded lifetime, TCP keepalive, idle-error handler, and one bounded retry for idempotent operations. |
 | Dashboard analytics included non-real sample records | Local analytics store generated and retained `sample-*` records | Sample generation was removed and all `sample-*` records are filtered from reads; computed metrics no longer use fixed placeholder rates. |
-| Cron header could be forged | `x-vercel-cron` was accepted as an authentication bypass | News, analytics-sync and monitor now require the configured `CRON_SECRET` in production. |
+| Cron header could be forged | `x-vercel-cron` was accepted as an authentication bypass | Remaining analytics-sync and monitor jobs require the configured `CRON_SECRET` in production. |
 | Sitemap submission was too frequent | Daily Vercel schedule and force path could submit repeatedly | Cron changed to every 3 days. Storage-level 72-hour guard prevents duplicate successful submissions. Content changes only refresh XML. |
 | Blog automatic publishing had a hidden webhook | `/api/webhook/send_article` could write automated content | The route and its untracked secret-bearing documentation/configuration were removed. Existing Blog content was preserved. |
 | Canada source matching contained a malformed accented term | Corrupted `Québec` token | Replaced with `québec` in the News source classifier. |
@@ -81,7 +77,6 @@ Final production check:
 | `/robots.txt` | 200 | 334 ms | 241 B |
 | `/manifest.webmanifest` | 200 | 446 ms | 430 B |
 | `/api/webhook/send_article` | 404 | 342 ms | n/a |
-| `/api/cron/news` without secret | 401 | 582 ms | n/a |
 
 The News response is the heaviest checked public page (about 213 KB). It remains functional, but should be watched as the News archive grows; image payload and page-level caching are the next measured performance candidates.
 
@@ -90,7 +85,6 @@ The News response is the heaviest checked public page (about 213 KB). It remains
 | Item | Reason / impact | Recommendation |
 | --- | --- | --- |
 | Production schema, indexes, grants and full database backup | The production database credentials/CLI and a managed snapshot API were not exposed to this session. No direct schema or backup operation was attempted. | Run a managed Neon backup and `pg_dump --schema-only`/index review using a DB administrator connection. |
-| Live post-release News cron execution | The CRON secret is deliberately not available to this session, so an authenticated manual production run was not attempted. | Check the next scheduled Vercel execution and its `news-run-log`; alert on missed quota or failed run. |
 | Search Console authorization/result | Service-account credentials are not readable through this session; the deployed scheduler and 72-hour guard are verified, not a successful Google API call. | Review the latest sitemap run in `/admin/sitemap` after the next scheduled cycle. |
 | Vercel host CPU, memory, disk and raw network metrics | Serverless host telemetry is not exposed by the available Vercel connector. | Enable Vercel Observability/alerts and review functions, database and edge metrics. |
 | Production mobile/desktop rendered visual QA | Browser-control tooling was not exposed in this session. HTTP, build and route checks do not substitute for viewport screenshots. | Run a manual or Playwright visual pass at 390 px and 1440 px for home, products, News, quote, menu and forms. |
@@ -108,9 +102,7 @@ The News response is the heaviest checked public page (about 213 KB). It remains
 - `lib/sitemapHooks.js`
 - `app/api/analytics/health/route.js`
 - `app/api/cron/analytics-sync/route.js`
-- `app/api/cron/news/route.js`
 - `app/api/cron/website-monitor/route.js`
-- `lib/newsAutomation.js`
 - `vercel.json`
 - `docs/sitemap.md`
 

@@ -21,30 +21,23 @@ export async function GET(request) {
   const checks = await Promise.allSettled([
     getCmsItems("product", { includeInactive: true }),
     getCmsItems("news", { includeInactive: true }),
-    getCmsItems("news-run-log", { includeInactive: true }),
     getEnquiries(),
     getLatestSyncStatus(),
     getAnalyticsSnapshot(analyticsRange),
     getSitemapStatus()
   ]);
-  const names = ["cmsProducts", "cmsNews", "newsAutomation", "enquiries", "analyticsSync", "analyticsSnapshot", "sitemap"];
+  const names = ["cmsProducts", "cmsNews", "enquiries", "analyticsSync", "analyticsSnapshot", "sitemap"];
   const failures = checks.flatMap((result, index) => result.status === "rejected" ? [{
     check: names[index],
     error: String(result.reason?.message || result.reason || "Unknown error").slice(0, 240)
   }] : []);
-  const [products, news, newsRuns, enquiries, sync, analytics, sitemap] = checks.map((result) => result.status === "fulfilled" ? result.value : null);
-  const latestNewsRun = Array.isArray(newsRuns) ? newsRuns[0] : null;
+  const [products, news, enquiries, sync, analytics, sitemap] = checks.map((result) => result.status === "fulfilled" ? result.value : null);
   const payload = {
     success: failures.length === 0,
     status: failures.length ? "degraded" : "ok",
     checks: {
       cmsProducts: Array.isArray(products) ? products.length : null,
       cmsNews: Array.isArray(news) ? news.length : null,
-      newsAutomation: latestNewsRun ? {
-        publishedAt: latestNewsRun.publishedAt || latestNewsRun.createdAt || "",
-        publishedCount: Array.isArray(latestNewsRun.selected_source) ? latestNewsRun.selected_source.length : 0,
-        trigger: latestNewsRun.trigger || ""
-      } : null,
       enquiries: Array.isArray(enquiries) ? enquiries.length : null,
       analyticsSync: sync?.status || null,
       analyticsLast24Hours: analytics?.overview ? {

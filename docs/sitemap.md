@@ -18,7 +18,6 @@ Production snapshots, URL state and run logs are stored in PostgreSQL tables usi
 ## Triggers
 
 - Product/news create, update, status change, slug change and delete queue a non-blocking refresh.
-- News automation queues a refresh after successful publication.
 - Vercel runs `/api/cron/sitemap?submit=true` every three days at `09:23 UTC`.
 - `/admin/sitemap` provides authenticated check, force-generate and generate-plus-submit controls.
 

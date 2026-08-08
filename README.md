@@ -101,7 +101,7 @@ Production deployment is on Vercel:
 vercel --prod --yes
 ```
 
-Cron jobs are configured in `vercel.json` for news automation, analytics sync and website monitoring.
+Cron jobs are configured in `vercel.json` for Sitemap submission, analytics sync and website monitoring.
 
 ## Sitemap Automation
 

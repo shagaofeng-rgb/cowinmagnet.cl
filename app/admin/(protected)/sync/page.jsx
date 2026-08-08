@@ -20,11 +20,9 @@ const t = {
   forms: "\u5ba2\u6237\u8868\u5355",
   analytics: "\u8bbf\u95ee\u5206\u6790",
   cms: "\u5185\u5bb9 CMS",
-  news: "\u65b0\u95fb\u81ea\u52a8\u91c7\u7f16",
   realtime: "\u5b9e\u65f6\u5199\u5165",
   halfHour: "\u6bcf 30 \u5206\u949f",
   saveNow: "\u4fdd\u5b58\u540e\u7acb\u5373\u751f\u6548",
-  daily: "\u6bcf\u5929 4 \u6b21"
 };
 
 export const dynamic = "force-dynamic";
@@ -41,8 +39,7 @@ export default async function AdminSyncPage() {
     { name: t.forms, configured: t.yes, storage: enquiryStorageMode(), schedule: t.realtime, status: t.normal },
     { name: t.analytics, configured: t.yes, storage: analytics.storageMode, schedule: t.halfHour, status: syncStatus.status || "waiting" },
     { name: t.cms, configured: t.yes, storage: cmsStorageMode(), schedule: t.saveNow, status: t.normal },
-    { name: "Google Search Console", configured: gscConfigured ? t.yes : t.no, storage: "Google API", schedule: t.halfHour, status: gscConfigured ? t.connected : t.pending },
-    { name: t.news, configured: t.yes, storage: cmsStorageMode(), schedule: t.daily, status: "Cron" }
+    { name: "Google Search Console", configured: gscConfigured ? t.yes : t.no, storage: "Google API", schedule: t.halfHour, status: gscConfigured ? t.connected : t.pending }
   ];
 
   return (

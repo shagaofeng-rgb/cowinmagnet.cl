@@ -17,8 +17,8 @@ export default async function AdminNewsCategoriesPage() {
       <div className="admin-page-head">
         <div>
           <p className="eyebrow">新闻分类</p>
-          <h1>新闻分类与采编主题</h1>
-          <p>分类从已发布和草稿新闻中聚合。自动采编会按主题覆盖和来源多样性记录分类。</p>
+          <h1>新闻分类管理</h1>
+          <p>分类从已发布和草稿新闻中聚合。</p>
         </div>
       </div>
       <div className="admin-table-wrap">

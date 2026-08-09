@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { isAllowedProductMedia } from "./product-media-policy.mjs";
 
 const root = process.cwd();
 const catalogPath = path.join(root, "data", "mainProductCatalog.json");
@@ -10,6 +11,7 @@ for (const product of catalog) {
   if (!fs.existsSync(directory)) continue;
   const gallery = fs.readdirSync(directory)
     .filter((file) => /\.(avif|jpe?g|png|webp)$/i.test(file))
+    .filter((file) => isAllowedProductMedia(path.join(directory, file)))
     .sort()
     .map((file) => `/assets/products/${product.slug}/${file}`);
   if (gallery.length) {

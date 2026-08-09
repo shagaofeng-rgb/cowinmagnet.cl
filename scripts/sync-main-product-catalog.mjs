@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { isAllowedProductMedia } from "./product-media-policy.mjs";
 
 const root = process.cwd();
 const mainCatalogUrl = "https://www.cowinmagnet.com/en/products";
@@ -60,6 +61,7 @@ async function localGallery(slug, fallback) {
   try {
     const files = (await fs.readdir(directory))
       .filter((file) => /\.(avif|jpe?g|png|webp)$/i.test(file))
+      .filter((file) => isAllowedProductMedia(path.join(directory, file)))
       .sort()
       .map((file) => `/assets/products/${slug}/${file}`);
     return files.length ? files : [fallback];

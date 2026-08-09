@@ -135,7 +135,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
     <section className="product-section"><div className="product-detail-wrap product-two-column">
       <div><p className="eyebrow">{content.series || categoryDisplay.title}</p><h2>{text.options}</h2><p className="section-lead">{locale === "es-cl" || locale === "es" ? "Las opciones se confirman solo cuando corresponden al modelo y a la condición de proceso indicada por el proyecto." : "Options are confirmed only when they apply to the selected model and stated process conditions."}</p></div>
-      <div className="product-content-stack"><article className="product-info-card"><h3>{text.options}</h3><ul>{content.options.map((item) => <li key={item}>{item}</li>)}</ul></article><article className="product-info-card"><h3>{text.operation}</h3><ul>{content.operation.map((item) => <li key={item}>{item}</li>)}</ul></article></div>
+      <div className="product-content-stack"><article className="product-info-card"><h3>{locale === "pt-br" ? "Configuração disponível" : locale === "en" ? "Available configuration" : "Configuración disponible"}</h3><ul>{content.options.map((item) => <li key={item}>{item}</li>)}</ul></article><article className="product-info-card"><h3>{text.operation}</h3><ul>{content.operation.map((item) => <li key={item}>{item}</li>)}</ul></article></div>
     </div></section>
 
     <section className="product-section product-section-muted"><div className="product-detail-wrap product-faq-layout"><div><p className="eyebrow">COWIN MAGNET</p><h2>{text.faq}</h2></div><div>{content.faqs.map((faq) => <details className="product-faq" key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></div></section>

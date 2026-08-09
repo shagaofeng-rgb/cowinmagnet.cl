@@ -193,8 +193,10 @@ function auxiliaryProfile(): Profile {
 }
 
 function profileFor(product: ProductIdentity): Profile {
-  if (is(product, /(wet-drum|ctb|ctn|cts|wet-roller|coal-washing|hmdn)/)) return wetProfile();
-  if (is(product, /(dry-drum|ctdg|cgt|ctz|rct|high-gradient|disc-magnetic|tailings|hjlh|hjpc|gtc|clt|nct|ljk)/)) return dryProfile();
+  // Mineral separators are classified from their actual process medium first.
+  // This avoids describing wet vertical-ring and tailings equipment as dry units.
+  if (is(product, /(wet|ctb|ctn|cts|coal-washing|hmdn|clt|nct|wbc|dcx|hjlh|hjpc|gtc|qcg)/)) return wetProfile();
+  if (is(product, /(dry-drum|ctdg|cgt|ctz|rct|dcz|hcg|dhj|dhd|ctzs)/)) return dryProfile();
   if (is(product, /(metal-detector|dls|gjt|gls)/)) return detectorProfile();
   if (is(product, /(drawer|hump|grid|rod|trap|pipe|filter|rcyz|clc|cyg|cbz|cgb|cqz|cxj|dcz|dcx|rcya|rcyf|rcyg)/)) return filterProfile();
   if (is(product, /(eddy-current|stainless-steel-separation|magnetic-head-pulley|drum-magnet)/)) return recyclingProfile();
@@ -202,12 +204,35 @@ function profileFor(product: ProductIdentity): Profile {
   return suspendedProfile(product);
 }
 
+function spanishSummary(title: string, profile: Profile) {
+  const common = "COWIN acompaña la definición técnica y el suministro para proyectos en Chile y Latinoamérica; las dimensiones, capacidad y configuración final se confirman con ingeniería antes de cotizar.";
+  if (profile.family.includes("proceso húmedo")) {
+    return `${title} se evalúa para circuitos de pulpa, concentración y recuperación de minerales. La selección parte de la mineralogía, granulometría, caudal, porcentaje de sólidos y objetivo metalúrgico, además de la química y abrasividad de la pulpa. No se publican recuperaciones, intensidades ni capacidades sin una condición de prueba o de proceso confirmada. ${common}`;
+  }
+  if (profile.family.includes("proceso seco")) {
+    return `${title} se utiliza para estudiar la separación de material seco en minería, áridos y procesos industriales. La configuración se valida con mineralogía, granulometría, humedad, distribución de alimentación, capacidad requerida y objetivo de separación. Los divisores, etapas y condiciones de operación se ajustan al proceso real, sin prometer resultados que no hayan sido verificados. ${common}`;
+  }
+  if (profile.family.includes("Detector")) {
+    return `${title} permite definir una etapa de detección de metal antes de equipos sensibles o dentro de una correa de proceso. La selección considera la ventana útil, el tamaño y tipo de metal objetivo, la velocidad, la pieza de prueba y la lógica de alarma o interbloqueo. La sensibilidad se valida con condiciones representativas, no con valores genéricos. ${common}`;
+  }
+  if (profile.family.includes("Filtro")) {
+    return `${title} se configura para retirar partículas ferrosas en tolvas, líneas de producto o tuberías industriales. Se revisan el producto, la contaminación objetivo, el caudal, la abertura o diámetro, el acceso de limpieza y, cuando corresponde, la presión y temperatura. Las barras, conexiones y materiales se confirman solo para la condición operativa indicada. ${common}`;
+  }
+  if (profile.family.includes("reciclaje")) {
+    return `${title} se evalúa para líneas de recuperación y clasificación de materiales ferrosos o no ferrosos. La selección se basa en la composición de entrada, el tamaño de partícula, la capacidad, la humedad, el material objetivo y el layout disponible. La recuperación final se valida con una muestra o con datos representativos de operación. ${common}`;
+  }
+  if (profile.family.includes("auxiliar")) {
+    return `${title} se integra como parte de una solución de proceso o control industrial. La configuración depende del equipo asociado, las interfaces mecánicas o eléctricas, el ambiente y la función requerida. Antes de cotizar se revisan el layout, la alimentación y los requisitos de seguridad para evitar suposiciones de catálogo. ${common}`;
+  }
+  return `${title} se evalúa para retirar hierro trampa y proteger equipos en minería, áridos, reciclaje y manejo de graneles. La selección considera el material, la contaminación ferrosa, el ancho y velocidad de cinta, la capa de material, la altura disponible y el ambiente operativo. En configuraciones autolimpiantes también se valida el sistema de descarga; en equipos electromagnéticos se revisan alimentación y control. ${common}`;
+}
+
 function spanishContent(product: ProductIdentity): ProductDetailContent {
   const profile = profileFor(product);
   const truth = getProductTruthCard(product.slug);
   const series = truth?.model || seriesFrom(product);
   const title = truth?.esTitle || `${series ? `${series}: ` : ""}${profile.family}`;
-  const summary = `${title} para evaluar en proyectos de minería, áridos, reciclaje y manejo de graneles en Chile y Latinoamérica. Su configuración se revisa con el material, el punto de proceso y las condiciones de instalación, evitando publicar valores no confirmados. Para seleccionar una alternativa se consideran el flujo de material, granulometría o capa, capacidad, espacio disponible y ambiente operativo. Cuando aplica, también se revisan alimentación eléctrica, control, presión, humedad, polvo y requisitos de mantenimiento. COWIN acompaña la definición técnica y el suministro para el proyecto; las dimensiones, rendimiento, intensidad, potencia y opciones finales se confirman con ingeniería antes de emitir la cotización.`;
+  const summary = spanishSummary(title, profile);
   return {
     ...profile,
     title,

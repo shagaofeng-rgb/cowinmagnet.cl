@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Locale, locales } from "@/data/site";
 import { htmlLanguageByLocale } from "@/lib/seo";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -16,6 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function LocaleLayout({ children, params }: { children: ReactNode; params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
+  if (!locales.includes(locale)) notFound();
 
   return (
     <div lang={htmlLanguageByLocale[locale] || "es-CL"}>

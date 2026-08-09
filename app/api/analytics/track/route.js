@@ -23,13 +23,17 @@ export async function POST(request) {
   const browser = /edg/i.test(userAgent) ? "Edge" : /firefox/i.test(userAgent) ? "Firefox" : /safari/i.test(userAgent) && !/chrome/i.test(userAgent) ? "Safari" : "Chrome";
   const os = /android/i.test(userAgent) ? "Android" : /iphone|ipad/i.test(userAgent) ? "iOS" : /mac/i.test(userAgent) ? "macOS" : "Windows";
 
-  const result = await appendAnalyticsEvent({
-    ...body,
-    device: body.device || device,
-    browser: body.browser || browser,
-    os: body.os || os,
-    ip: body.ip || clientIp(request)
-  });
-
-  return NextResponse.json({ success: true, data: result });
+  try {
+    const result = await appendAnalyticsEvent({
+      ...body,
+      device: body.device || device,
+      browser: body.browser || browser,
+      os: body.os || os,
+      ip: body.ip || clientIp(request)
+    });
+    return NextResponse.json({ success: true, data: result });
+  } catch (error) {
+    console.error("[analytics/track] persistence failed", error?.message || error);
+    return NextResponse.json({ success: false, error: "Analytics storage is temporarily unavailable." }, { status: 503 });
+  }
 }

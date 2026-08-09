@@ -6,6 +6,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 const VISITOR_KEY = "cowinmagnet_cl_visitor_id";
 const SESSION_KEY = "cowinmagnet_cl_session_id";
 const PREVIOUS_PAGE_KEY = "cowinmagnet_cl_previous_page";
+const PENDING_EVENTS_KEY = "cowinmagnet_cl_pending_analytics";
+const MAX_PENDING_EVENTS = 20;
 
 function makeId(prefix) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(16).slice(2)}`;
@@ -67,18 +69,49 @@ function readSource(params, referrer) {
   return { channel: "Referral", sourcePlatform: host || "Referral", sourceDetail: referrer, utmSource, utmMedium, utmCampaign, utmTerm, utmContent };
 }
 
-function send(payload) {
-  const body = JSON.stringify(payload);
-  if (navigator.sendBeacon) {
-    const ok = navigator.sendBeacon("/api/analytics/track", new Blob([body], { type: "application/json" }));
-    if (ok) return;
+function pendingEvents() {
+  try {
+    const stored = JSON.parse(window.sessionStorage.getItem(PENDING_EVENTS_KEY) || "[]");
+    return Array.isArray(stored) ? stored : [];
+  } catch {
+    return [];
   }
-  fetch("/api/analytics/track", {
+}
+
+function savePendingEvents(events) {
+  try {
+    window.sessionStorage.setItem(PENDING_EVENTS_KEY, JSON.stringify(events.slice(-MAX_PENDING_EVENTS)));
+  } catch {
+    // Analytics must never affect the public page when browser storage is blocked.
+  }
+}
+
+async function send(payload) {
+  const response = await fetch("/api/analytics/track", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body,
+    body: JSON.stringify(payload),
     keepalive: true
-  }).catch(() => {});
+  });
+  if (!response.ok) throw new Error(`analytics ${response.status}`);
+}
+
+function queueEvent(payload) {
+  savePendingEvents([...pendingEvents(), payload]);
+}
+
+async function flushPendingEvents() {
+  const queued = pendingEvents();
+  if (!queued.length) return;
+  const remaining = [];
+  for (const event of queued) {
+    try {
+      await send(event);
+    } catch {
+      remaining.push(event);
+    }
+  }
+  savePendingEvents(remaining);
 }
 
 export default function AnalyticsTracker() {
@@ -100,7 +133,8 @@ export default function AnalyticsTracker() {
     const previousPage = window.sessionStorage.getItem(PREVIOUS_PAGE_KEY) || "";
     const source = readSource(params, document.referrer);
 
-    send({
+    const event = {
+      id: makeId("event"),
       type: "page_view",
       visitorId,
       sessionId,
@@ -111,7 +145,15 @@ export default function AnalyticsTracker() {
       language: navigator.language || "",
       timestamp: new Date().toISOString(),
       ...source
-    });
+    };
+    void (async () => {
+      await flushPendingEvents();
+      try {
+        await send(event);
+      } catch {
+        queueEvent(event);
+      }
+    })();
 
     window.sessionStorage.setItem(PREVIOUS_PAGE_KEY, page);
   }, [pathname, searchParams]);

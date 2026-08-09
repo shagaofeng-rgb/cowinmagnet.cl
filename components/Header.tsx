@@ -46,6 +46,10 @@ export function Header({ locale }: { locale: Locale }) {
     return `/${parts.join("/")}`;
   }
 
+  function rememberLocale(target: Locale) {
+    document.cookie = `cowinmagnet_locale=${target}; Path=/; Max-Age=31536000; SameSite=Lax`;
+  }
+
   const links = [
     { href: "", label: copy.nav.home },
     { href: "products", label: copy.nav.products },
@@ -72,7 +76,7 @@ export function Header({ locale }: { locale: Locale }) {
         <div className="language-switcher">
           <button className="nav-trigger" type="button" aria-label="Language" aria-expanded={languageOpen} onClick={() => setLanguageOpen((open) => !open)}>{localeLabels[locale]}</button>
           <div className={`language-menu ${languageOpen ? "open" : ""}`}>
-            {locales.map((item) => <Link key={item} href={switchLocale(item)}>{localeLabels[item]}</Link>)}
+            {locales.map((item) => <Link key={item} href={switchLocale(item)} onClick={() => rememberLocale(item)}>{localeLabels[item]}</Link>)}
           </div>
         </div>
         <Link className="quote-link" href={base("request-a-quote")}>{copy.nav.quote}</Link>

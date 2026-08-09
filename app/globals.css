@@ -8,6 +8,24 @@ body {
   background: var(--paper);
 }
 
+.not-found-page {
+  display: grid;
+  justify-items: start;
+  align-content: center;
+  gap: 18px;
+  min-height: 62vh;
+  width: min(100% - 32px, 720px);
+  margin: 0 auto;
+  padding: 56px 0;
+}
+
+.not-found-page h1,
+.not-found-page p { margin: 0; }
+
+.not-found-page h1 { color: var(--ink); font-size: clamp(2rem, 5vw, 3.5rem); }
+
+.not-found-page > p:not(.eyebrow) { color: var(--muted); font-size: 1.0625rem; line-height: 1.65; }
+
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
@@ -1347,6 +1365,34 @@ body {
   .pd-quick-facts strong { font-size: .8rem; }
   .pd-gallery-thumbnails { gap: 8px; }
   .pd-gallery-thumbnails button { flex-basis: 64px; width: 64px; height: 64px; }
+}
+
+@media (max-width: 640px) {
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .footer-column li { margin: 0; }
+
+  .footer-column a,
+  .footer-contact-line {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin: 0;
+  }
+
+  .breadcrumb a,
+  .pd-page .pd-text-link,
+  .pd-page .pd-application-cards a,
+  .pd-page .pd-guide-link,
+  .pd-page .pd-related-grid a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

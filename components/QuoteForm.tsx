@@ -47,9 +47,11 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
           voltage: String(formData.get("voltage") || ""),
           frequency: String(formData.get("frequency") || ""),
           phases: String(formData.get("phases") || ""),
-          attachmentNames: Array.from(formData.getAll("attachments")).map((file) => file instanceof File ? file.name : String(file)).filter(Boolean),
           projectDescription: String(formData.get("projectDescription") || ""),
-          sourcePage: window.location.pathname
+          sourcePage: window.location.pathname,
+          sourceUrl: window.location.href,
+          utm: window.location.search,
+          website: String(formData.get("website") || "")
         };
 
         try {
@@ -63,7 +65,7 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
             setStatus(result.error || copy.quoteForm.failed);
             return;
           }
-          setStatus(`${copy.quoteForm.success}: ${result.data.id}`);
+          setStatus(copy.quoteForm.success);
           form.reset();
         } catch {
           setStatus(copy.quoteForm.connectError);
@@ -91,8 +93,7 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
           <label>{copy.quoteForm.installation}<select name="installation"><option value="">{copy.quoteForm.select}</option><option>Cross-belt</option><option>Inline</option><option>Above chute</option><option>To confirm</option></select></label>
           <label>{copy.quoteForm.cleaning}<select name="cleaning"><option value="">{copy.quoteForm.select}</option><option>Manual</option><option>Automatic</option><option>Self-cleaning</option><option>To confirm</option></select></label>
           <label>{copy.quoteForm.voltage}<input name="voltage" placeholder="V" /></label>
-          <label>{copy.quoteForm.language}<select name="language"><option>Spanish</option><option>Portuguese</option><option>English</option></select></label>
-          <label className="full">{copy.quoteForm.attachments}<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp" /></label>
+          <label>{copy.quoteForm.language}<select name="language" defaultValue={locale === "pt-br" ? "Portuguese" : locale === "en" ? "English" : "Spanish"}><option>Spanish</option><option>Portuguese</option><option>English</option></select></label>
         </div>
       </details>
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="honeypot" aria-hidden="true" />

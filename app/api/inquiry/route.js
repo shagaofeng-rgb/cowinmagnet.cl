@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { saveEnquiry } from "@/lib/enquiryStore";
+import { appendAnalyticsEvent } from "@/lib/analyticsStore";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -53,22 +54,46 @@ export async function POST(request) {
   const key = `${ip}:${(payload.email || payload.whatsapp || "unknown").trim().toLowerCase()}`;
   if (!checkRateLimit(key)) return Response.json({ success: false, error: "Too many submissions" }, { status: 429 });
 
-  const saved = await saveEnquiry(payload);
+  let saved;
+  try {
+    saved = await saveEnquiry(payload);
+  } catch (error) {
+    console.error("[inquiry] persistence failed", error?.message || error);
+    return Response.json({ success: false, error: "The inquiry service is temporarily unavailable. Please try again." }, { status: 503 });
+  }
+
+  // Lead storage is authoritative. Notification and analytics failures should not
+  // discard a successfully stored inquiry or tell the visitor that it was lost.
+  await appendAnalyticsEvent({
+    id: `inquiry-${saved.id}`,
+    type: "form_submit",
+    visitorId: `lead-${saved.id}`,
+    sessionId: `lead-${saved.id}`,
+    page: payload.sourcePage || "/",
+    pageTitle: "Inquiry submission",
+    country: payload.country || "Unknown",
+    language: payload.language || "",
+    timestamp: saved.createdAt
+  }).catch((error) => console.error("[inquiry] analytics event failed", error?.message || error));
 
   if (process.env.SMTP_HOST && process.env.SMTP_USER && (process.env.SMTP_PASSWORD || process.env.SMTP_PASS) && process.env.INQUIRY_TO_EMAIL) {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 465),
-      secure: process.env.SMTP_SECURE !== "false",
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS }
-    });
-    await transporter.sendMail({
-      from: process.env.INQUIRY_FROM_EMAIL || "Cowinmagnet LATAM <davidsha@cowinmagnet.com>",
-      to: process.env.INQUIRY_TO_EMAIL,
-      replyTo: payload.email,
-      subject: `New LATAM inquiry from ${payload.name}`,
-      text: JSON.stringify(saved, null, 2)
-    });
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT || 465),
+        secure: process.env.SMTP_SECURE !== "false",
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS }
+      });
+      await transporter.sendMail({
+        from: process.env.INQUIRY_FROM_EMAIL || "Cowinmagnet LATAM <davidsha@cowinmagnet.com>",
+        to: process.env.INQUIRY_TO_EMAIL,
+        replyTo: payload.email || undefined,
+        subject: `New LATAM inquiry from ${payload.name}`,
+        text: JSON.stringify(saved, null, 2)
+      });
+    } catch (error) {
+      console.error("[inquiry] notification email failed after persistence", error?.message || error);
+    }
   }
 
   return Response.json({ success: true, data: saved });

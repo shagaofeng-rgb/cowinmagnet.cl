@@ -1,0 +1,55 @@
+{
+  "nombrePublico": "Separador magnético para proceso seco",
+  "serie": "Por confirmar",
+  "modelo": null,
+  "categoria": "Magnetic Separation Equipment",
+  "tipo": "separacion_seca",
+  "limpieza": "no_aplica",
+  "especificacionesConfirmadas": {},
+  "especificacionesPendientes": [
+    "Mineral",
+    "Granulometría",
+    "Humedad",
+    "Capacidad",
+    "Objetivo de separación"
+  ],
+  "referenciaInterna": {
+    "catalogo": "Catálogo principal COWIN sincronizado",
+    "rutaPrincipal": "/en/products/belt-high-gradient-magnetic-separator",
+    "versionAuditoria": "2026-08-09",
+    "estadoValidacion": "Pendiente de confirmación del proveedor"
+  },
+  "aplicaciones": [
+    "Minerales secos",
+    "Áridos",
+    "Recuperación de fracciones ferrosas"
+  ],
+  "datosParaSeleccion": [
+    "Mineralogía",
+    "Granulometría y humedad",
+    "Caudal",
+    "Prueba de separabilidad"
+  ],
+  "afirmacionesPermitidas": [
+    "Selección técnica conforme a las condiciones reales del proceso",
+    "Soporte para proyectos en Chile y Latinoamérica",
+    "Especificaciones disponibles bajo solicitud"
+  ],
+  "afirmacionesProhibidas": [
+    "Stock local",
+    "Oficina o equipo local no confirmado",
+    "Rendimiento, intensidad, recuperación o certificación no confirmados"
+  ],
+  "mediaAprobada": [
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-01.jpg",
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-02.jpg",
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-03.jpg",
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-04.jpg",
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-05.jpg",
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-06.jpg",
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-07.jpg",
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-08.jpg",
+    "/assets/products/belt-high-gradient-magnetic-separator/belt-high-gradient-magnetic-separator-09.jpg"
+  ],
+  "confirmadoPorProveedor": false
+}

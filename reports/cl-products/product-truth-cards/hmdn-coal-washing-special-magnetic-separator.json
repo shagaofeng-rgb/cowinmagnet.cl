@@ -1,0 +1,51 @@
+{
+  "nombrePublico": "HMDN: Separador magnético para proceso húmedo",
+  "serie": "HMDN",
+  "modelo": "HMDN",
+  "categoria": "Magnetic Separation Equipment",
+  "tipo": "separacion_humeda",
+  "limpieza": "no_aplica",
+  "especificacionesConfirmadas": {},
+  "especificacionesPendientes": [
+    "Mineralogía",
+    "Granulometría",
+    "Caudal",
+    "Porcentaje de sólidos",
+    "Objetivo de separación"
+  ],
+  "referenciaInterna": {
+    "catalogo": "Catálogo principal COWIN sincronizado",
+    "rutaPrincipal": "/en/products/hmdn-coal-washing-special-magnetic-separator",
+    "versionAuditoria": "2026-08-09",
+    "estadoValidacion": "Pendiente de confirmación del proveedor"
+  },
+  "aplicaciones": [
+    "Procesamiento de minerales",
+    "Evaluación de relaves",
+    "Circuitos de pulpa"
+  ],
+  "datosParaSeleccion": [
+    "Muestra o análisis mineralógico",
+    "Granulometría y humedad",
+    "Caudal y porcentaje de sólidos",
+    "Objetivo metalúrgico"
+  ],
+  "afirmacionesPermitidas": [
+    "Selección técnica conforme a las condiciones reales del proceso",
+    "Soporte para proyectos en Chile y Latinoamérica",
+    "Especificaciones disponibles bajo solicitud"
+  ],
+  "afirmacionesProhibidas": [
+    "Stock local",
+    "Oficina o equipo local no confirmado",
+    "Rendimiento, intensidad, recuperación o certificación no confirmados"
+  ],
+  "mediaAprobada": [
+    "/assets/products/hmdn-coal-washing-special-magnetic-separator/hmdn-coal-washing-special-magnetic-separator-01.jpg",
+    "/assets/products/hmdn-coal-washing-special-magnetic-separator/hmdn-coal-washing-special-magnetic-separator-02.png",
+    "/assets/products/hmdn-coal-washing-special-magnetic-separator/hmdn-coal-washing-special-magnetic-separator-03.png",
+    "/assets/products/hmdn-coal-washing-special-magnetic-separator/hmdn-coal-washing-special-magnetic-separator-04.jpg",
+    "/assets/products/hmdn-coal-washing-special-magnetic-separator/hmdn-coal-washing-special-magnetic-separator-05.jpg"
+  ],
+  "confirmadoPorProveedor": false
+}

@@ -1,0 +1,55 @@
+{
+  "nombrePublico": "RCDA: Separador electromagnético suspendido",
+  "serie": "RCDA",
+  "modelo": "RCDA",
+  "categoria": "Magnetic Separation Equipment",
+  "tipo": "electromagnetico",
+  "limpieza": "manual",
+  "especificacionesConfirmadas": {},
+  "especificacionesPendientes": [
+    "Alimentación eléctrica",
+    "Altura de suspensión",
+    "Ancho y velocidad de cinta",
+    "Ambiente",
+    "Configuración de descarga"
+  ],
+  "referenciaInterna": {
+    "catalogo": "Catálogo principal COWIN sincronizado",
+    "rutaPrincipal": "/en/products/rcda-type-air-cooled-electromagnetic-iron-remover",
+    "versionAuditoria": "2026-08-09",
+    "estadoValidacion": "Pendiente de confirmación del proveedor"
+  },
+  "aplicaciones": [
+    "Protección de chancadores",
+    "Correas transportadoras",
+    "Manejo de graneles y áridos"
+  ],
+  "datosParaSeleccion": [
+    "Material y contaminación ferrosa",
+    "Ancho y velocidad de cinta",
+    "Capa de material",
+    "Altura de suspensión",
+    "Espacio de instalación y ambiente"
+  ],
+  "afirmacionesPermitidas": [
+    "Selección técnica conforme a las condiciones reales del proceso",
+    "Soporte para proyectos en Chile y Latinoamérica",
+    "Especificaciones disponibles bajo solicitud"
+  ],
+  "afirmacionesProhibidas": [
+    "Stock local",
+    "Oficina o equipo local no confirmado",
+    "Rendimiento, intensidad, recuperación o certificación no confirmados"
+  ],
+  "mediaAprobada": [
+    "/assets/products/rcda-type-air-cooled-electromagnetic-iron-remover/rcda-type-air-cooled-electromagnetic-iron-remover-01.jpg",
+    "/assets/products/rcda-type-air-cooled-electromagnetic-iron-remover/rcda-type-air-cooled-electromagnetic-iron-remover-02.png",
+    "/assets/products/rcda-type-air-cooled-electromagnetic-iron-remover/rcda-type-air-cooled-electromagnetic-iron-remover-03.png",
+    "/assets/products/rcda-type-air-cooled-electromagnetic-iron-remover/rcda-type-air-cooled-electromagnetic-iron-remover-04.png",
+    "/assets/products/rcda-type-air-cooled-electromagnetic-iron-remover/rcda-type-air-cooled-electromagnetic-iron-remover-05.png",
+    "/assets/products/rcda-type-air-cooled-electromagnetic-iron-remover/rcda-type-air-cooled-electromagnetic-iron-remover-06.png",
+    "/assets/products/rcda-type-air-cooled-electromagnetic-iron-remover/rcda-type-air-cooled-electromagnetic-iron-remover-07.jpg",
+    "/assets/products/rcda-type-air-cooled-electromagnetic-iron-remover/rcda-type-air-cooled-electromagnetic-iron-remover-08.jpg"
+  ],
+  "confirmadoPorProveedor": false
+}

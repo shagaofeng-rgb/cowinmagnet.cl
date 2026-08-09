@@ -1,0 +1,61 @@
+{
+  "nombrePublico": "Separador por corrientes de Foucault",
+  "serie": "Por confirmar",
+  "modelo": null,
+  "categoria": "Metal Detection & Recycling Sorting",
+  "tipo": "corrientes_foucault",
+  "limpieza": "no_aplica",
+  "especificacionesConfirmadas": {},
+  "especificacionesPendientes": [
+    "Tamaño de alimentación",
+    "Capacidad",
+    "Configuración de rotor",
+    "Divisor de producto"
+  ],
+  "referenciaInterna": {
+    "catalogo": "Catálogo principal COWIN sincronizado",
+    "rutaPrincipal": "/en/products/stainless-steel-separation-conveyor",
+    "versionAuditoria": "2026-08-09",
+    "estadoValidacion": "Pendiente de confirmación del proveedor"
+  },
+  "aplicaciones": [
+    "Reciclaje de metales",
+    "Clasificación de materiales",
+    "Recuperación de no ferrosos"
+  ],
+  "datosParaSeleccion": [
+    "Composición de alimentación",
+    "Tamaño de partícula",
+    "Capacidad",
+    "Objetivo de recuperación"
+  ],
+  "afirmacionesPermitidas": [
+    "Selección técnica conforme a las condiciones reales del proceso",
+    "Soporte para proyectos en Chile y Latinoamérica",
+    "Especificaciones disponibles bajo solicitud"
+  ],
+  "afirmacionesProhibidas": [
+    "Stock local",
+    "Oficina o equipo local no confirmado",
+    "Rendimiento, intensidad, recuperación o certificación no confirmados"
+  ],
+  "mediaAprobada": [
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-01.png",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-02.png",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-03.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-04.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-05.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-06.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-07.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-08.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-09.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-10.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-11.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-12.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-13.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-14.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-15.jpg",
+    "/assets/products/stainless-steel-separation-conveyor/stainless-steel-separation-conveyor-16.jpg"
+  ],
+  "confirmadoPorProveedor": false
+}

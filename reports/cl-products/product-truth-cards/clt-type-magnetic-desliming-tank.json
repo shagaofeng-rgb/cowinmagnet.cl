@@ -1,0 +1,53 @@
+{
+  "nombrePublico": "CLT: Separador magnético para proceso seco",
+  "serie": "CLT",
+  "modelo": "CLT",
+  "categoria": "Magnetic Separation Equipment",
+  "tipo": "separacion_seca",
+  "limpieza": "no_aplica",
+  "especificacionesConfirmadas": {},
+  "especificacionesPendientes": [
+    "Mineral",
+    "Granulometría",
+    "Humedad",
+    "Capacidad",
+    "Objetivo de separación"
+  ],
+  "referenciaInterna": {
+    "catalogo": "Catálogo principal COWIN sincronizado",
+    "rutaPrincipal": "/en/products/clt-type-magnetic-desliming-tank",
+    "versionAuditoria": "2026-08-09",
+    "estadoValidacion": "Pendiente de confirmación del proveedor"
+  },
+  "aplicaciones": [
+    "Minerales secos",
+    "Áridos",
+    "Recuperación de fracciones ferrosas"
+  ],
+  "datosParaSeleccion": [
+    "Mineralogía",
+    "Granulometría y humedad",
+    "Caudal",
+    "Prueba de separabilidad"
+  ],
+  "afirmacionesPermitidas": [
+    "Selección técnica conforme a las condiciones reales del proceso",
+    "Soporte para proyectos en Chile y Latinoamérica",
+    "Especificaciones disponibles bajo solicitud"
+  ],
+  "afirmacionesProhibidas": [
+    "Stock local",
+    "Oficina o equipo local no confirmado",
+    "Rendimiento, intensidad, recuperación o certificación no confirmados"
+  ],
+  "mediaAprobada": [
+    "/assets/products/clt-type-magnetic-desliming-tank/clt-type-magnetic-desliming-tank-01.jpg",
+    "/assets/products/clt-type-magnetic-desliming-tank/clt-type-magnetic-desliming-tank-02.png",
+    "/assets/products/clt-type-magnetic-desliming-tank/clt-type-magnetic-desliming-tank-03.png",
+    "/assets/products/clt-type-magnetic-desliming-tank/clt-type-magnetic-desliming-tank-04.png",
+    "/assets/products/clt-type-magnetic-desliming-tank/clt-type-magnetic-desliming-tank-05.png",
+    "/assets/products/clt-type-magnetic-desliming-tank/clt-type-magnetic-desliming-tank-06.jpg",
+    "/assets/products/clt-type-magnetic-desliming-tank/clt-type-magnetic-desliming-tank-07.jpg"
+  ],
+  "confirmadoPorProveedor": false
+}

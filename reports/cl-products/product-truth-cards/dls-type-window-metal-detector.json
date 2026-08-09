@@ -1,0 +1,56 @@
+{
+  "nombrePublico": "DLS: Detector de metales para proceso industrial",
+  "serie": "DLS",
+  "modelo": "DLS",
+  "categoria": "Metal Detection & Recycling Sorting",
+  "tipo": "deteccion_metal",
+  "limpieza": "no_aplica",
+  "especificacionesConfirmadas": {},
+  "especificacionesPendientes": [
+    "Ventana de detección",
+    "Producto de prueba",
+    "Velocidad",
+    "Alarma e interbloqueo"
+  ],
+  "referenciaInterna": {
+    "catalogo": "Catálogo principal COWIN sincronizado",
+    "rutaPrincipal": "/en/products/dls-type-window-metal-detector",
+    "versionAuditoria": "2026-08-09",
+    "estadoValidacion": "Pendiente de confirmación del proveedor"
+  },
+  "aplicaciones": [
+    "Protección de proceso",
+    "Correas transportadoras",
+    "Control de contaminación metálica"
+  ],
+  "datosParaSeleccion": [
+    "Tamaño de producto",
+    "Ancho de cinta",
+    "Velocidad",
+    "Sensibilidad requerida"
+  ],
+  "afirmacionesPermitidas": [
+    "Selección técnica conforme a las condiciones reales del proceso",
+    "Soporte para proyectos en Chile y Latinoamérica",
+    "Especificaciones disponibles bajo solicitud"
+  ],
+  "afirmacionesProhibidas": [
+    "Stock local",
+    "Oficina o equipo local no confirmado",
+    "Rendimiento, intensidad, recuperación o certificación no confirmados"
+  ],
+  "mediaAprobada": [
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-01.jpg",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-02.png",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-03.png",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-04.png",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-05.png",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-06.png",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-07.jpg",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-08.jpg",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-09.png",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-10.png",
+    "/assets/products/dls-type-window-metal-detector/dls-type-window-metal-detector-11.png"
+  ],
+  "confirmadoPorProveedor": false
+}

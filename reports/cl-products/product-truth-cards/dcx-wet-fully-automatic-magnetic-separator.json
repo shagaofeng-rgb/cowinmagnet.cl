@@ -1,0 +1,53 @@
+{
+  "nombrePublico": "DCX: Filtro y componente magnético para proceso",
+  "serie": "DCX",
+  "modelo": "DCX",
+  "categoria": "Magnetic Separation Equipment",
+  "tipo": "filtro_magnetico",
+  "limpieza": "manual",
+  "especificacionesConfirmadas": {},
+  "especificacionesPendientes": [
+    "Abertura o diámetro",
+    "Barras o elementos magnéticos",
+    "Caudal",
+    "Material de construcción"
+  ],
+  "referenciaInterna": {
+    "catalogo": "Catálogo principal COWIN sincronizado",
+    "rutaPrincipal": "/en/products/dcx-wet-fully-automatic-magnetic-separator",
+    "versionAuditoria": "2026-08-09",
+    "estadoValidacion": "Pendiente de confirmación del proveedor"
+  },
+  "aplicaciones": [
+    "Protección de proceso",
+    "Polvos y graneles",
+    "Líneas de producto"
+  ],
+  "datosParaSeleccion": [
+    "Producto y contaminación objetivo",
+    "Caudal o flujo",
+    "Diámetro o abertura",
+    "Temperatura y presión si aplica"
+  ],
+  "afirmacionesPermitidas": [
+    "Selección técnica conforme a las condiciones reales del proceso",
+    "Soporte para proyectos en Chile y Latinoamérica",
+    "Especificaciones disponibles bajo solicitud"
+  ],
+  "afirmacionesProhibidas": [
+    "Stock local",
+    "Oficina o equipo local no confirmado",
+    "Rendimiento, intensidad, recuperación o certificación no confirmados"
+  ],
+  "mediaAprobada": [
+    "/assets/products/dcx-wet-fully-automatic-magnetic-separator/dcx-wet-fully-automatic-magnetic-separator-01.jpg",
+    "/assets/products/dcx-wet-fully-automatic-magnetic-separator/dcx-wet-fully-automatic-magnetic-separator-02.png",
+    "/assets/products/dcx-wet-fully-automatic-magnetic-separator/dcx-wet-fully-automatic-magnetic-separator-03.png",
+    "/assets/products/dcx-wet-fully-automatic-magnetic-separator/dcx-wet-fully-automatic-magnetic-separator-04.png",
+    "/assets/products/dcx-wet-fully-automatic-magnetic-separator/dcx-wet-fully-automatic-magnetic-separator-05.png",
+    "/assets/products/dcx-wet-fully-automatic-magnetic-separator/dcx-wet-fully-automatic-magnetic-separator-06.png",
+    "/assets/products/dcx-wet-fully-automatic-magnetic-separator/dcx-wet-fully-automatic-magnetic-separator-07.jpg",
+    "/assets/products/dcx-wet-fully-automatic-magnetic-separator/dcx-wet-fully-automatic-magnetic-separator-08.jpg"
+  ],
+  "confirmadoPorProveedor": false
+}

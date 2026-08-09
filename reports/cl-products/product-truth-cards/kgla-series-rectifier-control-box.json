@@ -1,0 +1,50 @@
+{
+  "nombrePublico": "KGLA: Equipo auxiliar para integración de proceso",
+  "serie": "KGLA",
+  "modelo": "KGLA",
+  "categoria": "Industry Application Equipment",
+  "tipo": "auxiliar",
+  "limpieza": "no_aplica",
+  "especificacionesConfirmadas": {},
+  "especificacionesPendientes": [
+    "Configuración eléctrica o mecánica",
+    "Condiciones ambientales",
+    "Compatibilidad de proceso"
+  ],
+  "referenciaInterna": {
+    "catalogo": "Catálogo principal COWIN sincronizado",
+    "rutaPrincipal": "/en/products/kgla-series-rectifier-control-box",
+    "versionAuditoria": "2026-08-09",
+    "estadoValidacion": "Pendiente de confirmación del proveedor"
+  },
+  "aplicaciones": [
+    "Equipos auxiliares de proceso",
+    "Integración de planta"
+  ],
+  "datosParaSeleccion": [
+    "Modelo asociado",
+    "Alimentación eléctrica",
+    "Ambiente",
+    "Layout de instalación"
+  ],
+  "afirmacionesPermitidas": [
+    "Selección técnica conforme a las condiciones reales del proceso",
+    "Soporte para proyectos en Chile y Latinoamérica",
+    "Especificaciones disponibles bajo solicitud"
+  ],
+  "afirmacionesProhibidas": [
+    "Stock local",
+    "Oficina o equipo local no confirmado",
+    "Rendimiento, intensidad, recuperación o certificación no confirmados"
+  ],
+  "mediaAprobada": [
+    "/assets/products/kgla-series-rectifier-control-box/kgla-series-rectifier-control-box-01.jpg",
+    "/assets/products/kgla-series-rectifier-control-box/kgla-series-rectifier-control-box-02.png",
+    "/assets/products/kgla-series-rectifier-control-box/kgla-series-rectifier-control-box-03.png",
+    "/assets/products/kgla-series-rectifier-control-box/kgla-series-rectifier-control-box-04.png",
+    "/assets/products/kgla-series-rectifier-control-box/kgla-series-rectifier-control-box-05.png",
+    "/assets/products/kgla-series-rectifier-control-box/kgla-series-rectifier-control-box-06.jpg",
+    "/assets/products/kgla-series-rectifier-control-box/kgla-series-rectifier-control-box-07.jpg"
+  ],
+  "confirmadoPorProveedor": false
+}

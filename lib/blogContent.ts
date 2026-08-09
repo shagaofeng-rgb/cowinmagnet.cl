@@ -2,6 +2,7 @@ import "server-only";
 import { unstable_noStore as noStore } from "next/cache";
 import { getCmsItem, getCmsItems } from "@/lib/cmsStore";
 import { Locale, defaultLocale } from "@/data/site";
+import { publishedBlogArticles } from "@/data/publishedBlogArticles";
 
 export type BlogArticle = {
   slug: string;
@@ -43,8 +44,9 @@ function localizeArticle(article: BlogArticle, locale: Locale): BlogArticle {
 export async function getPublishedBlogArticles(locale: Locale = defaultLocale): Promise<BlogArticle[]> {
   noStore();
   const items = await getCmsItems("blog");
-  return items
-    .map(normalizeArticle)
+  const bySlug = new Map(publishedBlogArticles.map((article) => [article.slug, article]));
+  for (const item of items) bySlug.set(item.slug, normalizeArticle(item));
+  return [...bySlug.values()]
     .map((article) => localizeArticle(article, locale))
     .sort((a, b) => new Date(b.publishedAt || b.createdAt || 0).getTime() - new Date(a.publishedAt || a.createdAt || 0).getTime());
 }
@@ -52,5 +54,6 @@ export async function getPublishedBlogArticles(locale: Locale = defaultLocale): 
 export async function getPublishedBlogArticle(slug: string, locale: Locale = defaultLocale): Promise<BlogArticle | null> {
   noStore();
   const item = await getCmsItem("blog", slug, { includeInactive: false });
-  return item ? localizeArticle(normalizeArticle(item), locale) : null;
+  const article = item ? normalizeArticle(item) : publishedBlogArticles.find((candidate) => candidate.slug === slug);
+  return article ? localizeArticle(article, locale) : null;
 }

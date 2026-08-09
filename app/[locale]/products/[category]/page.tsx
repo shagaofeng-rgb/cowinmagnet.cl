@@ -2,12 +2,12 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContentCard } from "@/components/ContentCard";
 import { HeroBanner } from "@/components/HeroBanner";
-import { categoryImages, getCategoryDisplay, getProductSummary, productCategories, productCopy } from "@/data/catalog";
+import { categoryImages, getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath } from "@/data/site";
 import type { Metadata } from "next";
 import { localizedProductSeo } from "@/lib/seo";
-import { safeSpanishProductPresentation } from "@/data/productTruth";
+import { productPresentation } from "@/data/productPresentation";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +45,7 @@ export default async function ProductCategoryPage({ params }: { params: Promise<
     <>
       <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: display.title }]} />
       <HeroBanner eyebrow={copy.productCategory} title={display.title} summary={display.summary} image={categoryImages[category.key]} />
-      <section className="band"><div className="page-grid">{list.map((product) => { const presentation = (locale === "es-cl" || locale === "es") ? safeSpanishProductPresentation(product) : null; return <ContentCard key={product.slug} title={presentation?.title || product.title} summary={presentation?.summary || getProductSummary(product, locale)} image={product.image} href={localizedPath(locale, `products/${categorySlug}/${product.slug}`)} />; })}</div></section>
+      <section className="band"><div className="page-grid">{list.map((product) => { const presentation = productPresentation(product, locale); return <ContentCard key={product.slug} title={presentation.title} summary={presentation.summary} image={product.image} href={localizedPath(locale, `products/${categorySlug}/${product.slug}`)} />; })}</div></section>
     </>
   );
 }

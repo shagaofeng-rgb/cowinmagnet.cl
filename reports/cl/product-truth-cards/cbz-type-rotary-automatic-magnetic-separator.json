@@ -6,6 +6,8 @@
   "verified_identity": false,
   "verified_parameters": [],
   "pending_parameters": [
+    "verified_specifications",
+    "installation",
     "faq",
     "product_truth_review"
   ],
@@ -20,6 +22,6 @@
     "rendimiento no ensayado",
     "certificacion no verificada"
   ],
-  "evidence_status": "legacy upstream reference; not approved for public attribution",
+  "evidence_status": "COWIN engineering evidence required",
   "reviewed_at": null
 }

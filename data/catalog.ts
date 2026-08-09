@@ -1,4 +1,4 @@
-import { productCategories as mainProductCategoryNames, products as mainProducts } from "./products";
+import mainProducts from "./mainProductCatalog.json";
 import { Locale } from "./site";
 
 export const categoryImages = {
@@ -94,23 +94,11 @@ const categoryMeta: Record<string, { slug: string; key: CategoryKey; labels: Rec
   }
 };
 
-const defaultParameters = ["Material", "Capacity", "Belt width or pipe size", "Installation height or flow condition", "Voltage and frequency", "Operating environment"];
-
-function sanitizeText(value = "") {
-  return value
-    .replace(/锛\?/g, ": ")
-    .replace(/銆\?/g, " ")
-    .replace(/顨\?|顩\?|闇€|姹傚緛|璇㈣〃|鏈嶅姟|娴佺▼|璧勬枡|涓嬭浇|鑱旂郴|鎴戜滑/g, "")
-    .replace(/products_details\.css[^.]+/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 function categorySlug(category: string) {
   return categoryMeta[category]?.slug ?? category.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-export const productCategories = mainProductCategoryNames.map((category) => ({
+export const productCategories = [...new Set(mainProducts.map((product) => product.category))].map((category) => ({
   slug: categorySlug(category),
   sourceTitle: category,
   key: categoryMeta[category]?.key ?? "application",
@@ -120,19 +108,18 @@ export const productCategories = mainProductCategoryNames.map((category) => ({
 
 export const products = mainProducts.map((product) => {
   const category = categorySlug(product.category);
-  const parameters = product.specs?.length ? product.specs.map((spec) => spec.label) : defaultParameters;
   return {
     slug: product.slug,
     category,
     sourceCategory: product.category,
     title: product.name,
-    summary: sanitizeText(product.summary) || `${product.name} is synced from the Cowinmagnet main product catalog.`,
+    summary: "Technical configuration is confirmed for each project before quotation.",
     image: product.image,
     imageGallery: product.imageGallery?.length ? product.imageGallery : [product.image],
-    sourceUrl: product.sourceUrls?.[0] ?? `https://www.cowinmagnet.com/en/products/${product.slug}`,
-    features: product.features?.length ? product.features.map(sanitizeText).filter(Boolean) : ["Main-site product line", "Technical parameters confirmed before quotation"],
-    applications: product.applications?.length ? product.applications.map(sanitizeText).filter(Boolean) : ["Mining", "Conveyors", "Aggregates", "Recycling", "Industrial process lines"],
-    parameters: [...new Set(parameters)].slice(0, 18)
+    sourceUrl: `https://www.cowinmagnet.com/en/products/${product.slug}`,
+    features: [],
+    applications: [],
+    parameters: []
   };
 });
 
@@ -147,9 +134,9 @@ export function getCategoryDisplay(category: (typeof productCategories)[number],
 export function getProductSummary(product: (typeof products)[number], locale: Locale) {
   const category = productCategories.find((item) => item.slug === product.category);
   const categoryLabel = category ? getCategoryDisplay(category, locale).title : product.sourceCategory;
-  if (locale === "en") return product.summary;
-  if (locale === "pt-br") return `${product.title} faz parte da categoria ${categoryLabel} sincronizada do catalogo principal da Cowinmagnet. A selecao final deve confirmar material, capacidade, instalacao, ambiente e parametros eletricos.`;
-  return `${product.title} pertenece a la categoria ${categoryLabel}. La seleccion final debe confirmar material, capacidad, instalacion y condiciones de operacion con ingenieria de COWIN.`;
+  if (locale === "en") return `${categoryLabel} for industrial projects. Final selection is confirmed from material, capacity and site conditions.`;
+  if (locale === "pt-br") return `${categoryLabel} para projetos industriais. A sele莽茫o final 茅 confirmada com material, capacidade e condi莽玫es do local.`;
+  return `${categoryLabel} para proyectos industriales. La selecci贸n final se confirma con material, capacidad y condiciones del sitio.`;
 }
 
 export const productCopy: Record<Locale, {

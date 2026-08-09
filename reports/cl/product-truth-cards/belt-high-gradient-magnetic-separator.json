@@ -1,15 +1,11 @@
 {
   "slug": "belt-high-gradient-magnetic-separator",
-  "source_name": "Belt High Gradient Magnetic Separator",
+  "source_name": "Belt High-Gradient Magnetic Separator",
   "model_or_series": "Por confirmar por ingenieria de COWIN",
   "equipment_category": "Magnetic Separation Equipment",
   "verified_identity": true,
   "verified_parameters": "See runtime ProductTruthCard",
-  "pending_parameters": [
-    "verified_specifications",
-    "installation",
-    "faq"
-  ],
+  "pending_parameters": [],
   "allowed_claims": [
     "Soporte para proyectos en Chile y Latinoamerica",
     "Seleccion y configuracion sujetas a validacion tecnica"
@@ -21,6 +17,6 @@
     "rendimiento no ensayado",
     "certificacion no verificada"
   ],
-  "evidence_status": "legacy upstream reference; not approved for public attribution",
+  "evidence_status": "COWIN engineering evidence required",
   "reviewed_at": "2026-08-08"
 }

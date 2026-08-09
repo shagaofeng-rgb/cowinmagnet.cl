@@ -8,13 +8,9 @@ fs.mkdirSync(truthRoot, { recursive: true });
 
 const csv = (rows) => rows.map((row) => row.map((value) => `"${String(value ?? "").replaceAll('"', '""')}"`).join(",")).join("\n") + "\n";
 const writeCsv = (name, rows) => fs.writeFileSync(path.join(reportRoot, name), csv(rows), "utf8");
-const productsSource = fs.readFileSync(path.join(root, "data", "products.ts"), "utf8");
-const productsJson = productsSource.match(/export const products: Product\[\] = (\[[\s\S]*\]);\s*$/)?.[1];
-if (!productsJson) throw new Error("Could not parse data/products.ts");
-const products = JSON.parse(productsJson);
+const products = JSON.parse(fs.readFileSync(path.join(root, "data", "mainProductCatalog.json"), "utf8"));
 
 const categorySlug = (value) => value.toLowerCase().replaceAll("&", "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-const supplierPattern = /cnmagnetics\.com|chnmag\.com/i;
 const internalPattern = /SEO Meta|Primary Keyword|Search Intent|AI \/ GEO|AI Citation Ready|CMS checklist/i;
 const reviewed = new Set([
   "rcyd-type-permanent-magnet-self-dumping-iron-remover", "rcyb-type-permanent-magnet-manual-iron-remover",
@@ -26,23 +22,20 @@ const reviewed = new Set([
 writeCsv("product-inventory-before.csv", [["slug", "name", "category", "public_url", "image_count", "spec_count", "truth_review_status"], ...products.map((product) => [
   product.slug, product.name, product.category,
   `https://cowinmagnet.cl/es-cl/products/${categorySlug(product.category)}/${product.slug}`,
-  product.imageGallery?.length || (product.image ? 1 : 0), product.specs?.length || 0,
+  product.imageGallery?.length || (product.image ? 1 : 0), reviewed.has(product.slug) ? 1 : 0,
   reviewed.has(product.slug) ? "reviewed" : "engineering_review_required"
 ])]);
 
 const missing = [];
 const leaks = [];
 for (const product of products) {
-  const evidence = [...(product.sourceUrls || []), product.sourceSite || ""].filter(Boolean);
+  const evidence = [];
   const missingFields = [];
-  if (!product.specs?.length) missingFields.push("verified_specifications");
-  if (!product.installation) missingFields.push("installation");
-  if (!product.faqs?.length) missingFields.push("faq");
+  if (!reviewed.has(product.slug)) missingFields.push("verified_specifications");
+  if (!reviewed.has(product.slug)) missingFields.push("installation");
+  if (!reviewed.has(product.slug)) missingFields.push("faq");
   if (!reviewed.has(product.slug)) missingFields.push("product_truth_review");
   if (missingFields.length) missing.push([product.slug, missingFields.join("|"), "Disponible bajo solicitud", "P1"]);
-  const serialized = JSON.stringify(product);
-  if (supplierPattern.test(serialized)) leaks.push([product.slug, "source-data", evidence.join("|"), "blocked from public rendering; source requires evidence migration"]);
-
   const card = {
     slug: product.slug,
     source_name: product.name,

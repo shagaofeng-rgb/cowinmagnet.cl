@@ -168,25 +168,3 @@ export const productTruthCards: Record<string, ProductTruthCard> = {
 export function getProductTruthCard(slug: string) {
   return productTruthCards[slug] || null;
 }
-
-const categoryLabels: Record<string, string> = {
-  "suspended-self-unloading-iron-removers": "Equipo suspendido para retiro de hierro",
-  "magnetic-separation-equipment": "Equipo de separacion magnetica",
-  "metal-detection-recycling-sorting": "Equipo de deteccion y clasificacion de metales",
-  "magnetic-components-filters": "Componente de filtracion magnetica",
-  "industry-application-equipment": "Equipo magnetico para aplicaciones industriales"
-};
-
-export function safeSpanishProductPresentation(product: { slug: string; title: string; category: string }) {
-  const truth = getProductTruthCard(product.slug);
-  if (truth) return {
-    title: truth.esTitle,
-    summary: `${truth.equipmentType} para proyectos en Chile y Latinoamerica. La seleccion final se valida con el material, el punto de instalacion y las condiciones reales de operacion.`
-  };
-  const model = product.title.match(/\b[A-Z][A-Z0-9-]{1,12}\b/)?.[0];
-  const type = categoryLabels[product.category] || "Equipo magnetico industrial";
-  return {
-    title: model ? `${type} - modelo ${model}` : type,
-    summary: `${type}. La ficha tecnica y la configuracion estan disponibles bajo solicitud y deben ser confirmadas por ingenieria de COWIN antes de cotizar.`
-  };
-}

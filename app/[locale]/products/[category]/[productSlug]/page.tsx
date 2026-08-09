@@ -1,33 +1,38 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { FAQAccordion } from "@/components/FAQAccordion";
-import { HeroBanner } from "@/components/HeroBanner";
+import { ProductMediaGallery } from "@/components/ProductMediaGallery";
 import { QuoteForm } from "@/components/QuoteForm";
-import { getPublishedPosts } from "@/data/blog";
-import { getCategoryDisplay, getProductSummary, productCategories, productCopy } from "@/data/catalog";
+import { getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
+import { productPresentation } from "@/data/productPresentation";
+import { getProductTruthCard } from "@/data/productTruth";
 import { Locale, localizedPath, siteConfig } from "@/data/site";
 import { localizedProductSeo } from "@/lib/seo";
-import { getProductTruthCard, safeSpanishProductPresentation } from "@/data/productTruth";
 
 export const dynamic = "force-dynamic";
 
-function CatalogImage({ src, alt }: { src: string; alt: string }) {
-  const unoptimized = src.startsWith("data:") || src.startsWith("http://") || src.startsWith("https://");
-  return <Image src={src} alt={alt} width={720} height={540} sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw" unoptimized={unoptimized} />;
+function detailText(locale: Locale) {
+  if (locale === "pt-br") return {
+    overview: "Visão do equipamento", structure: "Configuração e escopo", applications: "Aplicações", data: "Dados técnicos", dataText: "Informações publicadas somente quando confirmadas para esta série.", selection: "Para selecionar este equipamento", related: "Produtos relacionados", quote: "Solicite uma seleção técnica", quoteText: "Compartilhe o material, a capacidade e as condições do local. A equipe COWIN responde com a configuração aplicável ao seu processo.", speak: "Falar com um especialista", view: "Ver produto"
+  };
+  if (locale === "en") return {
+    overview: "Equipment overview", structure: "Configuration and scope", applications: "Applications", data: "Technical data", dataText: "Information is published only when it is confirmed for this series.", selection: "To select this equipment", related: "Related products", quote: "Request technical selection", quoteText: "Share the material, capacity and site conditions. COWIN will respond with the configuration applicable to your process.", speak: "Talk to a specialist", view: "View product"
+  };
+  return {
+    overview: "Visión del equipo", structure: "Configuración y alcance", applications: "Aplicaciones", data: "Datos técnicos", dataText: "La información se publica solo cuando está confirmada para esta serie.", selection: "Para seleccionar este equipo", related: "Productos relacionados", quote: "Solicite una selección técnica", quoteText: "Comparta el material, la capacidad y las condiciones del sitio. COWIN responderá con la configuración aplicable a su proceso.", speak: "Hablar con un especialista", view: "Ver producto"
+  };
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; category: string; productSlug: string }> }): Promise<Metadata> {
   const { locale, category, productSlug } = await params;
   const catalogProducts = await getPublishedCatalogProducts();
-  const product = catalogProducts.find((item) => item.slug === productSlug);
+  const product = catalogProducts.find((item) => item.category === category && item.slug === productSlug);
+  const presentation = product ? productPresentation(product, locale) : null;
+  const title = product && presentation ? localizedProductSeo(locale, presentation.title) : "Product";
+  const description = presentation?.summary;
   const canonical = `/${locale}/products/${category}/${productSlug}`;
-  const presentation = product && (locale === "es-cl" || locale === "es") ? safeSpanishProductPresentation(product) : null;
-  const title = product ? localizedProductSeo(locale, presentation?.title || product.title) : "Product";
-  const description = product ? (presentation?.summary || getProductSummary(product, locale)).slice(0, 155) : undefined;
   return {
     title,
     description,
@@ -41,19 +46,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
         "x-default": `/es-cl/products/${category}/${productSlug}`
       }
     },
-    openGraph: product ? {
-      title,
-      description,
-      type: "website",
-      url: canonical,
-      images: [{ url: product.image, width: 1200, height: 800, alt: product.title }]
-    } : undefined,
-    twitter: product ? {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [product.image]
-    } : undefined
+    openGraph: product && presentation ? { title, description, type: "website", url: canonical, images: [{ url: product.image, width: 1200, height: 800, alt: presentation.title }] } : undefined,
+    twitter: product && presentation ? { card: "summary_large_image", title, description, images: [product.image] } : undefined
   };
 }
 
@@ -64,113 +58,80 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const product = catalogProducts.find((item) => item.category === categorySlug && item.slug === productSlug);
   const category = categories.find((item) => item.slug === categorySlug);
   if (!product || !category) notFound();
-  const relatedProducts = catalogProducts.filter((item) => item.category === categorySlug && item.slug !== product.slug).slice(0, 3);
-  const relatedNews = (await getPublishedPosts(locale))
-    .filter((post) => post.relatedProducts?.some((related) => related.slug === product.slug || related.category === product.category))
-    .slice(0, 3);
+
   const copy = productCopy[locale] ?? productCopy["es-cl"];
+  const text = detailText(locale);
   const truth = getProductTruthCard(product.slug);
-  const categoryDisplay = productCategories.some((item) => item.slug === category.slug) ? getCategoryDisplay(category as (typeof productCategories)[number], locale) : { title: category.title, summary: category.summary };
-  const spanishPresentation = (locale === "es-cl" || locale === "es") ? safeSpanishProductPresentation(product) : null;
-  const displayTitle = spanishPresentation?.title || product.title;
-  const productSummary = spanishPresentation?.summary || getProductSummary(product, locale);
-  const gallery = product.imageGallery?.length ? product.imageGallery : [product.image];
+  const presentation = productPresentation(product, locale);
+  const categoryDisplay = productCategories.some((item) => item.slug === category.slug)
+    ? getCategoryDisplay(category as (typeof productCategories)[number], locale)
+    : { title: category.title, summary: category.summary };
+  const relatedProducts = catalogProducts.filter((item) => item.category === categorySlug && item.slug !== product.slug).slice(0, 3);
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: displayTitle,
-    description: productSummary,
-    image: gallery.map((item) => item.startsWith("http") ? item : `https://cowinmagnet.cl${item}`),
+    name: presentation.title,
+    description: presentation.summary,
+    image: product.image.startsWith("http") ? product.image : `https://cowinmagnet.cl${product.image}`,
     brand: { "@type": "Brand", name: "Cowinmagnet" },
     category: categoryDisplay.title,
     url: `https://cowinmagnet.cl/${locale}/products/${product.category}/${product.slug}`,
-    additionalProperty: (truth?.verifiedSpecifications || []).map((item) => ({
-      "@type": "PropertyValue",
-      name: item.label,
-      value: item.value
-    }))
+    additionalProperty: (truth?.verifiedSpecifications || []).map((item) => ({ "@type": "PropertyValue", name: item.label, value: item.value }))
   };
   const breadcrumbSchema = {
     "@context": "https://schema.org", "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: copy.products, item: `https://cowinmagnet.cl/${locale}/products` },
       { "@type": "ListItem", position: 2, name: categoryDisplay.title, item: `https://cowinmagnet.cl/${locale}/products/${category.slug}` },
-      { "@type": "ListItem", position: 3, name: displayTitle }
+      { "@type": "ListItem", position: 3, name: presentation.title }
     ]
   };
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: displayTitle }]} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <HeroBanner eyebrow={truth?.model || copy.productDetail} title={displayTitle} summary={productSummary} image={product.image} imageMode="product" />
-      <section className="band product-actions"><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>{copy.fullQuote}</Link><a className="button light" href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer nofollow">Hablar con un especialista</a></section>
-      <section className="band">
-        <div className="geo-grid">
-          <article><h3>{copy.overview}</h3><p>{productSummary}</p></article>
-          <article><h3>{copy.features}</h3><ul>{truth ? [truth.equipmentType, `Fuente magnetica: ${truth.magnetType}`, `Descarga: ${truth.discharge}`].map((item) => <li key={item}>{item}</li>) : <li>Configuracion disponible bajo solicitud y sujeta a validacion tecnica.</li>}</ul></article>
-          <article><h3>{copy.applications}</h3><ul>{(truth?.applications || product.applications).map((item) => <li key={item}>{item}</li>)}</ul></article>
-        </div>
-      </section>
-      <section className="band muted">
-        <div className="section-heading">
-          <p className="eyebrow">{copy.images}</p>
-          <h2>{copy.imagesTitle}</h2>
-          <p>{copy.imagesText}</p>
-        </div>
-        <div className="page-grid">
-          <article className="content-card"><CatalogImage src={gallery[0]} alt={`${displayTitle} - vista principal`} /><div className="content-card-body"><h3>{copy.mainView}</h3><p>{copy.mainViewText}</p></div></article>
-          <article className="content-card"><CatalogImage src={gallery[1] ?? gallery[0]} alt={`${displayTitle} - vista adicional`} /><div className="content-card-body"><h3>{copy.galleryView}</h3><p>{copy.galleryViewText}</p></div></article>
-          <article className="content-card"><CatalogImage src={gallery[2] ?? gallery[0]} alt={`${displayTitle} - referencia de instalacion`} /><div className="content-card-body"><h3>{copy.installationView}</h3><p>{copy.installationViewText}</p></div></article>
-        </div>
-      </section>
-      <section className="band">
-        <div className="geo-grid">
-          <article><h3>{copy.principle}</h3><p>{truth?.principle || "El principio y el circuito magnetico se describen en la ficha tecnica disponible bajo solicitud para evitar atribuir caracteristicas de otra serie."}</p></article>
-          <article><h3>{copy.installation}</h3><p>{truth?.installation.join(" ") || copy.installationText}</p></article>
-          <article><h3>{copy.options}</h3><p>{truth?.options.join(" ") || "Las opciones reales se confirman por modelo y por las condiciones del proyecto."}</p></article>
-        </div>
-      </section>
-      <section className="band muted">
-        <div className="section-heading"><p className="eyebrow">{copy.technicalParameters}</p><h2>{copy.technicalParametersTitle}</h2><p>{copy.technicalParametersText}</p></div>
-        <table className="spec-table"><tbody>{truth?.verifiedSpecifications.length ? truth.verifiedSpecifications.map((item) => <tr key={item.label}><th>{item.label}</th><td>{item.value}</td></tr>) : <tr><th>Ficha tecnica</th><td>Disponible bajo solicitud</td></tr>}</tbody></table>
-      </section>
-      <section className="band">
-        <div className="geo-grid">
-          <article><h3>{copy.selectionGuide}</h3><ul>{(truth?.selectionInputs || []).map((item) => <li key={item}>{item}</li>)}</ul>{!truth ? <p>{copy.selectionGuideText}</p> : null}</article>
-          <article><h3>{copy.operatingConditions}</h3><p>{copy.operatingConditionsText}</p></article>
-          <article><h3>{copy.maintenance}</h3><p>{copy.maintenanceText}</p></article>
-        </div>
-      </section>
-      <section className="band muted">
-        <div className="geo-grid">
-          <article><h3>{copy.spares}</h3><p>{copy.sparesText}</p></article>
-          <article><h3>{copy.packaging}</h3><p>{copy.packagingText}</p></article>
-          <article><h3>{copy.downloads}</h3><p>{copy.downloadsText}</p><Link className="button light" href="/downloads/selection-questionnaire.txt">{copy.downloadQuestionnaire}</Link></article>
-        </div>
-      </section>
-      <section className="band">
-        <FAQAccordion items={truth ? truth.faqs.map((item) => [item.question, item.answer] as [string, string]) : copy.faq} />
-      </section>
-      <section className="band muted">
-        <div className="section-heading"><p className="eyebrow">{copy.related}</p><h2>{copy.relatedTitle}</h2></div>
-        <div className="page-grid">{relatedProducts.map((item) => { const relatedPresentation = (locale === "es-cl" || locale === "es") ? safeSpanishProductPresentation(item) : null; return <article className="content-card" key={item.slug}><CatalogImage src={item.image} alt={relatedPresentation?.title || item.title} /><div className="content-card-body"><h3>{relatedPresentation?.title || item.title}</h3><p>{relatedPresentation?.summary || getProductSummary(item, locale)}</p><Link href={localizedPath(locale, `products/${item.category}/${item.slug}`)}>{copy.viewProduct}</Link></div></article>; })}</div>
-      </section>
-      {relatedNews.length ? (
-        <section className="band">
-          <div className="section-heading"><p className="eyebrow">News</p><h2>Related industry news</h2></div>
-          <div className="page-grid">{relatedNews.map((post) => <article className="content-card" key={post.slug}>{post.image ? <CatalogImage src={post.image} alt={post.title} /> : null}<div className="content-card-body"><h3>{post.title}</h3><p>{post.summary}</p><Link href={localizedPath(locale, `news/${post.slug}`)}>Read news</Link></div></article>)}</div>
-        </section>
-      ) : null}
-      <section className="band">
-        <div className="geo-grid">
-          <article><h3>{copy.relatedIndustries}</h3><p>{copy.relatedIndustriesText}</p><Link href={localizedPath(locale, "industries")}>{copy.viewIndustries}</Link></article>
-          <article><h3>{copy.relatedSolutions}</h3><p>{copy.relatedSolutionsText}</p><Link href={localizedPath(locale, "solutions")}>{copy.viewSolutions}</Link></article>
-          <article><h3>{copy.technicalSupport}</h3><p>{copy.technicalSupportText}</p><Link href={localizedPath(locale, "technical-support")}>{copy.viewSupport}</Link></article>
-        </div>
-      </section>
-      <section className="band muted"><div className="section-heading"><p className="eyebrow">{copy.quote}</p><h2>{copy.quoteTitle}</h2></div><QuoteForm locale={locale} /></section>
-      <section className="band"><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>{copy.fullQuote}</Link></section>
-    </>
-  );
+
+  return <>
+    <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: presentation.title }]} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+    <section className="product-detail-hero">
+      <div className="product-detail-wrap product-detail-top">
+        <ProductMediaGallery images={product.imageGallery?.length ? product.imageGallery : [product.image]} alt={presentation.title} />
+        <article className="product-detail-intro">
+          <p className="eyebrow">{categoryDisplay.title}</p>
+          <h1>{presentation.title}</h1>
+          <p className="product-detail-lead">{presentation.summary}</p>
+          <dl className="product-identity-list">
+            {truth?.model ? <><dt>{locale === "pt-br" ? "Série" : locale === "en" ? "Series" : "Serie"}</dt><dd>{truth.model}</dd></> : null}
+            <dt>{locale === "pt-br" ? "Atendimento" : locale === "en" ? "Coverage" : "Cobertura"}</dt><dd>{locale === "pt-br" ? "Chile e América Latina" : locale === "en" ? "Chile and Latin America" : "Chile y Latinoamérica"}</dd>
+            <dt>{locale === "pt-br" ? "Seleção" : locale === "en" ? "Selection" : "Selección"}</dt><dd>{locale === "pt-br" ? "Validada por projeto" : locale === "en" ? "Validated by project" : "Validada por proyecto"}</dd>
+          </dl>
+          <div className="product-detail-actions">
+            <Link className="button primary" href="#cotizacion">{copy.fullQuote}</Link>
+            <a className="button light" href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer nofollow">{text.speak}</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <nav className="product-section-nav" aria-label="Product page sections"><div className="product-detail-wrap"><a href="#configuracion">{text.structure}</a><a href="#aplicaciones">{text.applications}</a><a href="#datos">{text.data}</a><a href="#cotizacion">{copy.fullQuote}</a></div></nav>
+
+    <section id="configuracion" className="product-section"><div className="product-detail-wrap product-two-column">
+      <div><p className="eyebrow">{text.overview}</p><h2>{text.structure}</h2><p className="section-lead">{presentation.summary}</p></div>
+      <div className="product-info-card"><ol>{presentation.structure.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span>{item}</li>)}</ol></div>
+    </div></section>
+
+    <section id="aplicaciones" className="product-section product-section-muted"><div className="product-detail-wrap product-two-column">
+      <div><p className="eyebrow">{categoryDisplay.title}</p><h2>{text.applications}</h2><p className="section-lead">{locale === "pt-br" ? "Aplicações a avaliar conforme o material e o objetivo de processo." : locale === "en" ? "Applications to evaluate against the material and process objective." : "Aplicaciones a evaluar según el material y el objetivo de proceso."}</p></div>
+      <ul className="product-application-list">{presentation.applications.map((item) => <li key={item}>{item}</li>)}</ul>
+    </div></section>
+
+    <section id="datos" className="product-section"><div className="product-detail-wrap product-data-layout">
+      <div><p className="eyebrow">{text.data}</p><h2>{truth ? text.data : text.selection}</h2><p className="section-lead">{text.dataText}</p></div>
+      <dl className="product-data-list">{presentation.technicalRows.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>
+      <p className="product-data-note">{presentation.selectionNote}</p>
+    </div></section>
+
+    {relatedProducts.length ? <section className="product-section product-section-muted"><div className="product-detail-wrap"><div className="product-section-heading"><p className="eyebrow">{categoryDisplay.title}</p><h2>{text.related}</h2></div><div className="product-related-grid">{relatedProducts.map((item) => { const related = productPresentation(item, locale); return <article key={item.slug}><img src={item.image} alt={related.title} /><div><h3>{related.title}</h3><p>{related.summary}</p><Link href={localizedPath(locale, `products/${item.category}/${item.slug}`)}>{text.view}</Link></div></article>; })}</div></div></section> : null}
+
+    <section id="cotizacion" className="product-quote-section"><div className="product-detail-wrap product-quote-layout"><div><p className="eyebrow">{text.quote}</p><h2>{presentation.title}</h2><p>{text.quoteText}</p></div><QuoteForm locale={locale} /></div></section>
+  </>;
 }

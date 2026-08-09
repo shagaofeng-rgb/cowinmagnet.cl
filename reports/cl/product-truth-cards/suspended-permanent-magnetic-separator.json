@@ -6,6 +6,8 @@
   "verified_identity": false,
   "verified_parameters": [],
   "pending_parameters": [
+    "verified_specifications",
+    "installation",
     "faq",
     "product_truth_review"
   ],

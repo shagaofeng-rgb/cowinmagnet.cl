@@ -107,7 +107,7 @@ export function productPresentation(product: ProductIdentity, locale: Locale): P
       structure: truth?.installation || ["Equipo y configuración definidos según el punto de proceso", "Soporte y montaje revisados con el layout disponible", "Alcance técnico confirmado antes de la cotización"],
       applications: truth?.applications || categoryApplications(product.category, locale),
       technicalRows: truth?.verifiedSpecifications || [
-        { label: "Identificación", value: modelFrom(product) ? `Modelo o serie ${modelFrom(product)}` : "Producto del catálogo principal COWIN" },
+        { label: "Identificación", value: modelFrom(product) ? `Modelo o serie ${modelFrom(product)}` : "Equipo COWIN para su aplicación" },
         { label: "Selección técnica", value: "Se confirma con material, capacidad y condiciones de montaje" },
         { label: "Ficha técnica", value: "Disponible por solicitud a ingeniería de COWIN" }
       ],
@@ -127,8 +127,8 @@ export function productPresentation(product: ProductIdentity, locale: Locale): P
       : ["Configuration defined for the process point", "Mounting reviewed against the available layout", "Technical scope confirmed before quotation"],
     applications: categoryApplications(product.category, locale),
     technicalRows: isPortuguese
-      ? [{ label: "Identificação", value: modelFrom(product) ? `Modelo ou série ${modelFrom(product)}` : "Produto do catálogo principal COWIN" }, { label: "Seleção técnica", value: "Confirmada com material, capacidade e condições de montagem" }, { label: "Ficha técnica", value: "Disponível mediante solicitação à engenharia COWIN" }]
-      : [{ label: "Identification", value: modelFrom(product) ? `Model or series ${modelFrom(product)}` : "COWIN main catalog product" }, { label: "Technical selection", value: "Confirmed from material, capacity and installation conditions" }, { label: "Datasheet", value: "Available on request from COWIN engineering" }],
+      ? [{ label: "Identificação", value: modelFrom(product) ? `Modelo ou série ${modelFrom(product)}` : "Equipamento COWIN para sua aplicação" }, { label: "Seleção técnica", value: "Confirmada com material, capacidade e condições de montagem" }, { label: "Ficha técnica", value: "Disponível mediante solicitação à engenharia COWIN" }]
+      : [{ label: "Identification", value: modelFrom(product) ? `Model or series ${modelFrom(product)}` : "COWIN equipment for your application" }, { label: "Technical selection", value: "Confirmed from material, capacity and installation conditions" }, { label: "Datasheet", value: "Available on request from COWIN engineering" }],
     selectionNote: isPortuguese
       ? "Valores de desempenho, dimensões e intensidade não são publicados sem confirmar o modelo e as condições do projeto."
       : "Performance values, dimensions and magnetic intensity are not published until the model and project conditions are confirmed."

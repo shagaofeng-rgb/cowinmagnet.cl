@@ -24,8 +24,8 @@ const categoryMeta: Record<string, { slug: string; key: CategoryKey; labels: Rec
     summaries: {
       "es-cl": "Equipos suspendidos para retirar hierro trampa sobre cintas transportadoras.",
       es: "Equipos suspendidos para retirar hierro trampa sobre cintas transportadoras.",
-      "pt-br": "Categoria sincronizada de cowinmagnet.com para remocao de ferro tramp sobre correias transportadoras.",
-      en: "Synced from cowinmagnet.com for conveyor tramp iron removal above belt lines."
+      "pt-br": "Equipamentos suspensos para remover ferro tramp sobre correias transportadoras.",
+      en: "Suspended equipment for removing tramp iron above conveyor belts."
     }
   },
   "Magnetic Separation Equipment": {
@@ -38,10 +38,10 @@ const categoryMeta: Record<string, { slug: string; key: CategoryKey; labels: Rec
       en: "Magnetic Separation Equipment"
     },
     summaries: {
-      "es-cl": "Separadores humedos, secos, de tambor, alta intensidad y proceso mineral sincronizados desde el catalogo principal.",
-      es: "Separadores humedos, secos, de tambor, alta intensidad y proceso mineral sincronizados desde el catalogo principal.",
-      "pt-br": "Separadores umidos, secos, de tambor, alta intensidade e processo mineral sincronizados do catalogo principal.",
-      en: "Wet, dry, drum, high-intensity and mineral process separators synced from the main catalog."
+      "es-cl": "Separadores húmedos, secos, de tambor y de alta intensidad para procesamiento de minerales.",
+      es: "Separadores húmedos, secos, de tambor y de alta intensidad para procesamiento de minerales.",
+      "pt-br": "Separadores úmidos, secos, de tambor e de alta intensidade para processamento mineral.",
+      en: "Wet, dry, drum, and high-intensity separators for mineral processing."
     }
   },
   "Metal Detection & Recycling Sorting": {
@@ -70,10 +70,10 @@ const categoryMeta: Record<string, { slug: string; key: CategoryKey; labels: Rec
       en: "Magnetic Components & Filters"
     },
     summaries: {
-      "es-cl": "Imanes de cajon, rejillas, barras, trampas, filtros y componentes magneticos del catalogo principal.",
-      es: "Imanes de cajon, rejillas, barras, trampas, filtros y componentes magneticos del catalogo principal.",
-      "pt-br": "Imas de gaveta, grades, barras, armadilhas, filtros e componentes magneticos do catalogo principal.",
-      en: "Drawer magnets, grids, rods, traps, filters and magnetic components from the main catalog."
+      "es-cl": "Imanes de cajón, rejillas, barras, trampas, filtros y componentes magnéticos para líneas de proceso.",
+      es: "Imanes de cajón, rejillas, barras, trampas, filtros y componentes magnéticos para líneas de proceso.",
+      "pt-br": "Ímãs de gaveta, grades, barras, armadilhas, filtros e componentes magnéticos para linhas de processo.",
+      en: "Drawer magnets, grids, rods, traps, filters, and magnetic components for process lines."
     }
   },
   "Industry Application Equipment": {
@@ -259,15 +259,15 @@ export const productCopy: Record<Locale, {
   "pt-br": {
     products: "Produtos",
     productCenterTitle: "Centro de produtos magneticos",
-    productCenterSummary: "Categorias e produtos sincronizados de cowinmagnet.com, adaptados para consultas tecnicas no Brasil e LATAM.",
+    productCenterSummary: "Equipamentos para projetos de separação magnética, proteção de processos e recuperação de metais no Brasil e na América Latina.",
     productCategory: "Categoria de produto",
     productDetail: "Detalhe do produto",
     overview: "Visao geral",
     features: "Principais caracteristicas",
     applications: "Aplicacoes principais",
     images: "Imagens do produto",
-    imagesTitle: "Imagens reais sincronizadas do catalogo principal",
-    imagesText: "As fotos vem do catalogo principal da Cowinmagnet. A configuracao final e validada por projeto.",
+    imagesTitle: "Galeria do equipamento",
+    imagesText: "As imagens ajudam a revisar a configuração geral. O escopo final é validado conforme o projeto.",
     mainView: "Vista principal",
     mainViewText: "Referencia visual principal do equipamento.",
     galleryView: "Vista adicional",
@@ -317,15 +317,15 @@ export const productCopy: Record<Locale, {
   en: {
     products: "Products",
     productCenterTitle: "Magnetic product center",
-    productCenterSummary: "Categories and products synced from cowinmagnet.com for technical inquiries in Chile and LATAM.",
+    productCenterSummary: "Equipment for magnetic separation, process protection, and metal recovery projects in Chile and Latin America.",
     productCategory: "Product Category",
     productDetail: "Product Detail",
     overview: "Product overview",
     features: "Main features",
     applications: "Main applications",
     images: "Product Images",
-    imagesTitle: "Real images synced from the main catalog",
-    imagesText: "Photos come from the Cowinmagnet main catalog. Final configuration is validated by project.",
+    imagesTitle: "Equipment gallery",
+    imagesText: "Images help review the general configuration. Final scope is validated for each project.",
     mainView: "Main view",
     mainViewText: "Main visual reference for the equipment.",
     galleryView: "Additional view",

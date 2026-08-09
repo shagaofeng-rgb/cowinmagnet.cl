@@ -23,7 +23,7 @@ for (const product of catalog) {
   const hasBreadcrumb = /"@type":"BreadcrumbList"/.test(html);
   const hasCanonical = html.includes(`canonical" href="https://cowinmagnet.cl${url}"`);
   const hasHreflang = html.includes('hrefLang="es-CL"') && html.includes('hrefLang="pt-BR"') && html.includes('hrefLang="en"');
-  const hasInquiryFields = html.includes('Producto / modelo') && html.includes('Contaminación o mineral objetivo');
+  const hasInquiryFields = html.includes('Paso 1 de 2') && html.includes('Nombre') && html.includes('País') && html.includes('WhatsApp');
   const hasLeak = leakPattern.test(html);
   results.push({ slug: product.slug, url, httpStatus: response.status, productSchema: hasProduct, breadcrumbSchema: hasBreadcrumb, canonical: hasCanonical, hreflang: hasHreflang, productInquiryFields: hasInquiryFields, publicLeak: hasLeak, status: response.ok && hasProduct && hasBreadcrumb && hasCanonical && hasHreflang && hasInquiryFields && !hasLeak ? "validado" : "revisar" });
 }

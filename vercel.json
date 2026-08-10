@@ -5,10 +5,6 @@
       "schedule": "23 9 */3 * *"
     },
     {
-      "path": "/api/cron/sitemap?submit=true&force=true&trigger=manual-gsc-repair",
-      "schedule": "10 3 10 8 *"
-    },
-    {
       "path": "/api/cron/analytics-sync",
       "schedule": "*/30 * * * *"
     },

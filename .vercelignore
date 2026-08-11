@@ -1,0 +1,6 @@
+# Local audit evidence and Git recovery bundles are never production assets.
+backups/
+reports/
+.data/
+.next/
+*.log

@@ -13,17 +13,15 @@ export async function GET(request) {
   if (!authorized(request)) return Response.json({ success: false, error: "Unauthorized" }, { status: 401 });
   try {
     const url = new URL(request.url);
-    // Legacy endpoint intentionally remains ingest-only. It can no longer publish News.
     const result = await runNewsIngest({
       siteId: url.searchParams.get("siteId") || undefined,
       force: url.searchParams.get("force") === "1",
       fallback: url.searchParams.get("fallback") === "1",
-      trigger: "legacy-editorial-route"
+      trigger: "vercel-cron"
     });
-    console.log("[editorial-news]", JSON.stringify(result));
     return Response.json(result);
   } catch (error) {
-    console.error("[editorial-news]", error);
+    console.error("[news-ingest]", error);
     return Response.json({ success: false, error: "News ingest failed" }, { status: 500 });
   }
 }

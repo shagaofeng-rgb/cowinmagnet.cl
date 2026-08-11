@@ -1,5 +1,5 @@
 import { products, productCategories } from "@/data/catalog";
-import { getPublishedPosts } from "@/data/blog";
+import { getPublishedNews } from "@/data/news";
 import { requireAdminApi } from "@/lib/adminApi";
 import { getCmsItems } from "@/lib/cmsStore";
 
@@ -11,7 +11,7 @@ export async function GET() {
   if (unauthorized) return unauthorized;
 
   const [posts, cmsNews] = await Promise.all([
-    getPublishedPosts("es-cl"),
+    getPublishedNews("es-cl"),
     getCmsItems("news", { includeInactive: false })
   ]);
   const internal = [

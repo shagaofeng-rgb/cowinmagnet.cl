@@ -1,4 +1,4 @@
-import { getPublishedPosts } from "@/data/blog";
+import { getPublishedNews } from "@/data/news";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -15,7 +15,7 @@ function escapeXml(value = "") {
 }
 
 export async function GET() {
-  const posts = await getPublishedPosts("es-cl");
+  const posts = await getPublishedNews("es-cl");
   const since = Date.now() - 48 * 60 * 60 * 1000;
   const freshNews = posts
     .filter((post) => post.sourceUrl)

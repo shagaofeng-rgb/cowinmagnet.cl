@@ -13,8 +13,12 @@
       "schedule": "7 */6 * * *"
     },
     {
-      "path": "/api/cron/editorial-news",
-      "schedule": "17 13 * * *"
+      "path": "/api/cron/news-ingest",
+      "schedule": "17 1,13 * * *"
+    },
+    {
+      "path": "/api/cron/news-publish",
+      "schedule": "23 13 * * *"
     }
   ]
 }

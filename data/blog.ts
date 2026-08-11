@@ -44,6 +44,7 @@ export type BlogPost = {
   imageCredit?: string;
   imageRightsUrl?: string;
   licenseUrl?: string;
+  editorialDisclaimer?: string;
   citations?: { title: string; url: string; domain: string }[];
   internalLinks?: { label: string; href: string }[];
   relatedProducts?: { slug: string; category: string; title: string; image?: string; href?: string; relevanceScore?: number; relationshipReason?: string }[];
@@ -978,6 +979,7 @@ function normalizeCmsPost(item: any): BlogPost {
     imageCredit: item.imageCredit || "",
     imageRightsUrl: item.imageRightsUrl || "",
     licenseUrl: item.licenseUrl || "",
+    editorialDisclaimer: item.editorialDisclaimer || "",
     citations: item.citations || [],
     internalLinks: item.internalLinks || [],
     relatedProducts: item.relatedProducts || []

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
-import { getPublishedPosts } from "@/data/blog";
+import { getPublishedNews } from "@/data/news";
 import { Locale, localizedPath, t } from "@/data/site";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function NewsPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
-  const posts = await getPublishedPosts(locale);
+  const posts = await getPublishedNews(locale);
 
   return (
     <>

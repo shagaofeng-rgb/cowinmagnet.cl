@@ -1,4 +1,4 @@
-import { runNewsIngest } from "@/lib/newsEditorial";
+import { runNewsPublication } from "@/lib/newsEditorial";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,17 +13,15 @@ export async function GET(request) {
   if (!authorized(request)) return Response.json({ success: false, error: "Unauthorized" }, { status: 401 });
   try {
     const url = new URL(request.url);
-    // Legacy endpoint intentionally remains ingest-only. It can no longer publish News.
-    const result = await runNewsIngest({
+    const result = await runNewsPublication({
       siteId: url.searchParams.get("siteId") || undefined,
       force: url.searchParams.get("force") === "1",
-      fallback: url.searchParams.get("fallback") === "1",
-      trigger: "legacy-editorial-route"
+      dryRun: url.searchParams.get("dryRun") === "1",
+      trigger: "vercel-cron"
     });
-    console.log("[editorial-news]", JSON.stringify(result));
-    return Response.json(result);
+    return Response.json(result, { status: result.success ? 200 : 503 });
   } catch (error) {
-    console.error("[editorial-news]", error);
-    return Response.json({ success: false, error: "News ingest failed" }, { status: 500 });
+    console.error("[news-publish]", error);
+    return Response.json({ success: false, error: "News publication failed" }, { status: 500 });
   }
 }

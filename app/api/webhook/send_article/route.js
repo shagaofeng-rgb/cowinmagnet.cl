@@ -10,8 +10,7 @@ const MAX_TITLE_LENGTH = 220;
 const MAX_CONTENT_LENGTH = 200000;
 
 function response(code, msg, status = 200, data) {
-  // The publishing plugin uses these exact success messages to distinguish a
-  // harmless validation request from a completed article publication.
+  // The publishing plugin distinguishes a connection validation from a completed publication.
   const compatibleMessage = code === 1 ? (data ? "发布成功" : "验证成功") : (status >= 500 ? "发布失败" : msg);
   return Response.json(data ? { code, msg: compatibleMessage, data } : { code, msg: compatibleMessage }, { status });
 }

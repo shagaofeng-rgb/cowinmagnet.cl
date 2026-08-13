@@ -9,6 +9,10 @@
       "schedule": "*/30 * * * *"
     },
     {
+      "path": "/api/cron/search-console-sync",
+      "schedule": "41 */6 * * *"
+    },
+    {
       "path": "/api/cron/website-monitor",
       "schedule": "7 */6 * * *"
     },

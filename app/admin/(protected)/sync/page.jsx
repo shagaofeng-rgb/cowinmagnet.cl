@@ -1,4 +1,4 @@
-import { getAnalyticsSnapshot, getLatestSyncStatus } from "@/lib/analyticsStore";
+import { getAnalyticsSnapshot, getLatestSearchConsoleSyncStatus, getLatestSyncStatus } from "@/lib/analyticsStore";
 import { cmsStorageMode } from "@/lib/cmsStore";
 import { enquiryStorageMode } from "@/lib/enquiryStore";
 import AdminSyncStatus from "@/components/admin/AdminSyncStatus";
@@ -22,6 +22,7 @@ const t = {
   cms: "\u5185\u5bb9 CMS",
   realtime: "\u5b9e\u65f6\u5199\u5165",
   halfHour: "\u6bcf 30 \u5206\u949f",
+  sixHours: "\u6bcf 6 \u5c0f\u65f6",
   saveNow: "\u4fdd\u5b58\u540e\u7acb\u5373\u751f\u6548",
 };
 
@@ -29,8 +30,9 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminSyncPage() {
-  const [syncStatus, analytics] = await Promise.all([
+  const [syncStatus, searchConsoleSyncStatus, analytics] = await Promise.all([
     getLatestSyncStatus(),
+    getLatestSearchConsoleSyncStatus(),
     getAnalyticsSnapshot({ startDate: new Date(Date.now() - 86400000), endDate: new Date() })
   ]);
 
@@ -39,7 +41,7 @@ export default async function AdminSyncPage() {
     { name: t.forms, configured: t.yes, storage: enquiryStorageMode(), schedule: t.realtime, status: t.normal },
     { name: t.analytics, configured: t.yes, storage: analytics.storageMode, schedule: t.halfHour, status: syncStatus.status || "waiting" },
     { name: t.cms, configured: t.yes, storage: cmsStorageMode(), schedule: t.saveNow, status: t.normal },
-    { name: "Google Search Console", configured: gscConfigured ? t.yes : t.no, storage: "Google API", schedule: t.halfHour, status: gscConfigured ? t.connected : t.pending }
+    { name: "Google Search Console", configured: gscConfigured ? t.yes : t.no, storage: "Google API + Database", schedule: t.sixHours, status: gscConfigured ? (searchConsoleSyncStatus.status || "waiting") : t.pending }
   ];
 
   return (

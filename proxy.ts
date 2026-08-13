@@ -21,12 +21,6 @@ function preferredLocale(request: NextRequest) {
 }
 
 export function proxy(request: NextRequest) {
-  const host = request.headers.get("host")?.toLowerCase().split(":")[0];
-  if (host === "www.cowinmagnet.cl") {
-    const canonicalUrl = new URL(`${request.nextUrl.pathname}${request.nextUrl.search}`, "https://cowinmagnet.cl");
-    return NextResponse.redirect(canonicalUrl, 308);
-  }
-
   if (request.method === "POST" && request.nextUrl.pathname === "/") {
     return NextResponse.rewrite(new URL("/api/webhook/send_article", request.url));
   }
@@ -39,4 +33,4 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = { matcher: "/:path*" };
+export const config = { matcher: "/" };

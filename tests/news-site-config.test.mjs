@@ -7,7 +7,8 @@ test("News site configuration is complete and uses strict site identity", () => 
   assert.equal(site.siteId, "cowinmagnet_latam");
   assert.equal(validateNewsSiteConfig(site).valid, true);
   assert.equal(site.news.ingestIntervalHours, 12);
-  assert.equal(site.news.publishIntervalHours, 48);
+  assert.equal(site.news.publishIntervalHours, 24);
+  assert.equal(site.news.dailyPublicationLimit, 1);
   assert.equal(site.blog.allowNewsAutomation, false);
   assert.ok(site.sources.primaryWhitelist.length >= 3);
   assert.ok(site.sources.fallbackWhitelist.length >= 2);

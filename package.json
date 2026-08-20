@@ -9,6 +9,7 @@
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/*.test.mjs",
+    "build:news-sources": "node scripts/build-news-source-catalog.mjs",
     "audit:cl": "node scripts/audit-cl.mjs",
     "sitemap:generate": "node scripts/sitemap.mjs",
     "media:clean": "node scripts/remove-blocked-product-media.mjs"

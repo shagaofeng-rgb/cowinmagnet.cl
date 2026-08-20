@@ -1,0 +1,327 @@
+# CowinMagnet Chile & South America source directory (user-supplied raw catalog)
+
+This is an immutable transcription of the source directory supplied for the Chile and South America News program. Normalization metadata is generated separately; no raw entry is removed because it is duplicated, inactive, inaccessible, or discovery-only.
+
+## Mining & Mineral Processing
+
+- Mundo Minero | https://www.mundominero.cl
+- Minería Pan-Americana | https://www.mineriamepanamericana.com
+- Revista Minería Total | https://www.mineriatotal.cl
+- Portal Minero | https://www.portalminero.com
+- Reporte Minero & Energético | https://www.reporteminero.cl
+- Guía Minera de Chile | https://www.guiaminera.cl
+- Boletín Minero (SONAMI Chile) | https://www.sonami.cl
+- ProExplo / IIMP | https://www.iimp.org.pe
+- Rumbo Minero | https://www.rumbominero.com
+- Revista Desde Adentro (SNMPE Perú) | https://www.snmpe.org.pe
+- Brasil Mineral | https://www.brasilmineral.com.br
+- Notícias Mineração Brasil | https://www.noticiasdemineracao.com
+- Área Minera | https://www.areaminera.cl
+- Minería y Desarrollo | https://www.mineriaydesarrollo.com
+- Panorama Minero | https://www.panoramaminero.com.ar
+- Revista Minería | https://www.revistamineria.com
+- Revista Agro & Minería LATAM | https://www.agromineria.com
+- COCHILCO News | https://www.cochilco.cl
+- Mining Press | https://www.miningpress.com
+- Minas y Petróleo | https://www.minasypetroleo.com
+- Mining.com | https://www.mining.com
+- International Mining | https://www.im-mining.com
+- Mining Magazine | https://www.miningmagazine.com
+- Engineering and Mining Journal | https://www.e-mj.com
+- Mining Technology | https://www.mining-technology.com
+- Global Mining Review | https://www.globalminingreview.com
+- Canadian Mining Journal | https://www.canadianminingjournal.com
+- Australasian Mining Review | https://www.miningreview.com.au
+- Mining Weekly | https://www.miningweekly.com
+- MEI Blog | https://minproworld.blogspot.com
+- Minerals Engineering International | https://www.mineng.com
+- Mining Equipment News | https://www.miningequipmentnews.com
+- Skillings Mining Review | https://www.skillings.net
+- Mining Journal | https://www.mining-journal.com
+- Pit & Quarry | https://www.pitandquarry.com
+- Mining News Pro | https://www.miningnewspro.com
+- Mining Intelligence | https://www.miningintelligence.com
+- Mineral Processing Magazine | https://www.mp-magazine.com
+- Aggregates & Mining Today | https://www.aggregatesandminingtoday.com
+- Mining Construction Today | https://www.miningconstructiontoday.com
+- SA Mining | https://www.samining.co.za
+- Mining Review Africa | https://www.miningreview.com
+- World Mining Magazine | https://www.worldminingmagazine.com
+- Mining Business Africa | https://www.miningbusinessafrica.co.za
+- Mining Engineering Magazine (SME) | https://www.smenet.org
+- Rock to Road | https://www.rocktoroad.com
+- Mining See | https://www.miningsee.eu
+- Mining Safety & Health News | https://www.miningsafety.com
+- Fastmarkets Mining | https://www.fastmarkets.com
+- Mining & Quarry World | https://www.quarrying.org
+
+## Recycling & Waste Processing
+
+- ANIR Chile | https://www.anir.cl
+- Reciclaje Chile Portal | https://www.reciclajechile.cl
+- Revista InduAmbiente | https://www.induambiente.cl
+- CEMPRE | https://www.cempre.org
+- ReciclaLatam | https://www.reciclalatam.org
+- ABRE | https://www.abre.org.br
+- Compromiso Reciclaje Argentina | https://www.reciclado.org.ar
+- Latam Waste Management Portal | https://www.gestionderesiduos.lat
+- Residuos Profesional | https://www.residuosprofesional.com
+- País Circular | https://www.paiscircular.cl
+- Futuro Renovable | https://www.futurorenovable.cl
+- Greentech Media Latam | https://www.greentechlatam.com
+- EcoInventions South America | https://www.ecoinventos.com
+- Ambiente y Comercio LATAM | https://www.ambienteycomercio.org
+- Sostenibilidad Chile Portal | https://www.sostenibilidad.cl
+- Recycling Today | https://www.recyclingtoday.com
+- Scrap Magazine | https://www.scrap.org
+- Waste360 | https://www.waste360.com
+- Recycling Magazine | https://www.recycling-magazine.com
+- Waste Management World | https://www.waste-management-world.com
+- Recycling International | https://www.recyclinginternational.com
+- E-Scrap News | https://www.resource-recycling.com/e-scrap
+- Plastics Recycling Update | https://www.resource-recycling.com/plastics
+- Resource Recycling | https://www.resource-recycling.com
+- Global Recycling Magazine | https://www.global-recycling.info
+- Waste Dive | https://www.wastedive.com
+- BioCycle | https://www.biocycle.net
+- C&D World | https://www.cdrecycling.org
+- Metal Recycling News | https://www.metalrecyclingnews.com
+- Auto Recycling World | https://www.autorecyclingworld.com
+- Waste & Recycling Middle East | https://www.wasteandrecyclingme.ae
+- Circular Online | https://www.circularonline.co.uk
+- Materials Recycling World | https://www.mrw.co.uk
+- Sustainable Materials Management Network | https://www.smmnetwork.org
+- Waste Advantage Magazine | https://www.wasteadvantagemag.com
+- Scrap Register | https://www.scrapregister.com
+- Recycling Inside | https://www.recyclinginside.com
+- SMART | https://www.smartasn.org
+- Recycled Metals Portal | https://www.recycledmetals.org
+- Bureau of International Recycling | https://www.bir.org
+
+## Bulk Handling & Machinery
+
+- Revista ElectroIndustria | https://www.emb.cl/electroindustria
+- Revista Mantenimiento e Industria | https://www.mantenimientochile.cl
+- Procesos Industriales LATAM | https://www.procesosindustriales.cl
+- Ingeniería e Industria | https://www.ingenieriaeindustria.com.ar
+- Portal Industrial de Chile | https://www.portalindustrial.cl
+- Revista Maquinarias Pesadas | https://www.maquinariaspesadas.org
+- Mercado de Maquinarias | https://www.mercadodemaquinarias.cl
+- Concreto e Industria Brasil | https://www.revistaconcreto.com.br
+- Noticias de Maquinaria Industrial LATAM | https://www.noticiasmaquinaria.com
+- Revista Equipos y Más | https://www.equiposymas.com
+- Bulk Solids Handling Magazine | https://www.bulk-solids-handling.com
+- Bulk Inside | https://www.bulkinside.com
+- Dry Bulk Magazine | https://www.drybulkmagazine.com
+- Powder & Bulk Solids | https://www.powderbulksolids.com
+- Conveyor Equipment Manufacturers Association | https://www.cemanet.org
+- Bulk Material Handling Forum | https://www.bulk-online.com
+- Processing Magazine | https://www.processingmagazine.com
+- Material Handling & Logistics | https://www.mhlnews.com
+- Modern Materials Handling | https://www.mmh.com
+- Industrial Equipment News | https://www.ien.com
+- Plant Engineering | https://www.plantengineering.com
+- Maintenance Technology | https://www.maintenancetechnology.com
+- Machinery Lubrication | https://www.machinerylubrication.com
+- OEM Off-Highway | https://www.oemoffhighway.com
+- Heavy Equipment Guide | https://www.heavyequipmentguide.ca
+- Equipment World | https://www.equipmentworld.com
+- Solid Handling News | https://www.solids-handling.com
+- International Bulk Journal | https://www.ibj-online.com
+- MHI | https://www.mhi.org
+- Agg-Net | https://www.agg-net.com
+- Conveyor Tech | https://www.conveyor-tech.com
+- Mechanical Handling Online | https://www.mechanicalhandling.com
+- Process Equipment News | https://www.processequipmentnews.com
+- Industrial Plant & Equipment | https://www.ipeonline.com
+- Powder Processing | https://www.powderprocessing.com
+- Process Industry Forum | https://www.processindustryforum.com
+- Engineering Maintenance Magazine | https://www.engineeringmaintenance.info
+- Reliability Plant | https://www.reliabilityplant.com
+- Design World Heavy Industry | https://www.designworldonline.com
+- Industrial Maintenance & Plant Operation | https://www.impomag.com
+
+## Cement, Concrete & Aggregates
+
+- FICEM | https://www.ficem.org
+- Instituto del Cemento y del Hormigón de Chile | https://www.ich.cl
+- Revista Hormigón Al Día | https://www.hormigondia.ich.cl
+- Asocem | https://www.asocem.org.pe
+- ABCP | https://www.abcp.org.br
+- Revista Construcción e Industria | https://www.revistaconstruccion.cl
+- Cámara Chilena de la Construcción | https://www.cchc.cl
+- Noticias del Cemento LATAM | https://www.cementolatino.com
+- Áridos Chile Association | https://www.aridoschile.cl
+- Revista Canteras y Construcción | https://www.canterasyconstruccion.com
+- World Cement | https://www.worldcement.com
+- Global Cement | https://www.globalcement.com
+- International Cement Review | https://www.cemnet.com
+- Pit & Quarry Magazine | https://www.pitandquarry.com
+- Rock Products | https://www.rockproducts.com
+- Aggregates Business | https://www.aggbusiness.com
+- Aggregate Research | https://www.aggregateresearch.com
+- Cement Lime Gypsum | https://www.cwgrp.com
+- Quarry Magazine | https://www.quarrymagazine.com.au
+- Concrete Products | https://www.concreteproducts.com
+- Cement and Concrete Composites | https://www.journals.elsevier.com/cement-and-concrete-composites
+- Indian Cement Review | https://www.indiancementreview.com
+- ZKG International | https://www.zkg.de
+- Aggregates Manager | https://www.equipmentworld.com/aggregates-manager
+- Quarrying Africa | https://www.quarryingafrica.com
+- Concrete Construction | https://www.concreteconstruction.net
+- Building Material Reporter | https://www.bmreporter.com
+- Precast Inc. Magazine | https://www.precast.org
+- Heavy Construction News | https://www.heavyconstructionnews.com
+- Mineral Products Association | https://www.mineralproducts.org
+
+## Food Processing, Grain & Agriculture
+
+- Red Agrícola Chile | https://www.redagricola.com/cl
+- Revista Industria Alimentaria LATAM | https://www.industriaalimentaria.org
+- Alimentos Procesados LATAM | https://www.alimentosprocesados.com
+- ChileAlimentos | https://www.chilealimentos.com
+- Portal Frutícola | https://www.portalfruticola.com
+- Agrodigital LATAM | https://www.agrodigital.com
+- Revista Énfasis Alimentación LATAM | https://www.alimentacion.enfasis.com
+- Insumos y Procesos Alimentarios | https://www.insumosypaginas.cl
+- Agro Insumos Uruguay | https://www.agroinsumos.com.uy
+- ABIA | https://www.abia.org.br
+- IAlimentos | https://www.revistaialimentos.com
+- Agrofy News | https://www.news.agrofy.com.ar
+- Mundo Agro Chile | https://www.mundoagro.cl
+- TecnoAlimentos Latam | https://www.tecnoalimentos.com
+- Agroindustria del Sur | https://www.agroindustria.cl
+- Food Engineering | https://www.foodengineeringmag.com
+- Food Processing Magazine | https://www.foodprocessing.com
+- Food Safety Magazine | https://www.food-safety.com
+- World Grain | https://www.world-grain.com
+- Milling and Grain | https://www.millingandgrain.com
+- FoodNavigator | https://www.foodnavigator.com
+- Powder Process Solutions | https://www.powderprocess.net
+- Food Quality & Safety | https://www.foodqualityandsafety.com
+- Agri-Pulse | https://www.agri-pulse.com
+- Feed & Grain | https://www.feedandgrain.com
+- Food Manufacturing | https://www.foodmanufacturing.com
+- The Milling Journal | https://www.millingjournal.com
+- Food Technology Magazine | https://www.ift.org
+- Processing Website | https://www.processing-website.com
+- Food Safety News | https://www.foodsafetynews.com
+- Global Food Safety Resource | https://www.globalfoodsafetyresource.com
+- Food in Canada | https://www.foodincanada.com
+- Dairy Processing | https://www.dairyprocessing.com
+- Baking Business | https://www.bakingbusiness.com
+- Meat & Poultry Processing | https://www.meatpoultry.com
+- International Sugar Journal | https://www.internationalsugarjournal.com
+- Process Industry Informer | https://www.processindustryinformer.com
+- All About Feed | https://www.allaboutfeed.net
+- Feed Strategy | https://www.feedstrategy.com
+- AgFunderNews | https://www.agfundernews.com
+
+## Chemicals, Plastics & Polymers
+
+- ASIQUIM | https://www.asiquim.cl
+- Plásticos en Latam | https://www.plastico.com
+- Revista Plásticos Modernos LATAM | https://www.plasticosmodernos.com
+- Abiquim | https://www.abiquim.org.br
+- Mundo Plástico Brasil | https://www.mundoplastico.com.br
+- Quiminet LATAM | https://www.quiminet.com
+- Ambiente Químico Chile | https://www.ambientequimico.cl
+- Resina y Plásticos Latam | https://www.resinasyplasticos.com
+- Industria Química Argentina | https://www.industriaquimica.com.ar
+- Tecnología del Plástico | https://www.tecnologiadelplastico.com
+- Plastics News | https://www.plasticsnews.com
+- Plastics Technology | https://www.ptonline.com
+- Chemical Engineering Magazine | https://www.chemengonline.com
+- Chemical & Engineering News | https://cen.acs.org
+- ICIS Chemical Business | https://www.icis.com
+- Sustainable Plastics | https://www.sustainableplastics.com
+- Plastics Machinery Magazine | https://www.plasticsmachinerymanufacturing.com
+- Chemical Processing | https://www.chemicalprocessing.com
+- Plastics Decorating | https://www.plasticsdecorating.com
+- Polymers Paint Colour Journal | https://www.coatingsgroup.com
+- Modern Plastics Worldwide | https://www.k-online.com
+- Compounding World Magazine | https://www.compoundingworld.com
+- Injection Moulding World | https://www.injectionmouldingworld.com
+- Chemical Week | https://www.chemweek.com
+- Specialty Chemicals Magazine | https://www.specchemonline.com
+- Plastics Today | https://www.plasticstoday.com
+- Chemical Inspection & Regulation News | https://www.cirsproducts.com
+- Polymer Update | https://www.polymerupdate.com
+- Rubber & Plastics News | https://www.rubbernews.com
+- Chemical Engineering World | https://www.cewonline.com
+
+## Magnetics & Separation Technology
+
+- IEEE Magnetics Society | https://www.ieeemagnetics.org
+- Magnetics Magazine | https://www.magneticsmag.com
+- Magnetics Society of Japan | https://www.msj.or.jp
+- UK Magnetics Society | https://www.ukmagnetsoc.org
+- Journal of Magnetism and Magnetic Materials | https://www.sciencedirect.com/journal/journal-of-magnetism-and-magnetic-materials
+- Rare Earth Industry Association | https://www.global-reia.org
+- Phys.org Magnetism News | https://www.phys.org/physics-news/magnetism
+- ASM International | https://www.asminternational.org
+- Materials Today | https://www.materialstoday.com
+- ScienceDaily Magnetism | https://www.sciencedaily.com/news/matter_energy/magnetism
+- Asian Metal | https://www.asianmetal.com
+- Industrial Minerals Magazine | https://www.indmin.com
+- SME Minerals & Metallurgical Processing | https://www.smenet.org/publications
+- Separation and Purification Technology | https://www.sciencedirect.com/journal/separation-and-purification-technology
+- Minerals Engineering International Online | https://www.mineng.com
+- Magnetic Materials Association News | https://www.mhma.com
+- Electromagnetic Academy | https://www.pieers.org
+- Applied Physics Letters Magnetics | https://aip.scitation.org/journal/apl
+- Advanced Powder Technology | https://www.sciencedirect.com/journal/advanced-powder-technology
+- Mineral Processing and Extractive Metallurgy Review | https://www.tandfonline.com
+
+## Industrial B2B, Trade Shows & Communities
+
+- EXPOMIN Chile | https://www.expomin.cl
+- FIDA Chile | https://www.fida.cl
+- Revista EMB | https://www.emb.cl
+- Industria LATAM Network | https://www.industrialatam.com
+- Directorio Industrial de Chile | https://www.directorioindustrial.cl
+- Guía de la Industria Chile | https://www.guiadelaindustria.cl
+- Revista Negocios Industriales LATAM | https://www.negociosindustriales.com
+- Prensa Industrial | https://www.prensaindustrial.cl
+- Empresas y Negocios Chile | https://www.empresasynegocios.cl
+- InfoIndustria Latam | https://www.infoindustria.com
+- FIMA Perú | https://www.fima.com.pe
+- FEIMEC Brasil | https://www.feimec.com.br
+- AgroAndina News | https://www.agroandina.cl
+- Portal Sustentabilidad e Industria | https://www.industriasustentable.cl
+- Innovación Industrial LATAM | https://www.innovacionindustrial.cl
+- ThomasNet Industrial News | https://www.thomasnet.com/articles
+- DirectIndustry e-Magazine | https://www.directindustry.com
+- Engineering.com | https://www.engineering.com
+- Plant Services Magazine | https://www.plantservices.com
+- Maintenance Sales News | https://www.maintenancesalesnews.com
+- GlobalSpec Engineering360 | https://www.globalspec.com
+- Industrial Distribution | https://www.inddist.com
+- Manufacturing.net | https://www.manufacturing.net
+- IndustryWeek | https://www.industryweek.com
+- Design News Industrial | https://www.designnews.com
+- Machine Design | https://www.machinedesign.com
+- Control Engineering | https://www.controleng.com
+- Automation World | https://www.automationworld.com
+- Efficient Plant Magazine | https://www.efficientplantmag.com
+- Industrial Buyer’s Guide News | https://www.industrialbuyersguide.com
+- Reddit r/Mining | https://www.reddit.com/r/Mining
+- Reddit r/Geology | https://www.reddit.com/r/Geology
+- Eng-Tips Engineering Forums | https://www.eng-tips.com
+- Quora Powder & Bulk Material Handling | https://www.quora.com
+- Mining Technology Forum LinkedIn Groups | https://www.linkedin.com
+- Recycling Industry Network LinkedIn Groups | https://www.linkedin.com
+- Process Engineers Network | https://www.processengineers.net
+- Maintenance & Reliability Forum | https://www.smrp.org
+- Heavy Equipment Forums | https://www.heavyequipmentforums.com
+- Bulk Materials Handling Community | https://www.bulkmaterialhandling.net
+- Industrial Maintenance Community | https://www.iscrapapp.com/blog
+- Minerals & Mining Community Forum | https://www.mineralsforum.com
+- Powder Processing Forum | https://www.powderforum.com
+- Plant Operations Forum | https://www.plantoperations.com
+- Global Trade Magazine Industrial Section | https://www.globaltrademag.com
+- B2B Industrial News Hub | https://www.b2bindustrialnews.com
+- Factory Maintenance Online | https://www.factorymaintenance.com
+- Sustainable Manufacturing News | https://www.sustainablemanufacturing.com
+- Safety+Health Magazine | https://www.safetyandhealthmagazine.com
+- International Mining Machinery Association | https://www.imma.org

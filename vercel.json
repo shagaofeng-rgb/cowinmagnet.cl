@@ -21,8 +21,12 @@
       "schedule": "17 1,13 * * *"
     },
     {
+      "path": "/api/cron/news-source-health",
+      "schedule": "47 0,12 * * *"
+    },
+    {
       "path": "/api/cron/news-publish",
-      "schedule": "23 13 * * *"
+      "schedule": "23 * * * *"
     }
   ]
 }

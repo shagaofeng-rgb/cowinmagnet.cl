@@ -7,6 +7,7 @@ const options = [
   ["day", "今日"],
   ["week", "本周"],
   ["month", "本月"],
+  ["quarter", "近 90 天"],
   ["custom", "自定义"]
 ];
 
@@ -41,9 +42,9 @@ export default function AdminDateRangeFilter({ range }) {
     <form className="admin-date-filter" onSubmit={(event) => { event.preventDefault(); pushRange("custom"); }}>
       <div className="admin-date-filter-head">
         <span>时间范围</span>
-        <small>当前查看：{range?.label}，{range?.startInput} 至 {range?.endInput}</small>
+        <small>当前查看：{range?.label}，{range?.startInput} 至 {range?.endInput}（{range?.timezone || "America/Santiago"}）</small>
       </div>
-      <div className="admin-date-presets" role="group" aria-label="选择时间范围">
+      <div className="admin-date-presets admin-date-presets-five" role="group" aria-label="选择时间范围">
         {options.map(([value, label]) => (
           <button type="button" className={range?.preset === value ? "is-active" : ""} onClick={() => pushRange(value)} key={value}>
             {label}

@@ -25,7 +25,7 @@ function formatDate(value) {
   if (!value) return t.never;
   try {
     return new Date(value).toLocaleString("zh-CN", {
-      timeZone: "Asia/Shanghai",
+      timeZone: "America/Santiago",
       year: "numeric",
       month: "2-digit",
       day: "2-digit",

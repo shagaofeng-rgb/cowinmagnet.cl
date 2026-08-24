@@ -67,12 +67,13 @@ export async function POST(request) {
   await appendAnalyticsEvent({
     id: `inquiry-${saved.id}`,
     type: "form_submit",
-    visitorId: `lead-${saved.id}`,
-    sessionId: `lead-${saved.id}`,
+    visitorId: payload.visitorId || `lead-${saved.id}`,
+    sessionId: payload.sessionId || `lead-${saved.id}`,
     page: payload.sourcePage || "/",
     pageTitle: "Inquiry submission",
     country: payload.country || "Unknown",
     language: payload.language || "",
+    referrer: payload.referrer || "",
     timestamp: saved.createdAt
   }).catch((error) => console.error("[inquiry] analytics event failed", error?.message || error));
 

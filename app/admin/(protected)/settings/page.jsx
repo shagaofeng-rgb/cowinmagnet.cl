@@ -11,6 +11,7 @@ const t = {
   admin: "\u7ba1\u7406\u5458",
   email: "\u90ae\u4ef6\u901a\u77e5",
   seo: "SEO \u6570\u636e\u6e90",
+  analytics: "\u771f\u5b9e\u6d41\u91cf\u4e0e\u6392\u9664\u89c4\u5219",
   passwordSource: "\u5bc6\u7801\u6765\u6e90\uff1a\u73af\u5883\u53d8\u91cf\u6216\u6570\u636e\u5e93\u7ba1\u7406\u5458\u8d26\u53f7\u3002"
 };
 
@@ -53,6 +54,13 @@ export default function AdminSettingsPage() {
           <h3>{t.seo}</h3>
           <p>Search Console: {masked(process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL)}</p>
           <p>Google Service Account: {masked(process.env.GOOGLE_SERVICE_ACCOUNT_BASE64 || process.env.GOOGLE_SERVICE_ACCOUNT_JSON)}</p>
+        </article>
+        <article className="admin-panel">
+          <h3>{t.analytics}</h3>
+          <p>访问时区：America/Santiago</p>
+          <p>自动排除：预览环境、后台、机器人、Codex/自动化、健康检查与 Collects 采集流量。</p>
+          <p>自定义规则：IP {masked(process.env.ANALYTICS_EXCLUDED_IPS)} · 来源 {masked(process.env.ANALYTICS_EXCLUDED_REFERRERS)} · UA {masked(process.env.ANALYTICS_EXCLUDED_USER_AGENTS)}</p>
+          <p>IP 默认仅显示脱敏结果；完整密钥与原始凭据不会显示在后台页面。</p>
         </article>
       </div>
     </section>

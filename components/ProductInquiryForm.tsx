@@ -86,7 +86,10 @@ export function ProductInquiryForm({ locale, productName, model }: Props) {
       name: values.name, company: values.company, country: values.country, region: "", email: values.email, whatsapp: values.whatsapp, language,
       product: productValue, model: model || "", industry: values.industry, material: values.material,
       beltWidth: values.geometry, capacity: values.flow, suspensionHeight: values.space, installation: "", cleaning: "", voltage: values.power,
-      projectDescription, sourcePage: window.location.pathname, sourceUrl: window.location.href, utm: sourceMetadata, website: ""
+      projectDescription, sourcePage: window.location.pathname, sourceUrl: window.location.href, utm: sourceMetadata, website: "",
+      visitorId: window.localStorage.getItem("cowinmagnet_cl_visitor_id") || "",
+      sessionId: window.sessionStorage.getItem("cowinmagnet_cl_session_id") || "",
+      referrer: document.referrer || ""
     };
     try {
       setLoading(true);

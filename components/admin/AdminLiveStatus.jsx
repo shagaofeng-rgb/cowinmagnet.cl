@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-const refreshMs = 30 * 60 * 1000;
+const refreshMs = 30 * 1000;
 
 function formatTime(value) {
   if (!value) return "-";
   return new Date(value).toLocaleTimeString("zh-CN", {
-    timeZone: "Asia/Shanghai",
+    timeZone: "America/Santiago",
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
@@ -54,9 +54,9 @@ export default function AdminLiveStatus() {
 
   return (
     <div className="admin-live-status">
-      <span>半小时自动同步</span>
+      <span>实时运营数据</span>
       <strong>{status.loading ? "连接中..." : `${status.pageViews} PV / ${status.inquiries} 询盘`}</strong>
-      <small>{status.state === "error" ? "同步状态异常" : `最近同步：${formatTime(status.syncedAt)} 北京时间`}</small>
+      <small>{status.state === "error" ? "同步状态异常" : `最近同步：${formatTime(status.syncedAt)} 智利时间`}</small>
     </div>
   );
 }

@@ -10,7 +10,14 @@ const csv = (rows) => rows.map((row) => row.map((value) => `"${String(value ?? "
 const writeCsv = (name, rows) => fs.writeFileSync(path.join(reportRoot, name), csv(rows), "utf8");
 const products = JSON.parse(fs.readFileSync(path.join(root, "data", "mainProductCatalog.json"), "utf8"));
 
-const categorySlug = (value) => value.toLowerCase().replaceAll("&", "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const categorySlugs = {
+  "Suspended & Self-Unloading Iron Removers": "suspended-self-unloading-iron-removers",
+  "Magnetic Separation Equipment": "magnetic-separation-equipment",
+  "Metal Detection & Recycling Sorting": "metal-detection-recycling-sorting",
+  "Magnetic Components & Filters": "magnetic-components-filters",
+  "Industry Application Equipment": "industry-application-equipment"
+};
+const categorySlug = (value) => categorySlugs[value] || value.toLowerCase().replaceAll("&", "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const internalPattern = /SEO Meta|Primary Keyword|Search Intent|AI \/ GEO|AI Citation Ready|CMS checklist/i;
 const reviewed = new Set([
   "rcyd-type-permanent-magnet-self-dumping-iron-remover", "rcyb-type-permanent-magnet-manual-iron-remover",
@@ -77,10 +84,10 @@ writeCsv("seo-audit-before.csv", [["priority", "surface", "finding", "status"],
   ["P1", "Search Console", "live indexing data requires authenticated production access", "pending verification"]
 ]);
 
-const blogSource = fs.readFileSync(path.join(root, "data", "blog.ts"), "utf8");
-const newsRows = [...blogSource.matchAll(/slug:\s*"([^"]+)"[\s\S]*?title:\s*"([^"]+)"[\s\S]*?date:\s*"([^"]+)"/g)].map((match) => {
+const newsSource = fs.readFileSync(path.join(root, "data", "news.ts"), "utf8");
+const newsRows = [...newsSource.matchAll(/slug:\s*"([^"]+)"[\s\S]*?title:\s*"([^"]+)"[\s\S]*?date:\s*"([^"]+)"/g)].map((match) => {
   const start = match.index || 0;
-  const sample = blogSource.slice(start, start + 12000);
+  const sample = newsSource.slice(start, start + 12000);
   return [match[1], match[2], match[3], internalPattern.test(sample) ? "internal_fields_present_in_source" : "clean", "manual review"];
 });
 writeCsv("news-library-audit.csv", [["slug", "title", "date", "content_flag", "action"], ...newsRows]);
@@ -98,6 +105,6 @@ fs.writeFileSync(path.join(reportRoot, "schema-validation.json"), JSON.stringify
 }, null, 2) + "\n", "utf8");
 fs.writeFileSync(path.join(reportRoot, "sitemap-validation.log"), `${new Date().toISOString()} source audit: typed sitemap index present; production HTTP and XML validation pending post-deployment\n`, "utf8");
 writeCsv("indexing-observation.csv", [["url", "observed_at", "source", "state", "evidence"], ["https://cowinmagnet.cl/sitemap.xml", new Date().toISOString(), "local-audit", "unknown", "Search Console authenticated verification pending"]]);
-fs.writeFileSync(path.join(reportRoot, "weekly-content-and-indexing-report.md"), `# Weekly content and indexing report\n\nGenerated: ${new Date().toISOString()}\n\n- Product inventory: ${products.length}\n- Reviewed high-value truth cards: ${reviewed.size}\n- Products requiring engineering evidence review: ${missing.length}\n- Legacy source records quarantined from public rendering: ${leaks.length}\n- News automation: source-led and quality-gated; one Spanish original article at most every 48 hours, enabled only after six candidates have passed editorial review\n- Search Console indexing state: pending authenticated verification; submission is not reported as indexing\n`, "utf8");
+fs.writeFileSync(path.join(reportRoot, "weekly-content-and-indexing-report.md"), `# Weekly content and indexing report\n\nGenerated: ${new Date().toISOString()}\n\n- Product inventory: ${products.length}\n- Reviewed high-value truth cards: ${reviewed.size}\n- Products requiring engineering evidence review: ${missing.length}\n- Legacy source records quarantined from public rendering: ${leaks.length}\n- News automation: enabled, source-led and quality-gated; ingestion runs twice daily and publication runs hourly, with at most one article per Chile local day after 09:00\n- Search Console indexing state: pending authenticated verification; submission is not reported as indexing\n`, "utf8");
 
 console.log(JSON.stringify({ products: products.length, reviewedTruthCards: reviewed.size, missingRows: missing.length, supplierSourceRows: leaks.length, newsRows: newsRows.length, reportRoot }, null, 2));

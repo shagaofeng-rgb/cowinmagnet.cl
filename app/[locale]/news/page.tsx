@@ -5,6 +5,7 @@ import { getPublishedNews } from "@/data/news";
 import { Locale, localizedPath, t } from "@/data/site";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { htmlLanguageByLocale } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -50,9 +51,10 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: L
         summary={t(locale, "Resumimos fuentes externas relevantes y agregamos una lectura tecnica para mineria, reciclaje, cemento y separacion magnetica.", "Resumimos fontes externas relevantes e adicionamos uma leitura tecnica para mineracao, reciclagem, cimento e separacao magnetica.", "We summarize relevant cited sources and add a technical view for mining, recycling, cement and magnetic separation.")}
       />
       <section className="band">
+        {locale === "en" || locale === "pt-br" ? <p className="news-language-note">{t(locale, "", "Os artigos mantem o idioma editorial original quando uma traducao revisada nao esta disponivel.", "Articles retain their original editorial language when a reviewed translation is not available.")}</p> : null}
         <div className="news-grid">
           {posts.map((post) => (
-            <article className="news-card" key={post.slug}>
+            <article className="news-card" key={post.slug} lang={post.localized?.[locale] ? htmlLanguageByLocale[locale] : post.contentLanguage || "es"}>
               {post.image ? <Image src={displayImage(post.image)} alt={post.title} width={720} height={430} unoptimized /> : null}
               <div className="news-card-body">
                 <p className="eyebrow">{post.categoryTitle || "Industry News"}</p>

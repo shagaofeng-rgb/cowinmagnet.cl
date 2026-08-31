@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
-import { focusMarkets, industryMarketRows } from "@/data/brief";
+import { focusMarkets, getIndustryMarketRows } from "@/data/brief";
 import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function MarketsPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
+  const industryMarketRows = getIndustryMarketRows(locale);
 
   return (
     <>

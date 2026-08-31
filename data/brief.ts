@@ -150,6 +150,30 @@ export const industryMarketRows = [
   }
 ];
 
+const portugueseIndustryMarketRows = [
+  { industry: "Mineracao", problem: "Protecao de britadores, separacao mineral, reducao de ferro e melhoria da pureza do mineral.", equipment: "RCYD, RCDD, CTDG, CTB, CXG, GTLH" },
+  { industry: "Pedreiras e agregados", problem: "Protecao de britadores de mandibula, cone e impacto contra danos causados por metais.", equipment: "RCYD, RCDD, CTZ" },
+  { industry: "Cimento", problem: "Remocao de metais ferrosos e protecao de britadores, moinhos e transportadores.", equipment: "RCYD, RCDD, CTZ, GJT" },
+  { industry: "Reciclagem", problem: "Recuperacao de metais ferrosos, protecao de britadores e aumento do valor dos materiais reciclados.", equipment: "RCYD, RCDD, CT, CTZ, ECS, RSS" },
+  { industry: "Alimentos", problem: "Remocao de contaminacao metalica, seguranca do produto e protecao da qualidade.", equipment: "CG, GG, CXC, GLS, LCG, GJT" },
+  { industry: "Madeira", problem: "Remocao de pregos, parafusos e pecas metalicas para proteger trituradores e moinhos.", equipment: "RCYD, CT, CTZ, CPB" }
+];
+
+const englishIndustryMarketRows = [
+  { industry: "Mining", problem: "Crusher protection, mineral separation, iron reduction and mineral-purity improvement.", equipment: "RCYD, RCDD, CTDG, CTB, CXG, GTLH" },
+  { industry: "Quarries and aggregates", problem: "Protection of jaw, cone and impact crushers against metal damage.", equipment: "RCYD, RCDD, CTZ" },
+  { industry: "Cement", problem: "Ferrous-metal removal and protection of crushers, mills and conveyor systems.", equipment: "RCYD, RCDD, CTZ, GJT" },
+  { industry: "Recycling", problem: "Ferrous-metal recovery, crusher protection and increased value of recycled materials.", equipment: "RCYD, RCDD, CT, CTZ, ECS, RSS" },
+  { industry: "Food processing", problem: "Metal-contamination removal, product safety and quality protection.", equipment: "CG, GG, CXC, GLS, LCG, GJT" },
+  { industry: "Wood processing", problem: "Removal of nails, screws and metal pieces to protect shredders, chippers and mills.", equipment: "RCYD, CT, CTZ, CPB" }
+];
+
+export function getIndustryMarketRows(locale: Locale) {
+  if (locale === "pt-br") return portugueseIndustryMarketRows;
+  if (locale === "en") return englishIndustryMarketRows;
+  return industryMarketRows;
+}
+
 export type BriefIndustryCard = {
   slug: string;
   image: string;

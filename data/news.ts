@@ -1,6 +1,5 @@
-import { unstable_noStore as noStore } from "next/cache";
-import { getCmsItems } from "@/lib/cmsStore";
-import { Locale, defaultLocale, siteConfig } from "@/data/site";
+import { getCachedPublishedNews } from "@/lib/publicCms";
+import { Locale, defaultLocale } from "@/data/site";
 
 export type LocalizedNewsContent = {
   title?: string;
@@ -39,6 +38,7 @@ export type NewsArticle = {
   seoKeywords?: string[];
   geoSummary?: string;
   localized?: Record<string, LocalizedNewsContent>;
+  contentLanguage?: string;
   imagePolicy?: string;
   sourceImageUrl?: string;
   imageCredit?: string;
@@ -85,6 +85,7 @@ function normalizeNewsItem(item: Record<string, any>): NewsArticle {
     seoKeywords: item.seoKeywords || [],
     geoSummary: item.geoSummary || "",
     localized: item.localized || {},
+    contentLanguage: item.contentLanguage || item.publicationLanguage || "es",
     imagePolicy: item.imagePolicy || "",
     sourceImageUrl: item.sourceImageUrl || "",
     imageCredit: item.imageCredit || "",
@@ -111,8 +112,7 @@ function localizeNews(article: NewsArticle, locale: Locale): NewsArticle {
 }
 
 export async function getPublishedNews(locale: Locale = defaultLocale): Promise<NewsArticle[]> {
-  noStore();
-  const items = await getCmsItems("news", { siteId: siteConfig.siteId });
+  const items = await getCachedPublishedNews();
   return items
     .map(normalizeNewsItem)
     .map((article) => localizeNews(article, locale))

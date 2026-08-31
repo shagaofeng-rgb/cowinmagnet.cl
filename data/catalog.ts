@@ -135,8 +135,8 @@ export function getProductSummary(product: (typeof products)[number], locale: Lo
   const category = productCategories.find((item) => item.slug === product.category);
   const categoryLabel = category ? getCategoryDisplay(category, locale).title : product.sourceCategory;
   if (locale === "en") return `${categoryLabel} for industrial projects. Final selection is confirmed from material, capacity and site conditions.`;
-  if (locale === "pt-br") return `${categoryLabel} para projetos industriais. A sele莽茫o final 茅 confirmada com material, capacidade e condi莽玫es do local.`;
-  return `${categoryLabel} para proyectos industriales. La selecci贸n final se confirma con material, capacidad y condiciones del sitio.`;
+  if (locale === "pt-br") return `${categoryLabel} para projetos industriais. A seleção final é confirmada com material, capacidade e condições do local.`;
+  return `${categoryLabel} para proyectos industriales. La selección final se confirma con material, capacidad y condiciones del sitio.`;
 }
 
 export const productCopy: Record<Locale, {

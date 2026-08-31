@@ -65,11 +65,12 @@ export function localizedEntityCopy(locale: Locale, kind: keyof typeof kindCopy,
   const localizedTitle = entityTitles[slug]?.[locale] || fallbackTitle;
   const [label, summary] = kindCopy[kind][locale];
   const marketSuffix = locale === "es-cl" ? "Chile" : locale === "pt-br" ? "America Latina" : locale === "en" ? "Latin America" : "LATAM";
+  const localizedFallbackSummary = locale === "es-cl" || locale === "es" ? fallbackSummary : "";
   return {
     label,
     title: localizedTitle,
     seoTitle: `${localizedTitle} - ${label} ${marketSuffix}`,
-    summary: `${summary}${fallbackSummary ? ` ${fallbackSummary}` : ""}`.slice(0, 220)
+    summary: `${summary}${localizedFallbackSummary ? ` ${localizedFallbackSummary}` : ""}`.slice(0, 220)
   };
 }
 

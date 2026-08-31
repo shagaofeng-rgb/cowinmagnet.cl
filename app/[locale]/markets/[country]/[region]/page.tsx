@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
 import { chileRegions } from "@/data/catalog";
-import { Locale, localizedPath } from "@/data/site";
+import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates, localizedEntityCopy } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -29,7 +29,11 @@ export default async function ChileRegionPage({ params }: { params: Promise<{ lo
     <>
       <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "markets") }, { label: "Chile", href: localizedPath(locale, "markets/chile") }, { label: display.title }]} />
       <HeroBanner eyebrow={display.label} title={display.title} summary={display.summary} image={region.image} />
-      <section className="band"><div className="geo-grid"><article><h3>Minerales principales</h3><p>Confirmar mineral, granulometria, humedad y tonelaje del proyecto.</p></article><article><h3>Aplicaciones de cintas</h3><p>Proteccion de chancadores, correas transportadoras y puntos de transferencia.</p></article><article><h3>Confirmacion electrica</h3><p>Voltaje, frecuencia, fases, altitud y ambiente son obligatorios antes de seleccionar.</p></article></div></section>
+      <section className="band"><div className="geo-grid">
+        <article><h3>{t(locale, "Minerales principales", "Minerais principais", "Main minerals")}</h3><p>{t(locale, "Confirmar mineral, granulometria, humedad y tonelaje del proyecto.", "Confirmar mineral, granulometria, umidade e tonelagem do projeto.", "Confirm the mineral, particle size, moisture and project tonnage.")}</p></article>
+        <article><h3>{t(locale, "Aplicaciones de cintas", "Aplicacoes em correias", "Conveyor applications")}</h3><p>{t(locale, "Proteccion de chancadores, correas transportadoras y puntos de transferencia.", "Protecao de britadores, correias transportadoras e pontos de transferencia.", "Crusher, conveyor belt and transfer-point protection.")}</p></article>
+        <article><h3>{t(locale, "Confirmacion electrica", "Confirmacao eletrica", "Electrical confirmation")}</h3><p>{t(locale, "Voltaje, frecuencia, fases, altitud y ambiente son obligatorios antes de seleccionar.", "Tensao, frequencia, fases, altitude e ambiente devem ser confirmados antes da selecao.", "Voltage, frequency, phases, altitude and environment must be confirmed before selection.")}</p></article>
+      </div></section>
     </>
   );
 }

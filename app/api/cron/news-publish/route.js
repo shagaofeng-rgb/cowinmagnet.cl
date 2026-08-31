@@ -19,6 +19,7 @@ export async function GET(request) {
       dryRun: url.searchParams.get("dryRun") === "1",
       trigger: "vercel-cron"
     });
+    console.log("[news-publish]", JSON.stringify(result));
     return Response.json(result, { status: result.success ? 200 : 503 });
   } catch (error) {
     console.error("[news-publish]", error);

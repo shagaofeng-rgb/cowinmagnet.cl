@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { getNewsSiteConfig } from "../lib/newsSiteConfig.mjs";
 import { sourceCatalog } from "../data/news/cowinmagnet-cl-source-catalog.mjs";
-import { activeSourcesForNewsSite, canonicalDomain, sourceIsEligibleForPublishing } from "../lib/newsSourceCatalog.mjs";
+import { activeSourcesForNewsSite, canonicalDomain, sourceCatalogForNewsSite, sourceIsEligibleForPublishing } from "../lib/newsSourceCatalog.mjs";
 import { buildValidationResult, canUseSourceForCandidate, classifySource } from "../lib/newsSourceValidation.mjs";
 
 test("normalizes canonical source domains without treating subdomains as separate publishers", () => {
@@ -18,6 +18,17 @@ test("only verified, robots-permitted catalog sources are available to the activ
   assert.ok(sourceCatalog.every((source) => source.active === false && source.validationStatus === "pending"));
   assert.ok(sourceIsEligibleForPublishing({ active: true, validationStatus: "verified", robotsAllowed: true, tier: "A" }));
   assert.equal(sourceIsEligibleForPublishing({ active: true, validationStatus: "verified", robotsAllowed: false, tier: "A" }), false);
+});
+
+test("configured whitelist sources are present and prioritized for health validation", () => {
+  const site = getNewsSiteConfig();
+  const catalog = sourceCatalogForNewsSite(site);
+  const configured = catalog.filter((source) => source.configuredPriority);
+  const configuredDomains = new Set(configured.map((source) => source.canonicalDomain));
+  for (const source of [...site.sources.primaryWhitelist, ...site.sources.fallbackWhitelist]) {
+    assert.ok(configuredDomains.has(canonicalDomain(source.domain)));
+  }
+  assert.ok(configured.every((source) => source.rssOrApiUrl && source.sourceOrdinal < configured.length));
 });
 
 test("classifies communities as discovery-only and refuses source cooldown violations", () => {

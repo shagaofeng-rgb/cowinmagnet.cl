@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdminApi } from "@/lib/adminApi";
 import { saveCmsItem, slugify } from "@/lib/cmsStore";
 import { queueSitemapRefresh } from "@/lib/sitemapHooks";
@@ -34,6 +34,7 @@ export async function POST(request) {
   });
 
   revalidatePath("/admin/news");
+  revalidateTag("public-news", { expire: 0 });
   revalidatePath("/es-cl/news");
   revalidatePath("/news-sitemap.xml");
   revalidatePath("/sitemap.xml");

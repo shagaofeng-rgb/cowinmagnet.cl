@@ -1,6 +1,5 @@
 import "server-only";
-import { unstable_noStore as noStore } from "next/cache";
-import { getCmsItem, getCmsItems } from "@/lib/cmsStore";
+import { getCachedPublishedBlog } from "@/lib/publicCms";
 import { Locale, defaultLocale } from "@/data/site";
 
 export type BlogArticle = {
@@ -41,8 +40,7 @@ function localizeArticle(article: BlogArticle, locale: Locale): BlogArticle {
 }
 
 export async function getPublishedBlogArticles(locale: Locale = defaultLocale): Promise<BlogArticle[]> {
-  noStore();
-  const items = await getCmsItems("blog");
+  const items = await getCachedPublishedBlog();
   return items
     .map(normalizeArticle)
     .map((article) => localizeArticle(article, locale))
@@ -50,7 +48,7 @@ export async function getPublishedBlogArticles(locale: Locale = defaultLocale): 
 }
 
 export async function getPublishedBlogArticle(slug: string, locale: Locale = defaultLocale): Promise<BlogArticle | null> {
-  noStore();
-  const item = await getCmsItem("blog", slug, { includeInactive: false });
+  const items = await getCachedPublishedBlog();
+  const item = items.find((article) => article.slug === slug);
   return item ? localizeArticle(normalizeArticle(item), locale) : null;
 }

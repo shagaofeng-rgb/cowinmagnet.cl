@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdminApi } from "@/lib/adminApi";
 import { saveCmsItem, slugify } from "@/lib/cmsStore";
 import { queueSitemapRefresh } from "@/lib/sitemapHooks";
@@ -38,6 +38,7 @@ export async function POST(request) {
   });
 
   for (const locale of ["es-cl", "es", "pt-br", "en"]) revalidatePath(`/${locale}/blog`);
+  revalidateTag("public-blog", { expire: 0 });
   revalidatePath("/sitemap.xml");
   queueSitemapRefresh("blog-created");
   redirect("/admin/blog?saved=blog");

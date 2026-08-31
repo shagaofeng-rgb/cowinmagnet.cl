@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { deleteCmsItem, getCmsItem, saveCmsItem, updateCmsItemStatus } from "@/lib/cmsStore";
 import { requireAdminApi } from "@/lib/adminApi";
 import { queueSitemapRefresh } from "@/lib/sitemapHooks";
@@ -12,6 +12,7 @@ async function slugFromContext(context) {
 }
 
 function revalidateNews(slug) {
+  revalidateTag("public-news", { expire: 0 });
   revalidatePath("/es-cl/news");
   revalidatePath("/en/news");
   revalidatePath(`/es-cl/news/${slug}`);

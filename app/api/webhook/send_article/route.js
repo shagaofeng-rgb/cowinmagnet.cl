@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { saveCmsItem, slugify } from "@/lib/cmsStore";
 import { queueSitemapRefresh } from "@/lib/sitemapHooks";
 
@@ -80,6 +80,7 @@ function articleSlug(title, content) {
 }
 
 function revalidateBlog(slug) {
+  revalidateTag("public-blog", { expire: 0 });
   for (const locale of ["es-cl", "es", "pt-br", "en"]) {
     revalidatePath(`/${locale}/blog`);
     revalidatePath(`/${locale}/blog/${slug}`);

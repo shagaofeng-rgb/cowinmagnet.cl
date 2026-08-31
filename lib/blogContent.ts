@@ -1,5 +1,5 @@
 import "server-only";
-import { getCachedPublishedBlog } from "@/lib/publicCms";
+import { getCachedPublishedBlog, getCachedPublishedBlogItem } from "@/lib/publicCms";
 import { Locale, defaultLocale } from "@/data/site";
 
 export type BlogArticle = {
@@ -48,7 +48,6 @@ export async function getPublishedBlogArticles(locale: Locale = defaultLocale): 
 }
 
 export async function getPublishedBlogArticle(slug: string, locale: Locale = defaultLocale): Promise<BlogArticle | null> {
-  const items = await getCachedPublishedBlog();
-  const item = items.find((article) => article.slug === slug);
+  const item = await getCachedPublishedBlogItem(slug);
   return item ? localizeArticle(normalizeArticle(item), locale) : null;
 }

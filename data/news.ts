@@ -1,4 +1,4 @@
-import { getCachedPublishedNews } from "@/lib/publicCms";
+import { getCachedPublishedNews, getCachedPublishedNewsItem } from "@/lib/publicCms";
 import { Locale, defaultLocale } from "@/data/site";
 
 export type LocalizedNewsContent = {
@@ -120,6 +120,6 @@ export async function getPublishedNews(locale: Locale = defaultLocale): Promise<
 }
 
 export async function getNewsBySlug(slug: string, locale: Locale = defaultLocale): Promise<NewsArticle | undefined> {
-  const articles = await getPublishedNews(locale);
-  return articles.find((article) => article.slug === slug);
+  const item = await getCachedPublishedNewsItem(slug);
+  return item ? localizeNews(normalizeNewsItem(item), locale) : undefined;
 }

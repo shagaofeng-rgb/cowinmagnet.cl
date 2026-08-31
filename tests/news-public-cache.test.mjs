@@ -8,12 +8,15 @@ const editorialSource = fs.readFileSync(new URL("../lib/newsEditorial.js", impor
 const blogContentSource = fs.readFileSync(new URL("../lib/blogContent.ts", import.meta.url), "utf8");
 const blogAdminSource = fs.readFileSync(new URL("../app/api/admin/content/blog/route.js", import.meta.url), "utf8");
 const blogWebhookSource = fs.readFileSync(new URL("../app/api/webhook/send_article/route.js", import.meta.url), "utf8");
+const cmsStoreSource = fs.readFileSync(new URL("../lib/cmsStore.js", import.meta.url), "utf8");
 
 test("public News reads use the tagged CMS cache instead of bypassing it", () => {
   assert.match(newsDataSource, /getCachedPublishedNews\(\)/);
   assert.doesNotMatch(newsDataSource, /unstable_noStore|noStore\(\)/);
   assert.match(publicCmsSource, /revalidate:\s*300/);
   assert.match(publicCmsSource, /tags:\s*\["public-news"\]/);
+  assert.match(publicCmsSource, /getCachedPublishedNewsItem/);
+  assert.match(publicCmsSource, /omitBody:\s*true/);
 });
 
 test("successful News publication invalidates the public News cache", () => {
@@ -24,6 +27,12 @@ test("public Blog reads use the tagged CMS cache", () => {
   assert.match(blogContentSource, /getCachedPublishedBlog\(\)/);
   assert.doesNotMatch(blogContentSource, /unstable_noStore|noStore\(\)|getCmsItem\(/);
   assert.match(publicCmsSource, /tags:\s*\["public-blog"\]/);
+  assert.match(publicCmsSource, /getCachedPublishedBlogItem/);
+});
+
+test("CMS detail reads query one slug instead of loading every article body", () => {
+  assert.match(cmsStoreSource, /WHERE type = \$1 AND slug = \$2 AND site_id = \$3 LIMIT 1/);
+  assert.match(cmsStoreSource, /payload - 'body'/);
 });
 
 test("Blog publication paths invalidate the public Blog cache", () => {

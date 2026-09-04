@@ -4,8 +4,11 @@ Audit window: 2026-08-31 to 2026-09-01
 Final verification follow-up: 2026-09-04  
 Production: <https://cowinmagnet.cl>  
 Repository: <https://github.com/shagaofeng-rgb/cowinmagnet.cl>  
-Final commit: `9a35e519c96df787d4cc7ca4d156a1d29c09a8f5`  
-Final Vercel deployment: `dpl_Fxr9kGdmAt6eKVR8kkFxxMMvYwvW` (`READY`, production aliases assigned)
+Production code commit: `9a35e519c96df787d4cc7ca4d156a1d29c09a8f5`
+
+Acceptance report commit: `6652d19d1507487c27e8c980060ad53cc21f00ff`
+
+Verified Vercel deployment: `dpl_Duune8wt7JWk9hzKQf1WoGQgoVju` (`READY`, production aliases assigned)
 
 ## Acceptance result
 
@@ -50,6 +53,17 @@ The same slug was independently fetched after publication and found in:
 - `/news-sitemap.xml` during its Google News 48-hour eligibility window
 
 No related Vercel warning/error log was present in the `13:20Z` to `14:00Z` acceptance window.
+
+### Continuous-run follow-up
+
+The fix was not accepted from a single successful run only. Subsequent production Cron evidence includes:
+
+- `2026-09-02T13:23:38Z`: `published_success`, slug `noticia-cobre-mineria-procesamiento-3adf24947bfc`, list/detail/News sitemap all `200` and visible in one delivery attempt; sitemap refresh processed 1,028 URLs with 0 errors.
+- `2026-09-03T13:23:38Z`: `published_success`, slug `noticia-cobre-mineria-procesamiento-4f819d344dcb`, list/detail/News sitemap all `200` and visible in one delivery attempt; sitemap refresh processed 1,032 URLs with 0 errors.
+- No Vercel warning/error events were present in either publication acceptance window.
+- On `2026-09-04`, the September 3 slug was independently confirmed with HTTP `200` and visible in the News list, detail page, RSS feed and News sitemap. The warmed News list returned in 1.4 seconds.
+
+This proves the automatic publication pipeline continued operating on later Chile publication days rather than succeeding only once.
 
 ## Frontend, multilingual and visual QA
 

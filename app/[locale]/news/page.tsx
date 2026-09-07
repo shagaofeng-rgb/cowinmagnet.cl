@@ -6,6 +6,7 @@ import { Locale, localizedPath, t } from "@/data/site";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { htmlLanguageByLocale } from "@/lib/seo";
+import { collectionIndexingMetadata } from "@/lib/localizedContent";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -16,6 +17,8 @@ function displayImage(src = "") {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
+  const posts = await getPublishedNews(locale);
+  const indexing = collectionIndexingMetadata(posts, locale, "news");
   const title = locale === "en" ? "Industry News for Magnetic Separation in the Americas" : locale === "pt-br" ? "Noticias industriais de separacao magnetica nas Americas" : "Noticias industriales de separacion magnetica en Americas";
   const description = locale === "en"
     ? "Editorial briefs from cited external sources with Cowinmagnet technical analysis for mining, recycling, cement and magnetic separation buyers."
@@ -25,16 +28,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return {
     title,
     description,
-    alternates: {
-      canonical: `/${locale}/news`,
-      languages: {
-        "es-CL": "/es-cl/news",
-        es: "/es/news",
-        "pt-BR": "/pt-br/news",
-        en: "/en/news",
-        "x-default": "/es-cl/news"
-      }
-    }
+    robots: indexing.indexable ? { index: true, follow: true } : { index: false, follow: true },
+    alternates: indexing.alternates
   };
 }
 

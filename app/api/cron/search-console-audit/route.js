@@ -22,6 +22,14 @@ function readPositiveInteger(value, fallback, max) {
   return Number.isFinite(parsed) ? Math.max(0, Math.min(parsed, max)) : fallback;
 }
 
+function rotatingOffset(total, limit) {
+  if (!total) return 0;
+  // The cron runs every two hours. Advancing by one inspected batch per slot
+  // covers the sitemap in roughly two days without storing mutable cursor state.
+  const slot = Math.floor(Date.now() / (2 * 60 * 60 * 1000));
+  return (slot * limit) % total;
+}
+
 function extractLocations(xml) {
   return [...String(xml || "").matchAll(/<loc>([^<]+)<\/loc>/gi)].map((match) => match[1].trim());
 }
@@ -50,19 +58,34 @@ export async function GET(request) {
 
   const url = new URL(request.url);
   const scope = url.searchParams.get("scope") === "core" ? "core" : "sitemap";
-  const offset = readPositiveInteger(url.searchParams.get("offset"), 0, 10_000);
+  const requestedOffset = url.searchParams.get("offset");
   const limit = readPositiveInteger(url.searchParams.get("limit"), 25, 50) || 25;
   const candidates = scope === "core" ? CORE_URLS : await sitemapUrls();
+  const offset = requestedOffset === null
+    ? rotatingOffset(candidates.length, limit)
+    : readPositiveInteger(requestedOffset, 0, 10_000);
   const urls = candidates.slice(offset, offset + limit);
   const inspection = await inspectGoogleSearchConsoleUrls(urls, { concurrency: 5 });
 
-  return Response.json({
+  const payload = {
     success: !inspection.error,
     scope,
     totalCandidates: candidates.length,
     offset,
     limit,
+    rotation: requestedOffset === null,
     nextOffset: offset + urls.length < candidates.length ? offset + urls.length : null,
     ...inspection
-  }, { status: inspection.error ? 502 : 200 });
+  };
+  console.log("[search-console-audit]", JSON.stringify({
+    success: payload.success,
+    scope,
+    totalCandidates: payload.totalCandidates,
+    offset,
+    limit,
+    rotation: payload.rotation,
+    summary: inspection.summary,
+    error: inspection.error || ""
+  }));
+  return Response.json(payload, { status: inspection.error ? 502 : 200 });
 }

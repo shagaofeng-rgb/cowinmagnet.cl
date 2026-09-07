@@ -83,16 +83,22 @@ export function localizedProductSeo(locale: Locale, title: string) {
 
 const languageMap = {
   "es-CL": "es-cl",
-  es: "es",
   "pt-BR": "pt-br",
   en: "en",
   "x-default": "es-cl"
 } as const;
 
+export function canonicalLocale(locale: Locale): Locale {
+  // The generic Spanish routes are intentionally retained for visitors, but
+  // currently duplicate the Chilean Spanish primary content. Point Google to
+  // the declared primary until they have materially distinct regional copy.
+  return locale === "es" ? "es-cl" : locale;
+}
+
 export function localizedAlternates(locale: Locale, path = ""): Metadata["alternates"] {
   const cleanPath = path ? `/${path.replace(/^\/+/, "")}` : "";
   return {
-    canonical: `/${locale}${cleanPath}`,
+    canonical: `/${canonicalLocale(locale)}${cleanPath}`,
     languages: Object.fromEntries(
       Object.entries(languageMap).map(([hreflang, targetLocale]) => [hreflang, `/${targetLocale}${cleanPath}`])
     )

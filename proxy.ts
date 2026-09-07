@@ -30,7 +30,11 @@ export function proxy(request: NextRequest) {
     response.headers.set("vary", "Cookie, Accept-Language, x-vercel-ip-country");
     return response;
   }
-  return NextResponse.next();
+  const locale = request.nextUrl.pathname.match(/^\/(es-cl|es|pt-br|en)(?:\/|$)/i)?.[1]?.toLowerCase();
+  if (!locale) return NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-cowin-locale", locale);
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
-export const config = { matcher: "/" };
+export const config = { matcher: ["/", "/(es-cl|es|pt-br|en)/:path*"] };

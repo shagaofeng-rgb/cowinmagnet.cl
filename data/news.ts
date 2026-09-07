@@ -38,6 +38,7 @@ export type NewsArticle = {
   seoKeywords?: string[];
   geoSummary?: string;
   localized?: Record<string, LocalizedNewsContent>;
+  sourceContent?: Pick<NewsArticle, "title" | "summary" | "body">;
   contentLanguage?: string;
   imagePolicy?: string;
   sourceImageUrl?: string;
@@ -100,14 +101,16 @@ function normalizeNewsItem(item: Record<string, any>): NewsArticle {
 
 function localizeNews(article: NewsArticle, locale: Locale): NewsArticle {
   const localized = article.localized?.[locale] || article.localized?.[defaultLocale] || article.localized?.es;
-  if (!localized) return article;
+  const sourceContent = { title: article.title, summary: article.summary, body: article.body };
+  if (!localized) return { ...article, sourceContent };
   return {
     ...article,
     title: localized.title || article.title,
     summary: localized.summary || article.summary,
     body: localized.body || article.body,
     geoSummary: localized.geoSummary || article.geoSummary,
-    seoKeywords: localized.seoKeywords || article.seoKeywords
+    seoKeywords: localized.seoKeywords || article.seoKeywords,
+    sourceContent
   };
 }
 

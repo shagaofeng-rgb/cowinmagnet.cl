@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getCategoryDisplay, industries, markets, productCategories, productCopy, products, solutions } from "@/data/catalog";
 import { Locale, localizedPath, siteConfig, t, uiText } from "@/data/site";
+import { canonicalLocale, localizedAlternates } from "@/lib/seo";
 
 const homeCopy: Record<Locale, {
   heroTitle: string;
@@ -139,20 +140,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return {
     title,
     description: home.heroSummary,
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        "es-CL": "/es-cl",
-        es: "/es",
-        "pt-BR": "/pt-br",
-        en: "/en",
-        "x-default": "/es-cl"
-      }
-    },
+    alternates: localizedAlternates(locale),
     openGraph: {
       title: home.heroTitle,
       description: home.heroSummary,
-      url: `/${locale}`,
+      url: `/${canonicalLocale(locale)}`,
       type: "website",
       images: [{ url: "/assets/home-hero-cowinmagnet-ai.jpg", width: 1600, height: 900, alt: "Cowinmagnet suspended magnetic separator and conveyor protection system" }]
     },

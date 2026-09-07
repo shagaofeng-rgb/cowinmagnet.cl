@@ -5,6 +5,7 @@ import { HeroBanner } from "@/components/HeroBanner";
 import { ArticleContent } from "@/components/ArticleContent";
 import { getPublishedBlogArticle } from "@/lib/blogContent";
 import { Locale, localizedPath } from "@/data/site";
+import { contentIndexingMetadata } from "@/lib/localizedContent";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -12,10 +13,12 @@ export const revalidate = 0;
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   const post = await getPublishedBlogArticle(slug, locale);
+  const indexing = post ? contentIndexingMetadata(post, locale, `blog/${post.slug}`) : null;
   return post ? {
     title: post.title,
     description: post.summary,
-    alternates: { canonical: `/${locale}/blog/${post.slug}` },
+    robots: indexing?.indexable ? { index: true, follow: true } : { index: false, follow: true },
+    alternates: indexing?.alternates,
     openGraph: { type: "article", title: post.title, description: post.summary, images: post.image ? [post.image] : undefined }
   } : { title: "Blog" };
 }
@@ -24,6 +27,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const { locale, slug } = await params;
   const post = await getPublishedBlogArticle(slug, locale);
   if (!post) notFound();
+  const indexing = contentIndexingMetadata(post, locale, `blog/${post.slug}`);
   const image = post.image;
   const schema = {
     "@context": "https://schema.org",
@@ -34,7 +38,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     dateModified: post.updatedAt || post.publishedAt || post.createdAt,
     author: { "@type": "Organization", name: post.author },
     publisher: { "@type": "Organization", name: "Cowinmagnet.cl" },
-    mainEntityOfPage: `https://cowinmagnet.cl/${locale}/blog/${post.slug}`,
+    mainEntityOfPage: `https://cowinmagnet.cl/${indexing.canonicalLocale}/blog/${post.slug}`,
     image: image ? [image] : undefined,
     articleSection: post.categoryTitle
   };

@@ -15,6 +15,7 @@ export type BlogArticle = {
   createdAt?: string;
   updatedAt?: string;
   localized?: Record<string, Partial<Pick<BlogArticle, "title" | "summary" | "body">>>;
+  sourceContent?: Pick<BlogArticle, "title" | "summary" | "body">;
 };
 
 function normalizeArticle(item: any): BlogArticle {
@@ -36,7 +37,8 @@ function normalizeArticle(item: any): BlogArticle {
 
 function localizeArticle(article: BlogArticle, locale: Locale): BlogArticle {
   const selected = article.localized?.[locale] || article.localized?.[defaultLocale] || article.localized?.es;
-  return selected ? { ...article, ...selected } : article;
+  const sourceContent = { title: article.title, summary: article.summary, body: article.body };
+  return selected ? { ...article, ...selected, sourceContent } : { ...article, sourceContent };
 }
 
 export async function getPublishedBlogArticles(locale: Locale = defaultLocale): Promise<BlogArticle[]> {

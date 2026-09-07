@@ -4,16 +4,20 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
 import { getPublishedBlogArticles } from "@/lib/blogContent";
 import { Locale, localizedPath, t } from "@/data/site";
+import { collectionIndexingMetadata } from "@/lib/localizedContent";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
+  const posts = await getPublishedBlogArticles(locale);
+  const indexing = collectionIndexingMetadata(posts, locale, "blog");
   return {
     title: locale === "en" ? "Blog | Magnetic Separation Knowledge" : locale === "pt-br" ? "Blog | Conhecimento em separacao magnetica" : "Blog | Conocimiento en separacion magnetica",
     description: locale === "en" ? "Published technical articles for magnetic separation, mining, recycling and bulk handling." : "Articulos tecnicos publicados sobre separacion magnetica, mineria, reciclaje y manejo de graneles.",
-    alternates: { canonical: `/${locale}/blog` }
+    robots: indexing.indexable ? { index: true, follow: true } : { index: false, follow: true },
+    alternates: indexing.alternates
   };
 }
 

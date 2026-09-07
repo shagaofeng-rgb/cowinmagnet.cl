@@ -8,7 +8,7 @@ import { getCategoryDisplay, productCategories, productCopy } from "@/data/catal
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { getProductDetailContent } from "@/data/productDetailContent";
 import { Locale, localizedPath } from "@/data/site";
-import { localizedProductSeo } from "@/lib/seo";
+import { canonicalLocale, localizedAlternates, localizedProductSeo } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -41,20 +41,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const content = product ? getProductDetailContent(product, locale) : null;
   const title = product && content ? localizedProductSeo(locale, content.title) : "Product";
   const description = content?.summary;
-  const canonical = `/${locale}/products/${category}/${productSlug}`;
+  const canonical = `/${canonicalLocale(locale)}/products/${category}/${productSlug}`;
   return {
     title,
     description,
-    alternates: {
-      canonical,
-      languages: {
-        "es-CL": `/es-cl/products/${category}/${productSlug}`,
-        es: `/es/products/${category}/${productSlug}`,
-        "pt-BR": `/pt-br/products/${category}/${productSlug}`,
-        en: `/en/products/${category}/${productSlug}`,
-        "x-default": `/es-cl/products/${category}/${productSlug}`
-      }
-    },
+    alternates: localizedAlternates(locale, `products/${category}/${productSlug}`),
     openGraph: product && content ? { title, description, type: "website", url: canonical, images: [{ url: product.image, width: 1200, height: 800, alt: content.title }] } : undefined,
     twitter: product && content ? { card: "summary_large_image", title, description, images: [product.image] } : undefined
   };
@@ -83,14 +74,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     image: product.image.startsWith("http") ? product.image : `https://cowinmagnet.cl${product.image}`,
     brand: { "@type": "Brand", name: "COWIN MAGNET" },
     category: categoryDisplay.title,
-    url: `https://cowinmagnet.cl/${locale}/products/${product.category}/${product.slug}`,
+    url: `https://cowinmagnet.cl/${canonicalLocale(locale)}/products/${product.category}/${product.slug}`,
     additionalProperty: content.confirmedSpecifications.map((item) => ({ "@type": "PropertyValue", name: item.label, value: item.value }))
   };
   const breadcrumbSchema = {
     "@context": "https://schema.org", "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: copy.products, item: `https://cowinmagnet.cl/${locale}/products` },
-      { "@type": "ListItem", position: 2, name: categoryDisplay.title, item: `https://cowinmagnet.cl/${locale}/products/${category.slug}` },
+      { "@type": "ListItem", position: 1, name: copy.products, item: `https://cowinmagnet.cl/${canonicalLocale(locale)}/products` },
+      { "@type": "ListItem", position: 2, name: categoryDisplay.title, item: `https://cowinmagnet.cl/${canonicalLocale(locale)}/products/${category.slug}` },
       { "@type": "ListItem", position: 3, name: content.title }
     ]
   };

@@ -6,7 +6,7 @@ import { categoryImages, getCategoryDisplay, productCategories, productCopy } fr
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath } from "@/data/site";
 import type { Metadata } from "next";
-import { localizedProductSeo } from "@/lib/seo";
+import { localizedAlternates, localizedProductSeo } from "@/lib/seo";
 import { productPresentation } from "@/data/productPresentation";
 
 export const dynamic = "force-dynamic";
@@ -19,16 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return {
     title: display ? localizedProductSeo(locale, display.title) : "Product Category",
     description: display?.summary,
-    alternates: {
-      canonical: `/${locale}/products/${categorySlug}`,
-      languages: {
-        "es-CL": `/es-cl/products/${categorySlug}`,
-        es: `/es/products/${categorySlug}`,
-        "pt-BR": `/pt-br/products/${categorySlug}`,
-        en: `/en/products/${categorySlug}`,
-        "x-default": `/es-cl/products/${categorySlug}`
-      }
-    }
+    alternates: localizedAlternates(locale, `products/${categorySlug}`)
   };
 }
 

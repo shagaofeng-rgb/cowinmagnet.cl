@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
 import { getNewsBySlug, staticPosts } from "@/data/news";
 import { Locale, localizedPath, t } from "@/data/site";
-import { localizedAlternates } from "@/lib/seo";
+import { contentIndexingMetadata } from "@/lib/localizedContent";
 
 export const dynamic = "force-dynamic";
 // CMS news slugs can change without a rebuild, so published pages render on demand.
@@ -23,10 +23,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
   const { locale, slug } = await params;
   const post = await getNewsBySlug(slug, locale);
+  const indexing = post ? contentIndexingMetadata(post, locale, `news/${post.slug}`) : null;
   return {
     title: post ? post.title : "News",
     description: post?.summary,
-    alternates: post ? localizedAlternates(locale, `news/${post.slug}`) : undefined,
+    robots: indexing?.indexable ? { index: true, follow: true } : { index: false, follow: true },
+    alternates: indexing?.alternates,
     openGraph: post ? {
       title: post.title,
       description: post.summary,
@@ -40,6 +42,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
   const { locale, slug } = await params;
   const post = await getNewsBySlug(slug, locale);
   if (!post) notFound();
+  const indexing = contentIndexingMetadata(post, locale, `news/${post.slug}`);
   const image = displayImage(post.image);
   const contentLanguage = post.localized?.[locale] ? (locale === "es-cl" ? "es-CL" : locale === "pt-br" ? "pt-BR" : locale) : post.contentLanguage || "es";
   const schema = {
@@ -52,7 +55,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
     author: { "@type": "Organization", name: post.author },
     publisher: { "@type": "Organization", name: "Cowinmagnet.cl" },
     image: [image],
-    mainEntityOfPage: `https://cowinmagnet.cl/${locale}/news/${post.slug}`,
+    mainEntityOfPage: `https://cowinmagnet.cl/${indexing.canonicalLocale}/news/${post.slug}`,
     isBasedOn: post.sourceUrl || undefined,
     keywords: post.seoKeywords?.join(", "),
     articleSection: post.categoryTitle || "Industry News",

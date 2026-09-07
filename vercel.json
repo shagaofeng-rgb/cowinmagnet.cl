@@ -1,8 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/cron/sitemap?submit=true",
-      "schedule": "23 9 */3 * *"
+      "path": "/api/cron/sitemap?submit=true&submitWhenUnchanged=true",
+      "schedule": "23 9 * * *"
     },
     {
       "path": "/api/cron/analytics-sync",
@@ -11,6 +11,14 @@
     {
       "path": "/api/cron/search-console-sync",
       "schedule": "41 */6 * * *"
+    },
+    {
+      "path": "/api/cron/search-console-audit?scope=sitemap&limit=50",
+      "schedule": "19 */2 * * *"
+    },
+    {
+      "path": "/api/cron/search-console-health",
+      "schedule": "5 10 * * *"
     },
     {
       "path": "/api/cron/website-monitor",

@@ -14,7 +14,7 @@ import {
   validateSitemapXml,
   withFileLock
 } from "../lib/sitemapCore.mjs";
-import { submitSitemapRequest } from "../lib/searchConsoleSitemap.mjs";
+import { getSitemapStatusRequest, submitSitemapRequest } from "../lib/searchConsoleSitemap.mjs";
 
 const baseUrl = "https://cowinmagnet.cl";
 const date = "2026-07-10T00:00:00.000Z";
@@ -120,4 +120,22 @@ test("Search Console authentication failure is returned without throwing", async
   assert.equal(result.success, false);
   assert.equal(result.status, 403);
   assert.equal(result.error, "Forbidden");
+});
+
+test("Search Console sitemap status exposes only monitoring fields", async () => {
+  const result = await getSitemapStatusRequest({
+    accessToken: "token",
+    siteUrl: "sc-domain:cowinmagnet.cl",
+    sitemapUrl: `${baseUrl}/sitemap.xml`,
+    fetchImpl: async () => new Response(JSON.stringify({
+      lastSubmitted: "2026-09-07T00:00:00.000Z",
+      lastDownloaded: "2026-09-07T01:00:00.000Z",
+      warnings: 0,
+      errors: 0,
+      contents: [{ type: "web", submitted: 100, indexed: 80 }]
+    }), { status: 200, headers: { "content-type": "application/json" } })
+  });
+  assert.equal(result.success, true);
+  assert.equal(result.lastDownloaded, "2026-09-07T01:00:00.000Z");
+  assert.deepEqual(result.contents, [{ type: "web", submitted: 100, indexed: 80 }]);
 });

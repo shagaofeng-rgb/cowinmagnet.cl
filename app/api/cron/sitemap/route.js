@@ -18,7 +18,8 @@ async function execute(request) {
     trigger: url.searchParams.get("trigger") || "daily-cron",
     force: url.searchParams.get("force") === "true",
     dryRun: url.searchParams.get("dryRun") === "true",
-    submit: url.searchParams.get("submit") !== "false"
+    submit: url.searchParams.get("submit") !== "false",
+    submitWhenUnchanged: url.searchParams.get("submitWhenUnchanged") === "true"
   });
   return Response.json(result, { status: result.success ? 200 : result.locked ? 409 : 500 });
 }

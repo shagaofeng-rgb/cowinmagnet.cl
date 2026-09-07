@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
+import { headers } from "next/headers";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 
 export const metadata: Metadata = {
@@ -48,7 +49,9 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const locale = (await headers()).get("x-cowin-locale");
+  const htmlLang = locale === "en" ? "en" : locale === "pt-br" ? "pt-BR" : locale === "es" ? "es" : "es-CL";
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -62,10 +65,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <html lang="es-CL" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: `(function(){var m=location.pathname.match(/^\\/(es-cl|es|pt-br|en)(?:\\/|$)/);var map={"es-cl":"es-CL","es":"es","pt-br":"pt-BR","en":"en"};if(m)document.documentElement.lang=map[m[1]]||"es-CL";}());` }} />
-      </head>
+    <html lang={htmlLang}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <Suspense fallback={null}>

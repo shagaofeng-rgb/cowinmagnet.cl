@@ -13,8 +13,14 @@ const t = {
   landing: "\u7740\u9646\u9875",
   topPages: "\u70ed\u95e8\u7740\u9646\u9875",
   performance: "\u8868\u73b0",
-  indexing: "\u6536\u5f55",
-  inspection: "\u6838\u5fc3 URL \u68c0\u67e5",
+  indexing: "\u6536\u5f55\u76d1\u63a7",
+  inspection: "\u6838\u5fc3 URL \u68c0\u67e5\uff084 \u6761\uff0c\u4e0d\u4ee3\u8868\u5168\u7ad9\u6536\u5f55\u6570\uff09",
+  sitemap: "\u5df2\u63d0\u4ea4 Sitemap",
+  sitemapRead: "Google \u6700\u540e\u8bfb\u53d6",
+  sitemapSubmitted: "Google \u6700\u540e\u63d0\u4ea4",
+  sitemapDiscovered: "\u5df2\u53d1\u73b0 URL",
+  sitemapIndexed: "Sitemap \u5df2\u6536\u5f55",
+  sitemapStatus: "Sitemap \u72b6\u6001",
   verdict: "\u7ed3\u8bba",
   coverage: "\u8986\u76d6\u72b6\u6001",
   lastCrawl: "\u6700\u8fd1\u6293\u53d6",
@@ -44,6 +50,10 @@ export default function AdminSearchConsoleLivePanel({ searchConsole }) {
   const queries = searchConsole.queries || [];
   const pages = searchConsole.pages || [];
   const indexingStatus = searchConsole.indexingStatus || [];
+  const sitemap = searchConsole.sitemap || {};
+  const sitemapContents = sitemap.contents || [];
+  const sitemapDiscovered = sitemapContents.reduce((sum, item) => sum + Number(item.submitted || 0), 0);
+  const sitemapIndexed = sitemapContents.reduce((sum, item) => sum + Number(item.indexed || 0), 0);
 
   return (
     <section className="admin-panel">
@@ -58,6 +68,13 @@ export default function AdminSearchConsoleLivePanel({ searchConsole }) {
         {metric(t.impressions, overview.impressions || 0, "GSC")}
         {metric(t.ctr, `${overview.ctr || 0}%`, "Click rate")}
         {metric(t.position, overview.position || "-", "Position")}
+      </section>
+
+      <section className="admin-grid two">
+        {metric(t.sitemapStatus, sitemap.success ? "Success" : "Needs attention", sitemap.error || sitemap.sitemapUrl || "")}
+        {metric(t.sitemapDiscovered, sitemapDiscovered || "-", sitemapIndexed ? `${t.sitemapIndexed}: ${sitemapIndexed}` : "Google API")}
+        {metric(t.sitemapRead, sitemap.lastDownloaded || "-", t.sitemapSubmitted)}
+        {metric(t.sitemapSubmitted, sitemap.lastSubmitted || "-", sitemap.isPending ? "Processing" : "Ready")}
       </section>
 
       <section className="admin-grid two">

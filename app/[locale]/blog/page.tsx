@@ -19,6 +19,11 @@ function displayDate(value: string | undefined, locale: Locale) {
   return new Intl.DateTimeFormat(language, { day: "numeric", month: "short", year: "numeric" }).format(date);
 }
 
+function displayAuthor(value: string | undefined, locale: Locale) {
+  if (!value || /^(admin|administrator)$/i.test(value.trim())) return t(locale, "Equipo editorial Cowinmagnet", "Equipe editorial Cowinmagnet", "Cowinmagnet editorial team");
+  return value;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const posts = await getPublishedBlogArticles(locale);
@@ -69,7 +74,7 @@ export default async function BlogPage({ params, searchParams }: { params: Promi
                 <h2><Link href={localizedPath(locale, `blog/${post.slug}`)}>{post.title}</Link></h2>
                 <p>{post.summary}</p>
                 <div className="editorial-card-footer">
-                  <small>{post.author || "Cowinmagnet"}</small>
+                  <small>{displayAuthor(post.author, locale)}</small>
                   <Link href={localizedPath(locale, `blog/${post.slug}`)}>{t(locale, "Leer articulo", "Ler artigo", "Read article")} <span aria-hidden="true">→</span></Link>
                 </div>
               </div>

@@ -25,6 +25,11 @@ function displayDate(value: string | undefined, locale: Locale) {
   return new Intl.DateTimeFormat(language, { day: "numeric", month: "short", year: "numeric" }).format(date);
 }
 
+function displayAuthor(value: string | undefined, locale: Locale) {
+  if (!value || /^(admin|administrator)$/i.test(value.trim())) return t(locale, "Equipo editorial Cowinmagnet", "Equipe editorial Cowinmagnet", "Cowinmagnet editorial team");
+  return value;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const posts = await getPublishedNews(locale);
@@ -82,7 +87,7 @@ export default async function NewsPage({ params, searchParams }: { params: Promi
                 <h2><Link href={localizedPath(locale, `news/${post.slug}`)}>{post.title}</Link></h2>
                 <p>{post.summary}</p>
                 <div className="editorial-card-footer">
-                  <small>{post.sourceUrl ? `${t(locale, "Fuente", "Fonte", "Source")}: ${post.sourceTitle || post.sourceDomain}` : (post.author || "Cowinmagnet")}</small>
+                  <small>{post.sourceUrl ? `${t(locale, "Fuente", "Fonte", "Source")}: ${post.sourceTitle || post.sourceDomain}` : displayAuthor(post.author, locale)}</small>
                   <Link href={localizedPath(locale, `news/${post.slug}`)}>{t(locale, "Leer noticia", "Ler noticia", "Read news")} <span aria-hidden="true">→</span></Link>
                 </div>
               </div>

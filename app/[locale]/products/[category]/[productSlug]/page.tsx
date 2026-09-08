@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { OperationDocuments, OptionsGrid, ProductApplications, ProductFaq, ProductHero, ProductHowItWorks, ProductQuoteIntro, ProductStickyActions, RelatedProducts, SelectionGuide, SpecGroups } from "@/components/ProductDetailBlocks";
 import { ProductInquiryForm } from "@/components/ProductInquiryForm";
-import { ProductSectionNav } from "@/components/ProductSectionNav";
+import { ProductContentTabs } from "@/components/ProductContentTabs";
 import { getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { getProductDetailContent } from "@/data/productDetailContent";
@@ -13,9 +13,9 @@ import { canonicalLocale, localizedAlternates, localizedProductSeo } from "@/lib
 export const dynamic = "force-dynamic";
 
 function sectionCopy(locale: Locale) {
-  if (locale === "en") return { overview: "Overview", how: "How it works", applications: "Applications", selection: "Selection", specifications: "Specifications", faq: "FAQ" };
-  if (locale === "pt-br") return { overview: "Resumo", how: "Como funciona", applications: "Aplicações", selection: "Seleção", specifications: "Especificações", faq: "Perguntas frequentes" };
-  return { overview: "Resumen", how: "Funcionamiento", applications: "Aplicaciones", selection: "Selección", specifications: "Especificaciones", faq: "FAQ" };
+  if (locale === "en") return { overview: "Overview", selection: "Selection guide", specifications: "Specifications & options", faq: "FAQ", related: "Related equipment" };
+  if (locale === "pt-br") return { overview: "Resumo", selection: "Guia de seleção", specifications: "Especificações e opções", faq: "Perguntas frequentes", related: "Equipamentos relacionados" };
+  return { overview: "Resumen", selection: "Guía de selección", specifications: "Especificaciones y opciones", faq: "FAQ", related: "Equipos relacionados" };
 }
 
 function relatedProductsFor<T extends { slug: string; category: string; title: string }>(current: T, catalogProducts: T[]) {
@@ -91,15 +91,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     <ProductHero product={product} content={content} categoryTitle={categoryDisplay.title} locale={locale} />
-    <ProductSectionNav items={[{ id: "funcionamiento", label: navigation.how }, { id: "aplicaciones", label: navigation.applications }, { id: "seleccion", label: navigation.selection }, { id: "especificaciones", label: navigation.specifications }, { id: "faq", label: navigation.faq }]} />
-    <ProductHowItWorks product={product} content={content} locale={locale} />
-    <ProductApplications product={product} locale={locale} />
-    <SelectionGuide product={product} content={content} locale={locale} />
-    <SpecGroups content={content} locale={locale} />
-    <OptionsGrid content={content} locale={locale} />
-    <OperationDocuments content={content} locale={locale} />
-    <ProductFaq content={content} locale={locale} />
-    <RelatedProducts products={relatedProducts} locale={locale} />
+    <ProductContentTabs tabs={[
+      { id: "overview", label: navigation.overview, content: <><ProductHowItWorks product={product} content={content} locale={locale} /><ProductApplications product={product} locale={locale} /></> },
+      { id: "selection", label: navigation.selection, content: <SelectionGuide product={product} content={content} locale={locale} /> },
+      { id: "specifications", label: navigation.specifications, content: <><SpecGroups content={content} locale={locale} /><OptionsGrid content={content} locale={locale} /><OperationDocuments content={content} locale={locale} /></> },
+      { id: "faq", label: navigation.faq, content: <ProductFaq content={content} locale={locale} /> },
+      { id: "related", label: navigation.related, content: <RelatedProducts products={relatedProducts} locale={locale} /> }
+    ]} />
     <section id="cotizacion" className="pd-quote-section"><div className="pd-shell pd-quote-grid"><ProductQuoteIntro locale={locale} /><ProductInquiryForm locale={locale} productName={content.title} model={content.series} /></div></section>
     <ProductStickyActions locale={locale} />
   </main>;

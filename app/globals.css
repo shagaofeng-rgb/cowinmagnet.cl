@@ -1695,3 +1695,43 @@ body {
   .admin-visitor-timeline li { gap: 5px; }
   .admin-visitor-timeline small { grid-column: auto; overflow-wrap: anywhere; }
 }
+
+
+.list-pagination,
+.list-pagination-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin: 28px 0 0;
+  color: #526b60;
+  font-size: .92rem;
+}
+
+.list-pagination > div { display: flex; gap: 8px; }
+.list-pagination a,
+.list-pagination span[aria-disabled="true"] {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  padding: 7px 13px;
+  border: 1px solid #c9ddd4;
+  border-radius: 6px;
+  color: #1c5b4d;
+  font-weight: 750;
+  text-decoration: none;
+}
+.list-pagination a:hover { border-color: var(--brand); background: #eef6f2; }
+.list-pagination span[aria-disabled="true"] { opacity: .45; }
+
+.pd-content-tabs { padding: clamp(32px, 5vw, 62px) 0 0; background: var(--pd-mist); }
+.pd-tab-list { display: flex; gap: 8px; overflow-x: auto; padding: 0 0 14px; scrollbar-width: thin; }
+.pd-tab-list button { flex: 0 0 auto; min-height: 44px; border: 1px solid var(--pd-line); border-radius: 7px; padding: 9px 15px; background: #fff; color: var(--pd-deep); font: inherit; font-size: .9rem; font-weight: 800; cursor: pointer; }
+.pd-tab-list button[aria-selected="true"] { border-color: var(--pd-deep); background: var(--pd-deep); color: #fff; }
+.pd-tab-list button:focus-visible { outline: 3px solid rgba(242, 169, 0, .35); outline-offset: 2px; }
+.pd-tab-panel { min-height: min(64vh, 920px); }
+.pd-tab-panel[hidden] { display: none; }
+
+@media (max-width: 860px) {
+  .list-pagination { align-items: flex-start; flex-direction: column; }
+}

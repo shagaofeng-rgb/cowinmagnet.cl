@@ -5,6 +5,8 @@ import { HeroBanner } from "@/components/HeroBanner";
 import { getPublishedBlogArticles } from "@/lib/blogContent";
 import { Locale, localizedPath, t } from "@/data/site";
 import { collectionIndexingMetadata } from "@/lib/localizedContent";
+import { PaginationNav } from "@/components/PaginationNav";
+import { paginateList, parseListPagination } from "@/lib/listPagination";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -21,9 +23,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   };
 }
 
-export default async function BlogPage({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function BlogPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { locale } = await params;
+  const query = await searchParams;
   const posts = await getPublishedBlogArticles(locale);
+  const paged = paginateList(posts, parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] }));
 
   return (
     <>
@@ -35,7 +39,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: L
       />
       <section className="band">
         <div className="news-grid">
-          {posts.map((post) => (
+          {paged.items.map((post) => (
             <article className="news-card" key={post.slug}>
               {post.image ? <img src={post.image} alt={post.title} loading="lazy" /> : null}
               <div className="news-card-body">
@@ -48,6 +52,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: L
             </article>
           ))}
         </div>
+        <PaginationNav meta={paged.meta} pathname={localizedPath(locale, "blog")} params={query} locale={locale} />
         {!posts.length ? <p>{t(locale, "Aun no hay articulos publicados.", "Ainda nao ha artigos publicados.", "No published articles yet.")}</p> : null}
       </section>
     </>

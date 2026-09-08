@@ -7,6 +7,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { htmlLanguageByLocale } from "@/lib/seo";
 import { collectionIndexingMetadata } from "@/lib/localizedContent";
+import { PaginationNav } from "@/components/PaginationNav";
+import { paginateList, parseListPagination } from "@/lib/listPagination";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -33,9 +35,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   };
 }
 
-export default async function NewsPage({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function NewsPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { locale } = await params;
+  const query = await searchParams;
   const posts = await getPublishedNews(locale);
+  const paged = paginateList(posts, parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] }));
 
   return (
     <>
@@ -48,7 +52,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: L
       <section className="band">
         {locale === "en" || locale === "pt-br" ? <p className="news-language-note">{t(locale, "", "Os artigos mantem o idioma editorial original quando uma traducao revisada nao esta disponivel.", "Articles retain their original editorial language when a reviewed translation is not available.")}</p> : null}
         <div className="news-grid">
-          {posts.map((post) => (
+          {paged.items.map((post) => (
             <article className="news-card" key={post.slug} lang={post.localized?.[locale] ? htmlLanguageByLocale[locale] : post.contentLanguage || "es"}>
               {post.image ? <Image src={displayImage(post.image)} alt={post.title} width={720} height={430} unoptimized /> : null}
               <div className="news-card-body">
@@ -62,6 +66,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: L
             </article>
           ))}
         </div>
+        <PaginationNav meta={paged.meta} pathname={localizedPath(locale, "news")} params={query} locale={locale} />
       </section>
     </>
   );

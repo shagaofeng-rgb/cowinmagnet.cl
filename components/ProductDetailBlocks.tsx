@@ -127,7 +127,7 @@ export function ProductHero({ product, content, categoryTitle, locale }: { produ
             <Link className="pd-button pd-button-primary" href="#cotizacion">{copy.quote}</Link>
             <a className="pd-button pd-button-secondary" href={`https://wa.me/${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer nofollow">{copy.speak}</a>
           </div>
-          <a className="pd-guide-link" href="#seleccion">{copy.guide}</a>
+          <Link className="pd-guide-link" href={`${localizedPath(locale, `products/${product.category}/${product.slug}`)}?tab=selection`}>{copy.guide}</Link>
           {content.pendingSpecifications.length ? <p className="pd-project-note">{copy.projectNote}</p> : null}
         </article>
       </div>

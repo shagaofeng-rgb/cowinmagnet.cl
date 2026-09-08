@@ -116,7 +116,7 @@ export function ProductHero({ product, content, categoryTitle, locale }: { produ
   return <>
     <section className="pd-hero">
       <div className="pd-shell pd-hero-grid">
-        <ProductMediaGallery images={product.imageGallery?.length ? product.imageGallery : [product.image]} alt={content.title} />
+        <ProductMediaGallery images={product.imageGallery?.length ? product.imageGallery : [product.image]} alt={content.title} locale={locale} />
         <article className="pd-hero-copy">
           <p className="pd-eyebrow">{labelFromCategory(categoryTitle, copy)}</p>
           <h1>{content.title}</h1>

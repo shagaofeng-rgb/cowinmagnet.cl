@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
+import { PaginationNav } from "@/components/PaginationNav";
 import { briefIndustryCards } from "@/data/brief";
 import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
+import { paginateList, parseListPagination } from "@/lib/listPagination";
 import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
@@ -16,8 +18,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   };
 }
 
-export default async function IndustriesPage({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function IndustriesPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { locale } = await params;
+  const query = await searchParams;
+  const pagination = parseListPagination(query, { defaultPageSize: 8, allowedPageSizes: [8] });
+  const { items, meta } = paginateList(briefIndustryCards, pagination);
   return (
     <>
       <Breadcrumbs locale={locale} items={[{ label: t(locale, "Industrias", "Industrias", "Industries") }]} />
@@ -34,13 +39,14 @@ export default async function IndustriesPage({ params }: { params: Promise<{ loc
           <p>{t(locale, "Use estas rutas para identificar el problema de planta. Las paginas de detalle conservan criterios de seleccion, equipos recomendados y enlaces de consulta.", "Use estas rotas para identificar o problema da planta. As paginas de detalhe mantem criterios de selecao, equipamentos recomendados e links de consulta.", "Use these paths to identify the plant problem. Detail pages retain selection criteria, recommended equipment and enquiry links.")}</p>
         </div>
         <div className="industry-card-grid">
-          {briefIndustryCards.map((card) => (
+          {items.map((card) => (
             <Link className="industry-visual-card" href={localizedPath(locale, `industries/${card.slug}`)} key={`${card.slug}-${card.image}`}>
               <Image src={card.image} alt={card.title[locale]} width={720} height={500} />
               <div><h2>{card.title[locale]}</h2><p>{card.summary[locale]}</p><span>{t(locale, "Ver solucion", "Ver solucao", "View solution")}</span></div>
             </Link>
           ))}
         </div>
+        <PaginationNav meta={meta} pathname={`/${locale}/industries`} params={query} locale={locale} />
       </section>
       <section className="band muted selection-cta">
         <div><p className="eyebrow">{t(locale, "Soporte de aplicacion", "Suporte de aplicacao", "Application support")}</p><h2>{t(locale, "Indique el material y el punto donde necesita separar o proteger", "Informe o material e o ponto onde precisa separar ou proteger", "Tell us the material and the point where you need separation or protection")}</h2><p>{t(locale, "Con una descripcion breve, capacidad aproximada y pais podemos orientar la familia de equipo y los datos que vale la pena confirmar.", "Com uma breve descricao, capacidade aproximada e pais podemos orientar a familia de equipamento e os dados que vale a pena confirmar.", "With a short description, approximate capacity and country, we can point you to the equipment family and the details worth confirming.")}</p></div>

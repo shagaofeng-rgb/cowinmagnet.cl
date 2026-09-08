@@ -1,6 +1,8 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
+import { PaginationNav } from "@/components/PaginationNav";
 import { Locale, t } from "@/data/site";
+import { paginateList, parseListPagination } from "@/lib/listPagination";
 import { localizedAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -31,8 +33,11 @@ const downloads = [
   }
 ];
 
-export default async function DownloadsPage({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function DownloadsPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { locale } = await params;
+  const query = await searchParams;
+  const pagination = parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] });
+  const { items, meta } = paginateList(downloads, pagination);
 
   return (
     <>
@@ -45,7 +50,7 @@ export default async function DownloadsPage({ params }: { params: Promise<{ loca
       />
       <section className="band">
         <div className="page-grid">
-          {downloads.map((item) => (
+          {items.map((item) => (
             <article className="content-card" key={item.href}>
               <div className="content-card-body">
                 <h3>{item.title}</h3>
@@ -55,6 +60,7 @@ export default async function DownloadsPage({ params }: { params: Promise<{ loca
             </article>
           ))}
         </div>
+        <PaginationNav meta={meta} pathname={`/${locale}/downloads`} params={query} locale={locale} />
       </section>
       <section className="band muted">
         <div className="section-heading">

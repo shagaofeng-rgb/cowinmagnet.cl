@@ -1,5 +1,6 @@
 import { getAdminDateRange } from "@/lib/adminDateRange";
 import { getAnalyticsSnapshot } from "@/lib/analyticsStore";
+import { parseAnalyticsFilters } from "@/lib/analyticsPolicy";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { AdminVisitorsRealtime } from "@/components/admin/AdminRealtimePanels";
 
@@ -9,7 +10,7 @@ export const metadata = { title: "访客记录 | Cowinmagnet.cl Admin" };
 export default async function AdminVisitorsPage({ searchParams }) {
   const params = await searchParams;
   const range = getAdminDateRange(params);
-  const analytics = await getAnalyticsSnapshot(range);
+  const analytics = await getAnalyticsSnapshot(range, parseAnalyticsFilters(params));
 
   return (
     <>

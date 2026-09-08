@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BarList, CsvExportButton, MetricCard, TrendChart } from "@/components/admin/AdminWidgets";
 
@@ -86,6 +87,12 @@ function Pagination({ meta = {} }) {
   return <div className="admin-pagination"><span>共 {Number(meta.total || 0).toLocaleString()} 位访客 · 第 {page}/{totalPages} 页</span><div><button type="button" disabled={page <= 1} onClick={() => move(page - 1)}>上一页</button><button type="button" disabled={page >= totalPages} onClick={() => move(page + 1)}>下一页</button></div></div>;
 }
 
+function LocalPagination({ total = 0, page = 1, pageSize = 25, onChange, label = "条记录" }) {
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  return <div className="admin-pagination"><span>共 {total.toLocaleString()} {label} · 第 {currentPage}/{totalPages} 页</span><div><button type="button" disabled={currentPage <= 1} onClick={() => onChange(currentPage - 1)}>上一页</button><button type="button" disabled={currentPage >= totalPages} onClick={() => onChange(currentPage + 1)}>下一页</button></div></div>;
+}
+
 export function AdminOverviewRealtime({ initialData, contentStats = {} }) {
   const { data, state } = useLiveAnalytics(initialData);
   const overview = data.overview || {}, traffic = data.traffic || {}, pages = rows(data.pages), searchConsole = data.searchConsole || {};
@@ -99,11 +106,14 @@ export function AdminOverviewRealtime({ initialData, contentStats = {} }) {
 export function AdminTrafficRealtime({ initialData }) {
   const { data, state } = useLiveAnalytics(initialData);
   const overview = data.overview || {}, traffic = data.traffic || {}, acquisition = data.acquisition || {};
+  const [acquisitionPage, setAcquisitionPage] = useState(1);
+  const acquisitionRows = rows(acquisition.session);
+  const acquisitionPageRows = acquisitionRows.slice((acquisitionPage - 1) * 25, acquisitionPage * 25);
   return <><LiveNote state={state} timezone={data.timezone} /><DataQuality dataQuality={data.dataQuality} />
     <section className="admin-kpi-grid"><MetricCard label="平均停留" value={(overview.avgDuration || 0) + "s"} note="页面事件" /><MetricCard label="跳出率" value={(overview.bounceRate || 0) + "%"} note="单页会话" /><MetricCard label="覆盖国家" value={rows(traffic.countries).length} note="访问 IP 地理头" /><MetricCard label="设备类型" value={rows(traffic.devices).length} note="浏览器识别" /></section>
     <section className="admin-panel"><p className="eyebrow">每日趋势</p><h2>有效访问变化</h2><TrendChart rows={rows(traffic.series)} /></section>
     <section className="admin-grid four"><article className="admin-panel"><p className="eyebrow">渠道</p><h2>来源分布</h2><BarList rows={rows(traffic.channels)} /></article><article className="admin-panel"><p className="eyebrow">平台</p><h2>搜索、社媒与 AI</h2><BarList rows={rows(traffic.sourcePlatforms)} /></article><article className="admin-panel"><p className="eyebrow">区域</p><h2>国家地区</h2><BarList rows={rows(traffic.countries)} /></article><article className="admin-panel"><p className="eyebrow">设备</p><h2>访问环境</h2><BarList rows={rows(traffic.devices)} /></article></section>
-    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">归因明细</p><h2>会话来源</h2></div><CsvExportButton rows={rows(acquisition.session).slice(0, 100)} filename="cowin-acquisition.csv" /></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>来源</th><th>渠道</th><th>访客</th><th>会话</th><th>PV</th><th>询盘</th><th>转化率</th></tr></thead><tbody>{rows(acquisition.session).slice(0, 100).map((row, index) => <tr key={row.source + "-" + index}><td>{row.source}</td><td>{row.channel}</td><td>{row.visitors}</td><td>{row.sessions}</td><td>{row.pageViews}</td><td>{row.leads}</td><td>{row.conversionRate}%</td></tr>)}{!rows(acquisition.session).length ? <EmptyRow columns={7} /> : null}</tbody></table></div></section>
+    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">归因明细</p><h2>会话来源</h2></div><CsvExportButton rows={acquisitionRows} filename="cowin-acquisition.csv" /></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>来源</th><th>渠道</th><th>访客</th><th>会话</th><th>PV</th><th>询盘</th><th>转化率</th></tr></thead><tbody>{acquisitionPageRows.map((row, index) => <tr key={row.source + "-" + index}><td>{row.source}</td><td>{row.channel}</td><td>{row.visitors}</td><td>{row.sessions}</td><td>{row.pageViews}</td><td>{row.leads}</td><td>{row.conversionRate}%</td></tr>)}{!acquisitionRows.length ? <EmptyRow columns={7} /> : null}</tbody></table></div><LocalPagination total={acquisitionRows.length} page={acquisitionPage} onChange={setAcquisitionPage} label="条来源归因" /></section>
   </>;
 }
 
@@ -112,14 +122,16 @@ export function AdminVisitorsRealtime({ initialData }) {
   const visitors = rows(data.visitors);
   const exported = useMemo(() => visitors.map((item) => ({ time: dateTime(item.lastSeen), customer: "C" + String(item.customerNumber || 0).padStart(5, "0"), type: item.customerType, visits: item.visitCount, country: item.country, source: item.source, page: item.lastPage, ip: item.ipMasked })), [visitors]);
   return <><LiveNote state={state} timezone={data.timezone} /><DataQuality dataQuality={data.dataQuality} />
-    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">访客中心</p><h2>真实访问记录</h2></div><CsvExportButton rows={exported} filename="cowin-visitors.csv" /></div><VisitorFilters data={data} /><div className="admin-table-wrap"><table className="admin-table admin-visitors-table"><thead><tr><th>最近访问</th><th>访客</th><th>类型</th><th>次数</th><th>国家</th><th>来源</th><th>最后页面</th><th>浏览页面</th><th>脱敏 IP</th></tr></thead><tbody>{visitors.map((item) => <tr key={item.visitorId}><td>{dateTime(item.lastSeen)}</td><td>C{String(item.customerNumber || 0).padStart(5, "0")}</td><td><span className={"admin-visitor-chip " + String(item.customerType).toLowerCase().replace(/\s+/g, "-")}>{item.customerType}</span></td><td>{item.visitCount}</td><td>{item.country}</td><td>{item.source}</td><td>{item.lastPage}</td><td title={item.pages?.join(" → ")}>{item.pageCount} 页</td><td>{item.ipMasked}</td></tr>)}{!visitors.length ? <EmptyRow columns={9} /> : null}</tbody></table></div><Pagination meta={data.visitorMeta} /></section>
+    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">访客中心</p><h2>真实访问记录</h2></div><CsvExportButton rows={exported} filename="cowin-visitors.csv" /></div><VisitorFilters data={data} /><div className="admin-table-wrap"><table className="admin-table admin-visitors-table"><thead><tr><th>最近访问</th><th>访客</th><th>类型</th><th>次数</th><th>国家</th><th>来源</th><th>最后页面</th><th>浏览页面</th><th>脱敏 IP</th></tr></thead><tbody>{visitors.map((item) => <tr key={item.visitorId}><td>{dateTime(item.lastSeen)}</td><td><Link className="admin-visitor-link" href={`/admin/visitors/${encodeURIComponent(item.visitorId)}`}>C{String(item.customerNumber || 0).padStart(5, "0")}<small>查看详情</small></Link></td><td><span className={"admin-visitor-chip " + String(item.customerType).toLowerCase().replace(/\s+/g, "-")}>{item.customerType}</span></td><td>{item.visitCount}</td><td>{item.country}</td><td>{item.source}</td><td>{item.lastPage}</td><td title={item.pages?.join(" → ")}>{item.pageCount} 页</td><td>{item.ipMasked}</td></tr>)}{!visitors.length ? <EmptyRow columns={9} /> : null}</tbody></table></div><Pagination meta={data.visitorMeta} /></section>
   </>;
 }
 
 export function AdminPagesRealtime({ initialData }) {
   const { data, state } = useLiveAnalytics(initialData);
-  const pages = rows(data.pages).slice(0, 100);
-  return <><LiveNote state={state} timezone={data.timezone} /><section className="admin-panel"><p className="eyebrow">页面表现</p><h2>落地页与询盘转化</h2><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>页面</th><th>URL</th><th>浏览</th><th>访客</th><th>平均停留</th><th>询盘率</th></tr></thead><tbody>{pages.map((page) => <tr key={page.page}><td>{page.title}</td><td>{page.page}</td><td>{page.views}</td><td>{page.visitors}</td><td>{page.avgDuration}s</td><td>{page.conversionRate}%</td></tr>)}{!pages.length ? <EmptyRow columns={6} /> : null}</tbody></table></div></section></>;
+  const [pageNumber, setPageNumber] = useState(1);
+  const allPages = rows(data.pages);
+  const pages = allPages.slice((pageNumber - 1) * 25, pageNumber * 25);
+  return <><LiveNote state={state} timezone={data.timezone} /><section className="admin-panel"><p className="eyebrow">页面表现</p><h2>落地页与询盘转化</h2><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>页面</th><th>URL</th><th>浏览</th><th>访客</th><th>平均停留</th><th>询盘率</th></tr></thead><tbody>{pages.map((page) => <tr key={page.page}><td>{page.title}</td><td>{page.page}</td><td>{page.views}</td><td>{page.visitors}</td><td>{page.avgDuration}s</td><td>{page.conversionRate}%</td></tr>)}{!allPages.length ? <EmptyRow columns={6} /> : null}</tbody></table></div><LocalPagination total={allPages.length} page={pageNumber} onChange={setPageNumber} label="个页面" /></section></>;
 }
 
 export function AdminJourneysRealtime({ initialData }) {

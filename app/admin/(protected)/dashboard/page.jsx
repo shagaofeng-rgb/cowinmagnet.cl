@@ -2,8 +2,9 @@ import { products, productCategories } from "@/data/catalog";
 import { adminAccountStorageMode } from "@/lib/adminAccountStore";
 import { getAdminDateRange } from "@/lib/adminDateRange";
 import { getAnalyticsSnapshot, getLatestSyncStatus } from "@/lib/analyticsStore";
-import { cmsStorageMode, getCmsItems } from "@/lib/cmsStore";
-import { enquiryStorageMode, getEnquiries } from "@/lib/enquiryStore";
+import { parseAnalyticsFilters } from "@/lib/analyticsPolicy";
+import { cmsStorageMode, getCmsItemsPage } from "@/lib/cmsStore";
+import { enquiryStorageMode, getEnquiriesPage } from "@/lib/enquiryStore";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { AdminOverviewRealtime } from "@/components/admin/AdminRealtimePanels";
 import AdminSyncStatus from "@/components/admin/AdminSyncStatus";
@@ -27,12 +28,12 @@ export default async function AdminDashboardPage({ searchParams }) {
   const params = await searchParams;
   const range = getAdminDateRange(params);
   const [uploadedProducts, newsPosts, enquiries, analytics, syncStatus, blogPosts] = await Promise.all([
-    getCmsItems("product", { includeInactive: true }),
-    getCmsItems("news", { includeInactive: true }),
-    getEnquiries(),
-    getAnalyticsSnapshot(range),
+    getCmsItemsPage("product", { includeInactive: true, pageSize: 25 }),
+    getCmsItemsPage("news", { includeInactive: true, pageSize: 25 }),
+    getEnquiriesPage({ pageSize: 25 }),
+    getAnalyticsSnapshot(range, parseAnalyticsFilters(params)),
     getLatestSyncStatus(),
-    getCmsItems("blog", { includeInactive: true })
+    getCmsItemsPage("blog", { includeInactive: true, pageSize: 25 })
   ]);
 
   return (
@@ -59,11 +60,11 @@ export default async function AdminDashboardPage({ searchParams }) {
         contentStats={{
           products: products.length,
           categories: productCategories.length,
-          cmsProducts: uploadedProducts.length,
-          newsPosts: newsPosts.length,
-          cmsNews: newsPosts.length,
-          blogPosts: blogPosts.length,
-          enquiries: enquiries.length,
+          cmsProducts: uploadedProducts.meta.total,
+          newsPosts: newsPosts.meta.total,
+          cmsNews: newsPosts.meta.total,
+          blogPosts: blogPosts.meta.total,
+          enquiries: enquiries.meta.total,
           cmsStorageMode: cmsStorageMode()
         }}
       />

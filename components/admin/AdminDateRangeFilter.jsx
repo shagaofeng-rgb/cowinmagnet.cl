@@ -7,7 +7,6 @@ const options = [
   ["day", "今日"],
   ["week", "本周"],
   ["month", "本月"],
-  ["quarter", "近 90 天"],
   ["custom", "自定义"]
 ];
 

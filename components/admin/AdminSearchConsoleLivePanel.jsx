@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 const t = {
   eyebrow: "SEO \u6570\u636e",
   title: "Google Search Console",
@@ -43,6 +47,11 @@ function rowMetric(row) {
   return `${row.clicks || 0} clicks / ${row.impressions || 0} impressions / CTR ${row.ctr || 0}% / Pos. ${row.position || "-"}`;
 }
 
+function Pager({ total, page, onChange, label }) {
+  const totalPages = Math.max(1, Math.ceil(total / 10));
+  return <div className="admin-pagination"><span>共 {total} {label} · 第 {page}/{totalPages} 页</span><div><button type="button" disabled={page <= 1} onClick={() => onChange(page - 1)}>上一页</button><button type="button" disabled={page >= totalPages} onClick={() => onChange(page + 1)}>下一页</button></div></div>;
+}
+
 export default function AdminSearchConsoleLivePanel({ searchConsole }) {
   const configured = searchConsole.configured;
   const error = searchConsole.error;
@@ -54,6 +63,12 @@ export default function AdminSearchConsoleLivePanel({ searchConsole }) {
   const sitemapContents = sitemap.contents || [];
   const sitemapDiscovered = sitemapContents.reduce((sum, item) => sum + Number(item.submitted || 0), 0);
   const sitemapIndexed = sitemapContents.reduce((sum, item) => sum + Number(item.indexed || 0), 0);
+  const [queryPage, setQueryPage] = useState(1);
+  const [landingPage, setLandingPage] = useState(1);
+  const [indexPage, setIndexPage] = useState(1);
+  const visibleQueries = queries.slice((queryPage - 1) * 10, queryPage * 10);
+  const visiblePages = pages.slice((landingPage - 1) * 10, landingPage * 10);
+  const visibleIndexing = indexingStatus.slice((indexPage - 1) * 10, indexPage * 10);
 
   return (
     <section className="admin-panel">
@@ -85,11 +100,12 @@ export default function AdminSearchConsoleLivePanel({ searchConsole }) {
             <table className="admin-table">
               <thead><tr><th>{t.queries}</th><th>{t.performance}</th></tr></thead>
               <tbody>
-                {queries.slice(0, 10).map((row) => <tr key={row.query}><td>{row.query}</td><td>{rowMetric(row)}</td></tr>)}
+                {visibleQueries.map((row) => <tr key={row.query}><td>{row.query}</td><td>{rowMetric(row)}</td></tr>)}
                 {!queries.length ? <tr><td colSpan="2">{t.noQueries}</td></tr> : null}
               </tbody>
             </table>
           </div>
+          <Pager total={queries.length} page={queryPage} onChange={setQueryPage} label="条搜索词" />
         </article>
 
         <article className="admin-panel">
@@ -99,11 +115,12 @@ export default function AdminSearchConsoleLivePanel({ searchConsole }) {
             <table className="admin-table">
               <thead><tr><th>URL</th><th>{t.performance}</th></tr></thead>
               <tbody>
-                {pages.slice(0, 10).map((row) => <tr key={row.page}><td>{row.page}</td><td>{rowMetric(row)}</td></tr>)}
+                {visiblePages.map((row) => <tr key={row.page}><td>{row.page}</td><td>{rowMetric(row)}</td></tr>)}
                 {!pages.length ? <tr><td colSpan="2">{t.noPages}</td></tr> : null}
               </tbody>
             </table>
           </div>
+          <Pager total={pages.length} page={landingPage} onChange={setLandingPage} label="个落地页" />
         </article>
       </section>
 
@@ -114,7 +131,7 @@ export default function AdminSearchConsoleLivePanel({ searchConsole }) {
           <table className="admin-table">
             <thead><tr><th>URL</th><th>{t.verdict}</th><th>{t.coverage}</th><th>{t.lastCrawl}</th></tr></thead>
             <tbody>
-              {indexingStatus.map((row) => (
+              {visibleIndexing.map((row) => (
                 <tr key={row.url}>
                   <td>{row.url}</td>
                   <td>{row.verdict}</td>
@@ -126,6 +143,7 @@ export default function AdminSearchConsoleLivePanel({ searchConsole }) {
             </tbody>
           </table>
         </div>
+        <Pager total={indexingStatus.length} page={indexPage} onChange={setIndexPage} label="条 URL 检查" />
       </article>
     </section>
   );

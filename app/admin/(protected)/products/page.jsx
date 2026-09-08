@@ -1,5 +1,8 @@
 import { productCategories, products } from "@/data/catalog";
-import { getCmsItems } from "@/lib/cmsStore";
+import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
+import { AdminListControls, AdminListPagination } from "@/components/admin/AdminListControls";
+import { getAdminDateRange } from "@/lib/adminDateRange";
+import { getCmsItemsPage } from "@/lib/cmsStore";
 
 const t = {
   eyebrow: "\u4ea7\u54c1\u7ba1\u7406",
@@ -37,7 +40,19 @@ export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminProductsPage({ searchParams }) {
   const params = await searchParams;
-  const uploadedProducts = await getCmsItems("product", { includeInactive: true });
+  const range = getAdminDateRange(params);
+  const uploaded = await getCmsItemsPage("product", {
+    includeInactive: true,
+    range,
+    page: params?.page,
+    pageSize: params?.pageSize,
+    query: params?.query,
+    status: params?.status
+  });
+  const catalogPageSize = [25, 50, 100].includes(Number(params?.catalogPageSize)) ? Number(params.catalogPageSize) : 25;
+  const catalogTotalPages = Math.max(1, Math.ceil(products.length / catalogPageSize));
+  const catalogPage = Math.min(Math.max(1, Number(params?.catalogPage || 1) || 1), catalogTotalPages);
+  const catalogProducts = products.slice((catalogPage - 1) * catalogPageSize, catalogPage * catalogPageSize);
 
   return (
     <section className="admin-panel">
@@ -45,8 +60,9 @@ export default async function AdminProductsPage({ searchParams }) {
         <div>
           <p className="eyebrow">{t.eyebrow}</p>
           <h1>{t.title}</h1>
-          <p>{t.desc} {products.length} \u4e2a\uff0c{t.cmsProducts} {uploadedProducts.length} \u4e2a\u3002</p>
+          <p>{t.desc} {products.length} \u4e2a\uff0c{t.cmsProducts} {uploaded.meta.total} \u4e2a\u3002</p>
         </div>
+        <AdminDateRangeFilter range={range} />
       </div>
       {params?.saved ? <div className="admin-alert good">{t.saved}</div> : null}
       {params?.error ? <div className="admin-alert">{t.error}</div> : null}
@@ -72,15 +88,27 @@ export default async function AdminProductsPage({ searchParams }) {
         <label>{t.imageAlt}<input name="imageAlt" /></label>
         <button type="submit">{t.save}</button>
       </form>
+      <section className="admin-list-section">
+        <div className="admin-panel-head"><div><p className="eyebrow">后台 CMS</p><h2>后台新增产品</h2></div></div>
+        <AdminListControls searchLabel="搜索产品名称、Slug 或分类" statusOptions={[{ value: "published", label: "已发布" }, { value: "draft", label: "草稿" }, { value: "offline", label: "已下线" }]} />
       <div className="admin-table-wrap">
         <table className="admin-table">
           <thead><tr><th>{t.name}</th><th>{t.category}</th><th>{t.status}</th><th>{t.source}</th></tr></thead>
           <tbody>
-            {uploadedProducts.map((item) => <tr key={item.slug}><td>{item.title}</td><td>{item.categoryTitle}</td><td>{item.status}</td><td>{t.cms}</td></tr>)}
-            {products.slice(0, 80).map((item) => <tr key={item.slug}><td>{item.title}</td><td>{item.category}</td><td>{t.published}</td><td>{t.mainSync}</td></tr>)}
+            {uploaded.items.map((item) => <tr key={item.slug}><td>{item.title}</td><td>{item.categoryTitle}</td><td>{item.status}</td><td>{t.cms}</td></tr>)}
+            {!uploaded.items.length ? <tr><td colSpan="4"><div className="admin-empty">当前筛选范围内没有后台新增产品。</div></td></tr> : null}
           </tbody>
         </table>
       </div>
+      <AdminListPagination meta={uploaded.meta} itemLabel="个后台产品" />
+      </section>
+      <section className="admin-list-section">
+        <div className="admin-panel-head"><div><p className="eyebrow">主站同步</p><h2>同步产品目录</h2></div></div>
+        <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>{t.name}</th><th>{t.category}</th><th>{t.status}</th><th>{t.source}</th></tr></thead><tbody>
+          {catalogProducts.map((item) => <tr key={item.slug}><td>{item.title}</td><td>{item.category}</td><td>{t.published}</td><td>{t.mainSync}</td></tr>)}
+        </tbody></table></div>
+        <AdminListPagination meta={{ page: catalogPage, pageSize: catalogPageSize, total: products.length, totalPages: catalogTotalPages }} itemLabel="个同步产品" pageParam="catalogPage" />
+      </section>
     </section>
   );
 }

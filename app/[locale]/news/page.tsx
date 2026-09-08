@@ -17,6 +17,14 @@ function displayImage(src = "") {
   return src || "/assets/markets/chile-copper-ore.jpg";
 }
 
+function displayDate(value: string | undefined, locale: Locale) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  const language = locale === "es-cl" ? "es-CL" : locale === "pt-br" ? "pt-BR" : "en-US";
+  return new Intl.DateTimeFormat(language, { day: "numeric", month: "short", year: "numeric" }).format(date);
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const posts = await getPublishedNews(locale);
@@ -40,6 +48,11 @@ export default async function NewsPage({ params, searchParams }: { params: Promi
   const query = await searchParams;
   const posts = await getPublishedNews(locale);
   const paged = paginateList(posts, parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] }));
+  const showingStart = paged.meta.total ? (paged.meta.page - 1) * paged.meta.pageSize + 1 : 0;
+  const showingEnd = Math.min(paged.meta.page * paged.meta.pageSize, paged.meta.total);
+  const countLabel = paged.meta.total
+    ? t(locale, `Mostrando ${showingStart}-${showingEnd} de ${paged.meta.total}`, `Mostrando ${showingStart}-${showingEnd} de ${paged.meta.total}`, `Showing ${showingStart}-${showingEnd} of ${paged.meta.total}`)
+    : t(locale, "Aún no hay noticias publicadas", "Ainda não há notícias publicadas", "No published news yet");
 
   return (
     <>
@@ -49,24 +62,35 @@ export default async function NewsPage({ params, searchParams }: { params: Promi
         title={t(locale, "Noticias industriales de Sudamerica", "Noticias industriais da America do Sul", "Industrial news from South America")}
         summary={t(locale, "Resumimos fuentes externas relevantes y agregamos una lectura tecnica para mineria, reciclaje, cemento y separacion magnetica.", "Resumimos fontes externas relevantes e adicionamos uma leitura tecnica para mineracao, reciclagem, cimento e separacao magnetica.", "We summarize relevant cited sources and add a technical view for mining, recycling, cement and magnetic separation.")}
       />
-      <section className="band">
+      <section className="band editorial-index-section">
         {locale === "en" || locale === "pt-br" ? <p className="news-language-note">{t(locale, "", "Os artigos mantem o idioma editorial original quando uma traducao revisada nao esta disponivel.", "Articles retain their original editorial language when a reviewed translation is not available.")}</p> : null}
-        <div className="news-grid">
+        <div className="editorial-index-head">
+          <div>
+            <p className="eyebrow">{t(locale, "ACTUALIZACIONES SELECCIONADAS", "ATUALIZACOES SELECIONADAS", "CURATED UPDATES")}</p>
+            <h2>{t(locale, "Noticias para decisiones de proceso", "Noticias para decisoes de processo", "News for process decisions")}</h2>
+          </div>
+          <p className="editorial-index-count">{countLabel}</p>
+        </div>
+        <div className="news-grid editorial-grid">
           {paged.items.map((post) => (
-            <article className="news-card" key={post.slug} lang={post.localized?.[locale] ? htmlLanguageByLocale[locale] : post.contentLanguage || "es"}>
-              {post.image ? <Image src={displayImage(post.image)} alt={post.title} width={720} height={430} unoptimized /> : null}
-              <div className="news-card-body">
-                <p className="eyebrow">{post.categoryTitle || "Industry News"}</p>
-                <h3>{post.title}</h3>
+            <article className="news-card editorial-card" key={post.slug} lang={post.localized?.[locale] ? htmlLanguageByLocale[locale] : post.contentLanguage || "es"}>
+              <Link className="editorial-card-visual" href={localizedPath(locale, `news/${post.slug}`)} aria-label={post.title}>
+                {post.image ? <Image src={displayImage(post.image)} alt="" width={720} height={430} unoptimized /> : <span className="editorial-card-fallback" aria-hidden="true">{t(locale, "NOTICIAS", "NOTICIAS", "NEWS")}</span>}
+              </Link>
+              <div className="news-card-body editorial-card-body">
+                <div className="editorial-card-meta"><span>{post.categoryTitle || "Industry News"}</span><time dateTime={post.date}>{displayDate(post.date, locale)}</time></div>
+                <h2><Link href={localizedPath(locale, `news/${post.slug}`)}>{post.title}</Link></h2>
                 <p>{post.summary}</p>
-                <small>{post.date} | {post.author}</small>
-                {post.sourceUrl ? <small>{t(locale, "Fuente", "Fonte", "Source")}: {post.sourceTitle || post.sourceDomain}</small> : null}
-                <Link href={localizedPath(locale, `news/${post.slug}`)}>{t(locale, "Leer noticia", "Ler noticia", "Read news")}</Link>
+                <div className="editorial-card-footer">
+                  <small>{post.sourceUrl ? `${t(locale, "Fuente", "Fonte", "Source")}: ${post.sourceTitle || post.sourceDomain}` : (post.author || "Cowinmagnet")}</small>
+                  <Link href={localizedPath(locale, `news/${post.slug}`)}>{t(locale, "Leer noticia", "Ler noticia", "Read news")} <span aria-hidden="true">→</span></Link>
+                </div>
               </div>
             </article>
           ))}
         </div>
         <PaginationNav meta={paged.meta} pathname={localizedPath(locale, "news")} params={query} locale={locale} />
+        {!posts.length ? <p className="editorial-empty">{t(locale, "Cuando se publiquen nuevas fuentes verificadas, aparecerán aquí.", "Quando novas fontes verificadas forem publicadas, elas aparecerão aqui.", "New verified coverage will appear here when it is published.")}</p> : null}
       </section>
     </>
   );

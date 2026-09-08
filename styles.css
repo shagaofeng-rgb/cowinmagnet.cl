@@ -1265,6 +1265,39 @@ h3 { margin: 0 0 10px; font-size: 1.05rem; }
   font-weight: 800;
   text-decoration: none;
 }
+
+/* Editorial index: fixed-height, scan-friendly cards for News and Blog archives. */
+.editorial-index-section { padding-top: clamp(34px, 5vw, 66px); }
+.editorial-index-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+  width: min(1180px, 100%);
+  margin: 0 auto clamp(20px, 3vw, 30px);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.editorial-index-head h2 { max-width: 22ch; margin: 4px 0 0; color: var(--ink); font-size: clamp(1.55rem, 3vw, 2.25rem); line-height: 1.12; text-wrap: balance; }
+.editorial-index-count { flex: 0 0 auto; margin: 0; color: var(--muted); font-size: .9rem; font-weight: 700; }
+.editorial-empty { width: min(1180px, 100%); margin: 20px auto 0; padding: 18px 20px; border: 1px dashed var(--line); border-radius: 10px; color: var(--muted); }
+.editorial-grid { align-items: stretch; }
+.editorial-card { display: flex; min-width: 0; flex-direction: column; }
+.editorial-card-visual { display: block; position: relative; overflow: hidden; aspect-ratio: 16 / 8.7; background: linear-gradient(135deg, #09251f, #154d41); text-decoration: none; }
+.editorial-card-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+.editorial-card-fallback { display: grid; place-items: end start; width: 100%; height: 100%; padding: 20px; background: linear-gradient(135deg, rgba(4, 25, 22, .26), rgba(14, 90, 72, .18)), radial-gradient(circle at 86% 14%, rgba(244, 195, 67, .78) 0 2px, transparent 3px), linear-gradient(135deg, #08221d, #176051); color: #f7c84a; font-size: .76rem; font-weight: 900; letter-spacing: .13em; }
+.editorial-card-body { flex: 1; grid-template-rows: auto auto minmax(0, 1fr) auto; gap: 13px; min-height: 274px; padding: 21px; }
+.editorial-card-meta { display: flex; justify-content: space-between; gap: 12px; align-items: center; color: var(--muted); font-size: .76rem; font-weight: 800; letter-spacing: .055em; text-transform: uppercase; }
+.editorial-card-meta span { min-width: 0; overflow: hidden; color: var(--brand); text-overflow: ellipsis; white-space: nowrap; }
+.editorial-card-meta time { flex: 0 0 auto; text-transform: none; letter-spacing: 0; }
+.editorial-card h2 { margin: 0; font-size: clamp(1.08rem, 1.6vw, 1.3rem); line-height: 1.28; text-wrap: balance; }
+.editorial-card h2 a { margin: 0; color: var(--ink); text-decoration: none; }
+.editorial-card h2 a:hover { color: var(--brand); text-decoration: none; }
+.editorial-card-body > p { display: -webkit-box; overflow: hidden; margin: 0; color: var(--muted); font-size: .94rem; line-height: 1.6; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.editorial-card-footer { display: flex; min-width: 0; justify-content: space-between; gap: 12px; align-items: end; padding-top: 13px; border-top: 1px solid var(--line); }
+.editorial-card-footer small { display: block; min-width: 0; overflow: hidden; color: var(--muted); font-size: .78rem; text-overflow: ellipsis; white-space: nowrap; }
+.editorial-card-footer a { flex: 0 0 auto; margin: 0; font-size: .88rem; white-space: nowrap; }
+@media (hover: hover) and (pointer: fine) { .editorial-card:hover .editorial-card-visual img { transform: scale(1.035); } }
 .news-article-layout {
   background: linear-gradient(180deg, #f8faf9 0%, #eef4f1 100%);
 }
@@ -1929,6 +1962,14 @@ textarea { resize: vertical; }
 }
 
 @media (max-width: 620px) {
+  .editorial-index-head { align-items: flex-start; flex-direction: column; gap: 10px; margin-bottom: 18px; padding-bottom: 15px; }
+  .editorial-index-head h2 { max-width: 18ch; font-size: 1.55rem; }
+  .editorial-index-count { font-size: .84rem; }
+  .editorial-card-body { min-height: 0; padding: 18px; }
+  .editorial-card-meta { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .editorial-card-meta time { font-size: .78rem; }
+  .editorial-card-body > p { -webkit-line-clamp: 4; }
+  .editorial-card-visual { aspect-ratio: 16 / 8; }
   .brand-copy small { display: none; }
   .brand-logo-wrap { width: 38px; height: 38px; }
   .hero { min-height: 86vh; }

@@ -11,6 +11,14 @@ import { paginateList, parseListPagination } from "@/lib/listPagination";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function displayDate(value: string | undefined, locale: Locale) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  const language = locale === "es-cl" ? "es-CL" : locale === "pt-br" ? "pt-BR" : "en-US";
+  return new Intl.DateTimeFormat(language, { day: "numeric", month: "short", year: "numeric" }).format(date);
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const posts = await getPublishedBlogArticles(locale);
@@ -28,6 +36,11 @@ export default async function BlogPage({ params, searchParams }: { params: Promi
   const query = await searchParams;
   const posts = await getPublishedBlogArticles(locale);
   const paged = paginateList(posts, parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] }));
+  const showingStart = paged.meta.total ? (paged.meta.page - 1) * paged.meta.pageSize + 1 : 0;
+  const showingEnd = Math.min(paged.meta.page * paged.meta.pageSize, paged.meta.total);
+  const countLabel = paged.meta.total
+    ? t(locale, `Mostrando ${showingStart}-${showingEnd} de ${paged.meta.total}`, `Mostrando ${showingStart}-${showingEnd} de ${paged.meta.total}`, `Showing ${showingStart}-${showingEnd} of ${paged.meta.total}`)
+    : t(locale, "Aún no hay artículos publicados", "Ainda não há artigos publicados", "No published articles yet");
 
   return (
     <>
@@ -37,23 +50,34 @@ export default async function BlogPage({ params, searchParams }: { params: Promi
         title={t(locale, "Guias y conocimientos tecnicos", "Guias e conhecimento tecnico", "Technical guides and insights")}
         summary={t(locale, "Articulos publicados desde el CMS para apoyar decisiones de separacion magnetica, mineria, reciclaje y manejo de graneles.", "Artigos publicados pelo CMS para apoiar decisoes sobre separacao magnetica, mineracao, reciclagem e manuseio de graneis.", "Published CMS articles supporting magnetic separation, mining, recycling and bulk-handling decisions.")}
       />
-      <section className="band">
-        <div className="news-grid">
+      <section className="band editorial-index-section">
+        <div className="editorial-index-head">
+          <div>
+            <p className="eyebrow">{t(locale, "BIBLIOTECA TECNICA", "BIBLIOTECA TECNICA", "TECHNICAL LIBRARY")}</p>
+            <h2>{t(locale, "Guías para definir su equipo", "Guias para definir seu equipamento", "Guides for defining your equipment")}</h2>
+          </div>
+          <p className="editorial-index-count">{countLabel}</p>
+        </div>
+        <div className="news-grid editorial-grid">
           {paged.items.map((post) => (
-            <article className="news-card" key={post.slug}>
-              {post.image ? <img src={post.image} alt={post.title} loading="lazy" /> : null}
-              <div className="news-card-body">
-                <p className="eyebrow">{post.categoryTitle}</p>
-                <h3>{post.title}</h3>
+            <article className="news-card editorial-card" key={post.slug}>
+              <Link className="editorial-card-visual" href={localizedPath(locale, `blog/${post.slug}`)} aria-label={post.title}>
+                {post.image ? <img src={post.image} alt="" loading="lazy" /> : <span className="editorial-card-fallback" aria-hidden="true">{t(locale, "GUÍA", "GUIA", "GUIDE")}</span>}
+              </Link>
+              <div className="news-card-body editorial-card-body">
+                <div className="editorial-card-meta"><span>{post.categoryTitle || "Blog"}</span><time dateTime={post.publishedAt || post.createdAt}>{displayDate(post.publishedAt || post.createdAt, locale)}</time></div>
+                <h2><Link href={localizedPath(locale, `blog/${post.slug}`)}>{post.title}</Link></h2>
                 <p>{post.summary}</p>
-                <small>{(post.publishedAt || post.createdAt || "").slice(0, 10)} | {post.author}</small>
-                <Link href={localizedPath(locale, `blog/${post.slug}`)}>{t(locale, "Leer articulo", "Ler artigo", "Read article")}</Link>
+                <div className="editorial-card-footer">
+                  <small>{post.author || "Cowinmagnet"}</small>
+                  <Link href={localizedPath(locale, `blog/${post.slug}`)}>{t(locale, "Leer articulo", "Ler artigo", "Read article")} <span aria-hidden="true">→</span></Link>
+                </div>
               </div>
             </article>
           ))}
         </div>
         <PaginationNav meta={paged.meta} pathname={localizedPath(locale, "blog")} params={query} locale={locale} />
-        {!posts.length ? <p>{t(locale, "Aun no hay articulos publicados.", "Ainda nao ha artigos publicados.", "No published articles yet.")}</p> : null}
+        {!posts.length ? <p className="editorial-empty">{t(locale, "Cuando se publiquen guías técnicas, aparecerán aquí.", "Quando guias técnicos forem publicados, eles aparecerão aqui.", "Published technical guides will appear here.")}</p> : null}
       </section>
     </>
   );

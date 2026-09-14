@@ -1048,6 +1048,29 @@ h3 { margin: 0 0 10px; font-size: 1.05rem; }
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
+.contact-map-layout {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  width: min(1120px, 100%);
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid rgba(16, 85, 69, .14);
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: 0 14px 34px rgba(9, 49, 40, .07);
+}
+.contact-map-copy {
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  padding: clamp(26px, 4vw, 50px);
+}
+.contact-map-copy h2,
+.contact-map-copy p { margin: 0; }
+.contact-map-copy p:not(.eyebrow) { color: var(--muted); line-height: 1.7; }
+.contact-map-copy .button { justify-self: start; margin-top: 4px; }
+.contact-map-frame { min-height: 390px; background: #e7efeb; }
+.contact-map-frame iframe { display: block; width: 100%; height: 100%; min-height: 390px; border: 0; }
 .brief-page {
   background: linear-gradient(180deg, #f8faf9 0%, #eef4f1 100%);
 }
@@ -1928,7 +1951,8 @@ textarea { resize: vertical; }
   .home-hero-inner,
   .home-product-showcase,
   .home-market-layout,
-  .brief-product-row { grid-template-columns: 1fr; }
+  .brief-product-row,
+  .contact-map-layout { grid-template-columns: 1fr; }
   .home-benefit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .home-quote-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .home-quote-redesign > img {
@@ -1947,6 +1971,8 @@ textarea { resize: vertical; }
     justify-self: start;
   }
   .home-market-map img { min-height: 340px; }
+  .contact-map-frame,
+  .contact-map-frame iframe { min-height: 330px; }
   .page-hero-product img {
     object-position: center;
     padding: 210px clamp(16px, 5vw, 42px) 28px;

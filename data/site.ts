@@ -11,7 +11,10 @@ export const siteConfig = {
   globalSite: "https://www.cowinmagnet.com",
   defaultCurrency: "USD",
   whatsapp: "8615665135205",
-  email: "davidsha@cowinmagnet.com"
+  email: "davidsha@cowinmagnet.com",
+  companyAddress: "XR8Q+3VQ, Kecheng District, Quzhou, Zhejiang, China",
+  companyMapCoordinates: "28.965204,118.839750",
+  companyMapUrl: "https://maps.app.goo.gl/P1YyVHoCdGBd9ef37"
 };
 
 export const localeLabels: Record<Locale, string> = {

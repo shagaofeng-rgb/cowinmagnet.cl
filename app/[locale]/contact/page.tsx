@@ -27,6 +27,25 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         image="/assets/products/rcde-type-oil-cooled-electromagnetic-iron-remover/rcde-type-oil-cooled-electromagnetic-iron-remover-01.jpg"
       />
       <section className="band"><div className="geo-grid"><article><h3>Email</h3><p>{siteConfig.email}</p></article><article><h3>WhatsApp</h3><p>+86 156 6513 5205</p></article><article><h3>{t(locale, "Empresa", "Empresa", "Company")}</h3><p>{siteConfig.company}</p></article></div></section>
+      <section className="band muted contact-map-band">
+        <div className="contact-map-layout">
+          <div className="contact-map-copy">
+            <p className="eyebrow">{t(locale, "Ubicación", "Localização", "Location")}</p>
+            <h2>{t(locale, "Visite nuestra ubicación", "Visite nossa localização", "Visit our location")}</h2>
+            <p>{siteConfig.companyAddress}</p>
+            <p>{t(locale, "Use el mapa para planificar su visita o abrir las indicaciones en Google Maps.", "Use o mapa para planejar sua visita ou abrir as direções no Google Maps.", "Use the map to plan your visit or open directions in Google Maps.")}</p>
+            <a className="button secondary" href={siteConfig.companyMapUrl} target="_blank" rel="noopener noreferrer">{t(locale, "Abrir en Google Maps", "Abrir no Google Maps", "Open in Google Maps")}</a>
+          </div>
+          <div className="contact-map-frame">
+            <iframe
+              title={t(locale, "Mapa de ubicación de Cowinmagnet", "Mapa de localização da Cowinmagnet", "Cowinmagnet location map")}
+              src={`https://www.google.com/maps?q=${siteConfig.companyMapCoordinates}&z=17&output=embed`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
+      </section>
       <section className="band muted"><QuoteForm locale={locale} /></section>
     </>
   );

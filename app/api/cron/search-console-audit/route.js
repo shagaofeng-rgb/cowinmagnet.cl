@@ -36,7 +36,7 @@ function extractLocations(xml) {
 
 async function fetchXml(url) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 12_000);
+  const timeout = setTimeout(() => controller.abort(), 8_000);
   try {
     const response = await fetch(url, { signal: controller.signal, headers: { accept: "application/xml,text/xml;q=0.9,*/*;q=0.1" } });
     if (!response.ok) throw new Error(`Sitemap fetch failed: ${response.status}`);
@@ -59,13 +59,13 @@ export async function GET(request) {
   const url = new URL(request.url);
   const scope = url.searchParams.get("scope") === "core" ? "core" : "sitemap";
   const requestedOffset = url.searchParams.get("offset");
-  const limit = readPositiveInteger(url.searchParams.get("limit"), 25, 50) || 25;
+  const limit = readPositiveInteger(url.searchParams.get("limit"), 8, 10) || 8;
   const candidates = scope === "core" ? CORE_URLS : await sitemapUrls();
   const offset = requestedOffset === null
     ? rotatingOffset(candidates.length, limit)
     : readPositiveInteger(requestedOffset, 0, 10_000);
   const urls = candidates.slice(offset, offset + limit);
-  const inspection = await inspectGoogleSearchConsoleUrls(urls, { concurrency: 5 });
+  const inspection = await inspectGoogleSearchConsoleUrls(urls, { concurrency: 2 });
 
   const payload = {
     success: !inspection.error,

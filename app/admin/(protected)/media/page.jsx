@@ -1,4 +1,5 @@
 import { products } from "@/data/catalog";
+import { requireAdminSession } from "@/lib/adminAuth";
 import { AdminListControls, AdminListPagination } from "@/components/admin/AdminListControls";
 import { getCmsItems } from "@/lib/cmsStore";
 
@@ -11,6 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: `${t.title} | Cowinmagnet.cl` };
 
 export default async function AdminMediaPage({ searchParams }) {
+  await requireAdminSession();
   const params = await searchParams;
   const [cmsProducts, cmsNews] = await Promise.all([getCmsItems("product", { includeInactive: true }), getCmsItems("news", { includeInactive: true })]);
   const query = String(params?.query || "").trim().toLowerCase();

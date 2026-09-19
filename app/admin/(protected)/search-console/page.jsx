@@ -1,4 +1,5 @@
 import { getAdminDateRange } from "@/lib/adminDateRange";
+import { requireAdminSession } from "@/lib/adminAuth";
 import { getSearchConsoleSnapshot } from "@/lib/analyticsStore";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import AdminSearchConsoleLivePanel from "@/components/admin/AdminSearchConsoleLivePanel";
@@ -13,6 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminSearchConsolePage({ searchParams }) {
+  await requireAdminSession();
   const params = await searchParams;
   const range = getAdminDateRange(params);
   const searchConsole = await getSearchConsoleSnapshot(range);

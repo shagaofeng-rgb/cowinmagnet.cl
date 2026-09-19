@@ -1,12 +1,14 @@
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { AdminListControls, AdminListPagination } from "@/components/admin/AdminListControls";
 import { getAdminDateRange } from "@/lib/adminDateRange";
+import { requireAdminSession } from "@/lib/adminAuth";
 import { getCmsItemsPage } from "@/lib/cmsStore";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Blog 文章 | Cowinmagnet.cl" };
 
 export default async function AdminBlogPage({ searchParams }) {
+  await requireAdminSession();
   const params = await searchParams;
   const range = getAdminDateRange(params);
   const posts = await getCmsItemsPage("blog", {

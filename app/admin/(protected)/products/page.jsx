@@ -2,6 +2,7 @@ import { productCategories, products } from "@/data/catalog";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { AdminListControls, AdminListPagination } from "@/components/admin/AdminListControls";
 import { getAdminDateRange } from "@/lib/adminDateRange";
+import { requireAdminSession } from "@/lib/adminAuth";
 import { getCmsItemsPage } from "@/lib/cmsStore";
 
 const t = {
@@ -39,6 +40,7 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminProductsPage({ searchParams }) {
+  await requireAdminSession();
   const params = await searchParams;
   const range = getAdminDateRange(params);
   const uploaded = await getCmsItemsPage("product", {

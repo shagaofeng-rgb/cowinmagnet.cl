@@ -1,9 +1,11 @@
 import { getCmsItems } from "@/lib/cmsStore";
+import { requireAdminSession } from "@/lib/adminAuth";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "新闻分类 | Cowinmagnet.cl 后台" };
 
 export default async function AdminNewsCategoriesPage() {
+  await requireAdminSession();
   const news = await getCmsItems("news", { includeInactive: true });
   const categoryMap = new Map();
   news.forEach((item) => {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { products, productCategories } from "@/data/catalog";
-import { getCmsItemsPage } from "@/lib/cmsStore";
+import { requireAdminSession } from "@/lib/adminAuth";
+import { getCmsContentSummary } from "@/lib/cmsStore";
 
 const t = {
   eyebrow: "\u5185\u5bb9\u603b\u89c8",
@@ -22,17 +23,14 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminContentPage() {
-  const [cmsProducts, cmsNews, cmsBlogs] = await Promise.all([
-    getCmsItemsPage("product", { includeInactive: true, pageSize: 1 }),
-    getCmsItemsPage("news", { includeInactive: true, pageSize: 1 }),
-    getCmsItemsPage("blog", { includeInactive: true, pageSize: 1 })
-  ]);
+  await requireAdminSession();
+  const contentSummary = await getCmsContentSummary();
 
   const cards = [
     { label: t.staticProducts, value: products.length, note: `${productCategories.length} ${t.categories}`, href: "/admin/products" },
-    { label: t.cmsProducts, value: cmsProducts.meta.total, note: t.productNote, href: "/admin/products" },
-    { label: t.cmsNews, value: cmsNews.meta.total, note: t.newsNote, href: "/admin/news" },
-    { label: t.blog, value: cmsBlogs.meta.total, note: t.blogNote, href: "/admin/blog" }
+    { label: t.cmsProducts, value: contentSummary.product, note: t.productNote, href: "/admin/products" },
+    { label: t.cmsNews, value: contentSummary.news, note: t.newsNote, href: "/admin/news" },
+    { label: t.blog, value: contentSummary.blog, note: t.blogNote, href: "/admin/blog" }
   ];
 
   return (

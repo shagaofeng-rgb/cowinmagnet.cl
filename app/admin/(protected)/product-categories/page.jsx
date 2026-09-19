@@ -1,10 +1,12 @@
 import { productCategories, products } from "@/data/catalog";
+import { requireAdminSession } from "@/lib/adminAuth";
 import { getCmsItems } from "@/lib/cmsStore";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "产品分类 | Cowinmagnet.cl 后台" };
 
 export default async function AdminProductCategoriesPage() {
+  await requireAdminSession();
   const cmsProducts = await getCmsItems("product", { includeInactive: true });
   const rows = productCategories.map((category) => ({
     ...category,

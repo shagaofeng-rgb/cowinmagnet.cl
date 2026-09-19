@@ -1,7 +1,6 @@
-import nodemailer from "nodemailer";
-import { saveEnquiry } from "@/lib/enquiryStore";
+import { saveEnquiry, updateEnquiryNotification } from "@/lib/enquiryStore";
 import { appendAnalyticsEvent } from "@/lib/analyticsStore";
-import { buildInquiryNotification } from "@/lib/inquiryNotification";
+import { deliverInquiryNotification } from "@/lib/inquiryEmail";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -79,25 +78,9 @@ export async function POST(request) {
     timestamp: saved.createdAt
   }).catch((error) => console.error("[inquiry] analytics event failed", error?.message || error));
 
-  if (process.env.SMTP_HOST && process.env.SMTP_USER && (process.env.SMTP_PASSWORD || process.env.SMTP_PASS)) {
-    try {
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT || 465),
-        secure: process.env.SMTP_SECURE !== "false",
-        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS }
-      });
-      const notification = buildInquiryNotification(saved);
-      await transporter.sendMail({
-        ...notification,
-        // An SMTP provider may require a pre-verified sender identity. The
-        // recipient is intentionally fixed and cannot be overridden.
-        from: process.env.INQUIRY_FROM_EMAIL || notification.from
-      });
-    } catch (error) {
-      console.error("[inquiry] notification email failed after persistence", error?.message || error);
-    }
-  }
+  const notification = await deliverInquiryNotification(saved);
+  await updateEnquiryNotification(saved.id, notification).catch((error) => console.error("[inquiry] notification status persistence failed", error?.message || error));
+  if (notification.status === "failed" || notification.status === "not_configured") console.error("[inquiry] notification email requires retry", notification.status, notification.error);
 
   return Response.json({ success: true, data: saved });
 }

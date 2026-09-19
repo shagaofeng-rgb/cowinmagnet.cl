@@ -9,11 +9,15 @@
       "schedule": "*/30 * * * *"
     },
     {
+      "path": "/api/cron/inquiry-notifications",
+      "schedule": "*/10 * * * *"
+    },
+    {
       "path": "/api/cron/search-console-sync",
       "schedule": "41 */6 * * *"
     },
     {
-      "path": "/api/cron/search-console-audit?scope=sitemap&limit=50",
+      "path": "/api/cron/search-console-audit?scope=sitemap&limit=8",
       "schedule": "19 */2 * * *"
     },
     {

@@ -1,7 +1,8 @@
 import { products, productCategories } from "@/data/catalog";
+import { requireAdminSession } from "@/lib/adminAuth";
 import { getAdminDateRange } from "@/lib/adminDateRange";
 import { getAnalyticsSnapshot } from "@/lib/analyticsStore";
-import { getCmsItemsPage } from "@/lib/cmsStore";
+import { getCmsContentSummary } from "@/lib/cmsStore";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { AdminOverviewRealtime } from "@/components/admin/AdminRealtimePanels";
 
@@ -15,12 +16,11 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminDashboardPage({ searchParams }) {
+  await requireAdminSession();
   const params = await searchParams;
   const range = getAdminDateRange(params);
-  const [uploadedProducts, newsPosts, blogPosts, analytics] = await Promise.all([
-    getCmsItemsPage("product", { includeInactive: true, pageSize: 1 }),
-    getCmsItemsPage("news", { includeInactive: true, pageSize: 1 }),
-    getCmsItemsPage("blog", { includeInactive: true, pageSize: 1 }),
+  const [contentSummary, analytics] = await Promise.all([
+    getCmsContentSummary(),
     getAnalyticsSnapshot(range),
   ]);
 
@@ -39,10 +39,10 @@ export default async function AdminDashboardPage({ searchParams }) {
         contentStats={{
           products: products.length,
           categories: productCategories.length,
-          cmsProducts: uploadedProducts.meta.total,
-          newsPosts: newsPosts.meta.total,
-          cmsNews: newsPosts.meta.total,
-          blogPosts: blogPosts.meta.total
+          cmsProducts: contentSummary.product,
+          newsPosts: contentSummary.news,
+          cmsNews: contentSummary.news,
+          blogPosts: contentSummary.blog
         }}
       />
     </>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminSession } from "@/lib/adminAuth";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { PaginationNav } from "@/components/PaginationNav";
 import { getAdminDateRange } from "@/lib/adminDateRange";
@@ -13,6 +14,7 @@ function dateTime(value) {
 }
 
 export default async function AdminVisitorDetailPage({ params, searchParams }) {
+  await requireAdminSession();
   const { visitorId } = await params;
   const query = await searchParams;
   const range = getAdminDateRange(query);

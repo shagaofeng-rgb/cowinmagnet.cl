@@ -2,6 +2,7 @@ import Link from "next/link";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { AdminListControls, AdminListPagination } from "@/components/admin/AdminListControls";
 import { getAdminDateRange } from "@/lib/adminDateRange";
+import { requireAdminSession } from "@/lib/adminAuth";
 import { getEnquiriesPage } from "@/lib/enquiryStore";
 
 const t = {
@@ -14,6 +15,7 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminEnquiriesPage({ searchParams }) {
+  await requireAdminSession();
   const params = await searchParams;
   const range = getAdminDateRange(params);
   const enquiries = await getEnquiriesPage({

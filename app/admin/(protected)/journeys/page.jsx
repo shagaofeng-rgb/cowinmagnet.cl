@@ -1,4 +1,5 @@
 import { getAdminDateRange } from "@/lib/adminDateRange";
+import { requireAdminSession } from "@/lib/adminAuth";
 import { getAnalyticsSnapshot } from "@/lib/analyticsStore";
 import { parseAnalyticsFilters } from "@/lib/analyticsPolicy";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
@@ -8,6 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "访问路径 | Cowinmagnet.cl Admin" };
 
 export default async function AdminJourneysPage({ searchParams }) {
+  await requireAdminSession();
   const params = await searchParams;
   const range = getAdminDateRange(params);
   const analytics = await getAnalyticsSnapshot(range, parseAnalyticsFilters(params));

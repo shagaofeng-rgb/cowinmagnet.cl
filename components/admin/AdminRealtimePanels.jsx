@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { BarList, CsvExportButton, MetricCard, TrendChart } from "@/components/admin/AdminWidgets";
 
-const refreshMs = 30_000;
 const rows = (value) => Array.isArray(value) ? value : [];
 
 function dateTime(value) {
@@ -14,42 +13,10 @@ function dateTime(value) {
   return new Intl.DateTimeFormat("zh-CN", { timeZone: "America/Santiago", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(date);
 }
 
-function useLiveAnalytics(initialData) {
-  const searchParams = useSearchParams();
+function useAnalyticsSnapshot(initialData) {
   const [data, setData] = useState(initialData || {});
-  const [state, setState] = useState({ loading: false, error: "", syncedAt: "" });
   useEffect(() => setData(initialData || {}), [initialData]);
-  useEffect(() => {
-    let active = true;
-    async function refresh() {
-      try {
-        setState((current) => ({ ...current, loading: true, error: "" }));
-        const query = searchParams.toString();
-        const response = await fetch("/api/admin/analytics" + (query ? "?" + query : ""), { cache: "no-store" });
-        if (!response.ok) throw new Error("analytics refresh");
-        const next = await response.json();
-        if (active) {
-          setData(next.data || next);
-          setState({ loading: false, error: "", syncedAt: dateTime(new Date().toISOString()) });
-        }
-      } catch {
-        if (active) setState((current) => ({ ...current, loading: false, error: "实时读取失败，页面保留最近一次可用数据。" }));
-      }
-    }
-    void refresh();
-    const timer = window.setInterval(refresh, refreshMs);
-    return () => { active = false; window.clearInterval(timer); };
-  }, [searchParams]);
-  return { data, state };
-}
-
-function LiveNote({ state, timezone = "America/Santiago" }) {
-  return <div className={"admin-live-note" + (state.error ? " error" : "")} role="status"><span>{state.loading ? "正在读取实时运营数据…" : "实时数据已启用"}</span><small>{state.error || ("每 30 秒更新 · " + timezone + (state.syncedAt ? " · 刷新于 " + state.syncedAt : ""))}</small></div>;
-}
-
-function DataQuality({ dataQuality = {} }) {
-  const excluded = rows(dataQuality.excludedReasons);
-  return <section className="admin-data-quality"><div><p className="eyebrow">数据质量</p><strong>真实经营流量</strong><span>测试、预览、自动化与采集流量已标记，不计入经营指标。</span></div><div className="admin-quality-metrics"><span><b>{Number(dataQuality.activeEvents || 0).toLocaleString()}</b> 有效事件</span><span><b>{Number(dataQuality.excludedEvents || 0).toLocaleString()}</b> 已排除</span></div><small>{excluded.length ? "排除原因：" + excluded.map((item) => item.label + " " + item.value).join(" · ") : "当前区间未发现已标记的无效流量。"}</small></section>;
+  return { data };
 }
 
 function EmptyRow({ columns }) {
@@ -87,54 +54,42 @@ function Pagination({ meta = {} }) {
   return <div className="admin-pagination"><span>共 {Number(meta.total || 0).toLocaleString()} 位访客 · 第 {page}/{totalPages} 页</span><div><button type="button" disabled={page <= 1} onClick={() => move(page - 1)}>上一页</button><button type="button" disabled={page >= totalPages} onClick={() => move(page + 1)}>下一页</button></div></div>;
 }
 
-function LocalPagination({ total = 0, page = 1, pageSize = 25, onChange, label = "条记录" }) {
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const currentPage = Math.min(page, totalPages);
-  return <div className="admin-pagination"><span>共 {total.toLocaleString()} {label} · 第 {currentPage}/{totalPages} 页</span><div><button type="button" disabled={currentPage <= 1} onClick={() => onChange(currentPage - 1)}>上一页</button><button type="button" disabled={currentPage >= totalPages} onClick={() => onChange(currentPage + 1)}>下一页</button></div></div>;
-}
-
 export function AdminOverviewRealtime({ initialData, contentStats = {} }) {
-  const { data, state } = useLiveAnalytics(initialData);
-  const overview = data.overview || {}, traffic = data.traffic || {}, pages = rows(data.pages), searchConsole = data.searchConsole || {};
-  return <><LiveNote state={state} timezone={data.timezone} /><DataQuality dataQuality={data.dataQuality} />
-    <section className="admin-kpi-grid"><MetricCard label="页面浏览量" value={Number(overview.pageViews || 0).toLocaleString()} note="PV · 有效流量" /><MetricCard label="独立访客" value={Number(overview.uniqueVisitors || 0).toLocaleString()} note="UV · 第一方标识" /><MetricCard label="访问会话" value={Number(overview.sessions || 0).toLocaleString()} note="Session" /><MetricCard label="询盘提交" value={Number(overview.inquiries || 0).toLocaleString()} note="已保存到后台" /></section>
+  const { data } = useAnalyticsSnapshot(initialData);
+  const overview = data.overview || {}, traffic = data.traffic || {}, pages = rows(data.topPages || data.pages);
+  return <><section className="admin-kpi-grid"><MetricCard label="页面浏览量" value={Number(overview.pageViews || 0).toLocaleString()} note="当前时间范围" /><MetricCard label="独立访客" value={Number(overview.uniqueVisitors || 0).toLocaleString()} note="独立访问标识" /><MetricCard label="访问会话" value={Number(overview.sessions || 0).toLocaleString()} note="访问次数" /><MetricCard label="询盘提交" value={Number(overview.inquiries || 0).toLocaleString()} note="已收到线索" /></section>
     <section className="admin-grid two"><article className="admin-panel"><p className="eyebrow">访问趋势</p><h2>每日 PV / UV</h2><TrendChart rows={rows(traffic.series)} /></article><article className="admin-panel"><p className="eyebrow">获取渠道</p><h2>客户从哪里来</h2><BarList rows={rows(traffic.channels)} /></article></section>
-    <section className="admin-grid two"><article className="admin-panel"><p className="eyebrow">热门页面</p><h2>页面表现排名</h2><BarList rows={pages.slice(0, 8).map((page) => ({ label: page.title || page.page, value: page.views }))} /></article><article className="admin-panel"><p className="eyebrow">内容与 SEO</p><h2>运营状态</h2><div className="admin-mini-metrics"><MetricCard label="Google 点击" value={searchConsole.overview?.clicks || 0} note="GSC 有数据延迟" /><MetricCard label="产品内容" value={contentStats.cmsProducts ?? 0} note={"News " + (contentStats.newsPosts || 0) + " · Blog " + (contentStats.blogPosts || 0)} /><MetricCard label="存储" value={data.storageMode || "-"} note="真实数据源" /></div></article></section>
+    <section className="admin-grid two"><article className="admin-panel"><p className="eyebrow">热门页面</p><h2>页面表现排名</h2><BarList rows={pages.slice(0, 8).map((page) => ({ label: page.title || page.page, value: page.views }))} /></article><article className="admin-panel"><p className="eyebrow">内容概览</p><h2>网站内容</h2><div className="admin-mini-metrics"><MetricCard label="产品内容" value={contentStats.cmsProducts ?? 0} note="后台发布内容" /><MetricCard label="新闻内容" value={contentStats.newsPosts ?? 0} note={"Blog " + (contentStats.blogPosts || 0)} /><MetricCard label="产品目录" value={contentStats.products ?? 0} note={(contentStats.categories || 0) + " 个分类"} /></div></article></section>
   </>;
 }
 
 export function AdminTrafficRealtime({ initialData }) {
-  const { data, state } = useLiveAnalytics(initialData);
+  const { data } = useAnalyticsSnapshot(initialData);
   const overview = data.overview || {}, traffic = data.traffic || {}, acquisition = data.acquisition || {};
-  const [acquisitionPage, setAcquisitionPage] = useState(1);
-  const acquisitionRows = rows(acquisition.session);
-  const acquisitionPageRows = acquisitionRows.slice((acquisitionPage - 1) * 25, acquisitionPage * 25);
-  return <><LiveNote state={state} timezone={data.timezone} /><DataQuality dataQuality={data.dataQuality} />
+  return <>
     <section className="admin-kpi-grid"><MetricCard label="平均停留" value={(overview.avgDuration || 0) + "s"} note="页面事件" /><MetricCard label="跳出率" value={(overview.bounceRate || 0) + "%"} note="单页会话" /><MetricCard label="覆盖国家" value={rows(traffic.countries).length} note="访问 IP 地理头" /><MetricCard label="设备类型" value={rows(traffic.devices).length} note="浏览器识别" /></section>
     <section className="admin-panel"><p className="eyebrow">每日趋势</p><h2>有效访问变化</h2><TrendChart rows={rows(traffic.series)} /></section>
-    <section className="admin-grid four"><article className="admin-panel"><p className="eyebrow">渠道</p><h2>来源分布</h2><BarList rows={rows(traffic.channels)} /></article><article className="admin-panel"><p className="eyebrow">平台</p><h2>搜索、社媒与 AI</h2><BarList rows={rows(traffic.sourcePlatforms)} /></article><article className="admin-panel"><p className="eyebrow">区域</p><h2>国家地区</h2><BarList rows={rows(traffic.countries)} /></article><article className="admin-panel"><p className="eyebrow">设备</p><h2>访问环境</h2><BarList rows={rows(traffic.devices)} /></article></section>
-    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">归因明细</p><h2>会话来源</h2></div><CsvExportButton rows={acquisitionRows} filename="cowin-acquisition.csv" /></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>来源</th><th>渠道</th><th>访客</th><th>会话</th><th>PV</th><th>询盘</th><th>转化率</th></tr></thead><tbody>{acquisitionPageRows.map((row, index) => <tr key={row.source + "-" + index}><td>{row.source}</td><td>{row.channel}</td><td>{row.visitors}</td><td>{row.sessions}</td><td>{row.pageViews}</td><td>{row.leads}</td><td>{row.conversionRate}%</td></tr>)}{!acquisitionRows.length ? <EmptyRow columns={7} /> : null}</tbody></table></div><LocalPagination total={acquisitionRows.length} page={acquisitionPage} onChange={setAcquisitionPage} label="条来源归因" /></section>
+    <section className="admin-grid four"><article className="admin-panel"><p className="eyebrow">渠道</p><h2>来源分布</h2><BarList rows={rows(traffic.channels)} /></article><article className="admin-panel"><p className="eyebrow">平台</p><h2>来源平台</h2><BarList rows={rows(traffic.sourcePlatforms)} /></article><article className="admin-panel"><p className="eyebrow">区域</p><h2>国家地区</h2><BarList rows={rows(traffic.countries)} /></article><article className="admin-panel"><p className="eyebrow">设备</p><h2>访问环境</h2><BarList rows={rows(traffic.devices)} /></article></section>
+    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">归因明细</p><h2>会话来源</h2></div><CsvExportButton rows={rows(acquisition.session)} filename="cowin-acquisition.csv" /></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>来源</th><th>渠道</th><th>访客</th><th>会话</th><th>PV</th><th>询盘</th><th>转化率</th></tr></thead><tbody>{rows(acquisition.session).map((row, index) => <tr key={row.source + "-" + index}><td>{row.source}</td><td>{row.channel}</td><td>{row.visitors}</td><td>{row.sessions}</td><td>{row.pageViews}</td><td>{row.leads}</td><td>{row.conversionRate}%</td></tr>)}{!rows(acquisition.session).length ? <EmptyRow columns={7} /> : null}</tbody></table></div><Pagination meta={data.acquisitionMeta} /></section>
   </>;
 }
 
 export function AdminVisitorsRealtime({ initialData }) {
-  const { data, state } = useLiveAnalytics(initialData);
+  const { data } = useAnalyticsSnapshot(initialData);
   const visitors = rows(data.visitors);
-  const exported = useMemo(() => visitors.map((item) => ({ time: dateTime(item.lastSeen), customer: "C" + String(item.customerNumber || 0).padStart(5, "0"), type: item.customerType, visits: item.visitCount, country: item.country, source: item.source, page: item.lastPage, ip: item.ipMasked })), [visitors]);
-  return <><LiveNote state={state} timezone={data.timezone} /><DataQuality dataQuality={data.dataQuality} />
-    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">访客中心</p><h2>真实访问记录</h2></div><CsvExportButton rows={exported} filename="cowin-visitors.csv" /></div><VisitorFilters data={data} /><div className="admin-table-wrap"><table className="admin-table admin-visitors-table"><thead><tr><th>最近访问</th><th>访客</th><th>类型</th><th>次数</th><th>国家</th><th>来源</th><th>最后页面</th><th>浏览页面</th><th>脱敏 IP</th></tr></thead><tbody>{visitors.map((item) => <tr key={item.visitorId}><td>{dateTime(item.lastSeen)}</td><td><Link className="admin-visitor-link" href={`/admin/visitors/${encodeURIComponent(item.visitorId)}`}>C{String(item.customerNumber || 0).padStart(5, "0")}<small>查看详情</small></Link></td><td><span className={"admin-visitor-chip " + String(item.customerType).toLowerCase().replace(/\s+/g, "-")}>{item.customerType}</span></td><td>{item.visitCount}</td><td>{item.country}</td><td>{item.source}</td><td>{item.lastPage}</td><td title={item.pages?.join(" → ")}>{item.pageCount} 页</td><td>{item.ipMasked}</td></tr>)}{!visitors.length ? <EmptyRow columns={9} /> : null}</tbody></table></div><Pagination meta={data.visitorMeta} /></section>
+  const exported = useMemo(() => visitors.map((item) => ({ time: dateTime(item.lastSeen), customer: item.customerId, type: item.customerType, visits: item.visitCount, country: item.country, source: item.source, page: item.lastPage, ip: item.ipMasked })), [visitors]);
+  return <>
+    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">访客中心</p><h2>真实访问记录</h2></div><CsvExportButton rows={exported} filename="cowin-visitors.csv" /></div><VisitorFilters data={data} /><div className="admin-table-wrap"><table className="admin-table admin-visitors-table"><thead><tr><th>最近访问</th><th>访客</th><th>类型</th><th>次数</th><th>国家</th><th>来源</th><th>最后页面</th><th>浏览页面</th><th>脱敏 IP</th></tr></thead><tbody>{visitors.map((item) => <tr key={item.visitorId}><td>{dateTime(item.lastSeen)}</td><td><Link className="admin-detail-link" href={`/admin/visitors/${encodeURIComponent(item.visitorId)}`}>{item.customerId}</Link></td><td><span className={"admin-visitor-chip " + String(item.customerType).toLowerCase().replace(/\s+/g, "-")}>{item.customerType}</span></td><td>{item.visitCount}</td><td>{item.country}</td><td>{item.source}</td><td>{item.lastPage}</td><td title={item.pages?.join(" → ")}>{item.pageCount} 页</td><td>{item.ipMasked}</td></tr>)}{!visitors.length ? <EmptyRow columns={9} /> : null}</tbody></table></div><Pagination meta={data.visitorMeta} /></section>
   </>;
 }
 
 export function AdminPagesRealtime({ initialData }) {
-  const { data, state } = useLiveAnalytics(initialData);
-  const [pageNumber, setPageNumber] = useState(1);
-  const allPages = rows(data.pages);
-  const pages = allPages.slice((pageNumber - 1) * 25, pageNumber * 25);
-  return <><LiveNote state={state} timezone={data.timezone} /><section className="admin-panel"><p className="eyebrow">页面表现</p><h2>落地页与询盘转化</h2><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>页面</th><th>URL</th><th>浏览</th><th>访客</th><th>平均停留</th><th>询盘率</th></tr></thead><tbody>{pages.map((page) => <tr key={page.page}><td>{page.title}</td><td>{page.page}</td><td>{page.views}</td><td>{page.visitors}</td><td>{page.avgDuration}s</td><td>{page.conversionRate}%</td></tr>)}{!allPages.length ? <EmptyRow columns={6} /> : null}</tbody></table></div><LocalPagination total={allPages.length} page={pageNumber} onChange={setPageNumber} label="个页面" /></section></>;
+  const { data } = useAnalyticsSnapshot(initialData);
+  const pages = rows(data.pages);
+  return <><section className="admin-panel"><p className="eyebrow">页面表现</p><h2>落地页与询盘转化</h2><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>页面</th><th>URL</th><th>浏览</th><th>访客</th><th>平均停留</th><th>询盘率</th></tr></thead><tbody>{pages.map((page) => <tr key={page.page}><td>{page.title}</td><td>{page.page}</td><td>{page.views}</td><td>{page.visitors}</td><td>{page.avgDuration}s</td><td>{page.conversionRate}%</td></tr>)}{!pages.length ? <EmptyRow columns={6} /> : null}</tbody></table></div><Pagination meta={data.pageMeta} /></section></>;
 }
 
 export function AdminJourneysRealtime({ initialData }) {
-  const { data, state } = useLiveAnalytics(initialData);
-  return <><LiveNote state={state} timezone={data.timezone} /><section className="admin-panel"><p className="eyebrow">访问路径</p><h2>页面流转路径</h2><BarList rows={rows(data.journeys).slice(0, 50).map((item) => ({ label: item.route, value: item.value }))} /></section></>;
+  const { data } = useAnalyticsSnapshot(initialData);
+  return <><section className="admin-panel"><p className="eyebrow">访问路径</p><h2>页面流转路径</h2><BarList rows={rows(data.journeys).map((item) => ({ label: item.route, value: item.value }))} /><Pagination meta={data.journeyMeta} /></section></>;
 }

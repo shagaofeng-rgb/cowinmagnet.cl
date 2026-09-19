@@ -51,6 +51,9 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
           sourcePage: window.location.pathname,
           sourceUrl: window.location.href,
           utm: window.location.search,
+          visitorId: window.localStorage.getItem("cowinVisitorId") || "",
+          sessionId: window.sessionStorage.getItem("cowinSessionId") || "",
+          referrer: document.referrer,
           website: String(formData.get("website") || "")
         };
 

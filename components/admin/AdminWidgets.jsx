@@ -26,20 +26,28 @@ export function BarList({ rows = [] }) {
 }
 
 export function TrendChart({ rows = [] }) {
-  const max = Math.max(...rows.map((row) => Number(row.pv || row.value || 0)), 1);
-  return (
-    <div className="admin-trend">
-      {rows.length ? rows.map((row) => {
-        const value = Number(row.pv || row.value || 0);
-        return (
-          <div className="admin-trend-bar" key={row.date || row.label} title={`${row.date || row.label}: ${value}`}>
-            <i style={{ height: `${Math.max(8, (value / max) * 100)}%` }} />
-            <span>{String(row.date || row.label).slice(5)}</span>
-          </div>
-        );
-      }) : <p className="admin-muted">暂无趋势数据</p>}
-    </div>
-  );
+  if (!rows.length) return <p className="admin-muted">当前范围暂无趋势数据。</p>;
+  const values = rows.map((row) => Number(row.pv || row.value || 0));
+  const max = Math.max(...values, 1);
+  const width = Math.max(360, rows.length * 52);
+  const height = 190;
+  const points = values.map((value, index) => {
+    const x = rows.length === 1 ? width / 2 : 24 + (index * (width - 48)) / (rows.length - 1);
+    const y = 20 + (1 - value / max) * 126;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  return <div className="admin-line-chart" role="img" aria-label="每日访问趋势">
+    <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" aria-hidden="true">
+      <line x1="24" y1="146" x2={width - 24} y2="146" />
+      <line x1="24" y1="83" x2={width - 24} y2="83" />
+      <polyline points={points} />
+      {values.map((value, index) => {
+        const [x, y] = points.split(" ")[index].split(",");
+        return <circle cx={x} cy={y} r="3.5" key={`${rows[index].date || index}-${value}`} />;
+      })}
+    </svg>
+    <div className="admin-line-chart-labels">{rows.map((row) => <span key={row.date || row.label}>{String(row.date || row.label).slice(5)}</span>)}</div>
+  </div>;
 }
 
 export function CsvExportButton({ rows = [], filename = "export.csv" }) {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { products, productCategories } from "@/data/catalog";
-import { cmsStorageMode, getCmsItems } from "@/lib/cmsStore";
+import { getCmsItemsPage } from "@/lib/cmsStore";
 
 const t = {
   eyebrow: "\u5185\u5bb9\u603b\u89c8",
@@ -23,16 +23,16 @@ export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
 
 export default async function AdminContentPage() {
   const [cmsProducts, cmsNews, cmsBlogs] = await Promise.all([
-    getCmsItems("product", { includeInactive: true }),
-    getCmsItems("news", { includeInactive: true }),
-    getCmsItems("blog", { includeInactive: true })
+    getCmsItemsPage("product", { includeInactive: true, pageSize: 1 }),
+    getCmsItemsPage("news", { includeInactive: true, pageSize: 1 }),
+    getCmsItemsPage("blog", { includeInactive: true, pageSize: 1 })
   ]);
 
   const cards = [
     { label: t.staticProducts, value: products.length, note: `${productCategories.length} ${t.categories}`, href: "/admin/products" },
-    { label: t.cmsProducts, value: cmsProducts.length, note: t.productNote, href: "/admin/products" },
-    { label: t.cmsNews, value: cmsNews.length, note: t.newsNote, href: "/admin/news" },
-    { label: t.blog, value: cmsBlogs.length, note: t.blogNote, href: "/admin/blog" }
+    { label: t.cmsProducts, value: cmsProducts.meta.total, note: t.productNote, href: "/admin/products" },
+    { label: t.cmsNews, value: cmsNews.meta.total, note: t.newsNote, href: "/admin/news" },
+    { label: t.blog, value: cmsBlogs.meta.total, note: t.blogNote, href: "/admin/blog" }
   ];
 
   return (
@@ -52,11 +52,6 @@ export default async function AdminContentPage() {
             <small>{card.note}</small>
           </Link>
         ))}
-      </section>
-      <section className="admin-panel">
-        <p className="eyebrow">{t.storage}</p>
-        <h2>{cmsStorageMode()}</h2>
-        <p className="admin-muted">{t.storageNote}</p>
       </section>
     </>
   );

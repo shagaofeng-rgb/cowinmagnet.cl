@@ -26,6 +26,8 @@ export default function AdminDateRangeFilter({ range }) {
     }
     const params = new URLSearchParams(searchParams.toString());
     params.set("range", value);
+    params.set("page", "1");
+    params.set("candidatePage", "1");
     if (value === "custom") {
       params.set("start", start);
       params.set("end", end);
@@ -34,16 +36,15 @@ export default function AdminDateRangeFilter({ range }) {
       params.delete("end");
     }
     router.push(`${pathname}?${params.toString()}`);
-    router.refresh();
   }
 
   return (
     <form className="admin-date-filter" onSubmit={(event) => { event.preventDefault(); pushRange("custom"); }}>
       <div className="admin-date-filter-head">
         <span>时间范围</span>
-        <small>当前查看：{range?.label}，{range?.startInput} 至 {range?.endInput}（{range?.timezone || "America/Santiago"}）</small>
+        <small>当前查看：{range?.label}，{range?.startInput} 至 {range?.endInput}</small>
       </div>
-      <div className="admin-date-presets admin-date-presets-five" role="group" aria-label="选择时间范围">
+      <div className="admin-date-presets admin-date-presets-six" role="group" aria-label="选择时间范围">
         {options.map(([value, label]) => (
           <button type="button" className={range?.preset === value ? "is-active" : ""} onClick={() => pushRange(value)} key={value}>
             {label}

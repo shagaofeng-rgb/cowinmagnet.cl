@@ -1,68 +1,26 @@
-import { cmsStorageMode } from "@/lib/cmsStore";
-import { enquiryStorageMode } from "@/lib/enquiryStore";
-
-const t = {
-  eyebrow: "\u7cfb\u7edf\u8bbe\u7f6e",
-  title: "\u73af\u5883\u3001\u90ae\u4ef6\u3001\u6570\u636e\u6e90\u4e0e\u5b89\u5168\u914d\u7f6e",
-  desc: "\u540e\u53f0\u53ea\u663e\u793a\u914d\u7f6e\u72b6\u6001\uff0c\u4e0d\u8fd4\u56de\u5b8c\u6574\u5bc6\u94a5\u6216\u5bc6\u7801\u3002",
-  configured: "\u5df2\u914d\u7f6e",
-  missing: "\u672a\u914d\u7f6e",
-  database: "\u6570\u636e\u5e93",
-  admin: "\u7ba1\u7406\u5458",
-  email: "\u90ae\u4ef6\u901a\u77e5",
-  seo: "SEO \u6570\u636e\u6e90",
-  analytics: "\u771f\u5b9e\u6d41\u91cf\u4e0e\u6392\u9664\u89c4\u5219",
-  passwordSource: "\u5bc6\u7801\u6765\u6e90\uff1a\u73af\u5883\u53d8\u91cf\u6216\u6570\u636e\u5e93\u7ba1\u7406\u5458\u8d26\u53f7\u3002"
-};
+const sections = [
+  { title: "账户安全", text: "管理员可在账户安全中维护登录凭据，并按企业内部流程分配后台访问权限。" },
+  { title: "客户通知", text: "新的客户表单会同步发送至指定业务邮箱，销售团队可据此跟进。" },
+  { title: "数据展示", text: "后台仅展示当前筛选范围内的经营数据、客户线索和内容状态。" },
+  { title: "网站状态", text: "当网站数据或搜索表现需要关注时，系统会在对应业务页面提供提示。" }
+];
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
-
-function masked(value) {
-  return value ? t.configured : t.missing;
-}
+export const metadata = { title: "后台设置 | Cowinmagnet.cl" };
 
 export default function AdminSettingsPage() {
   return (
     <section className="admin-panel">
       <div className="admin-page-head">
         <div>
-          <p className="eyebrow">{t.eyebrow}</p>
-          <h1>{t.title}</h1>
-          <p>{t.desc}</p>
+          <p className="eyebrow">后台设置</p>
+          <h1>账户与运营设置</h1>
+          <p>集中查看与日常运营相关的设置说明。</p>
         </div>
       </div>
-      <div className="admin-grid">
-        <article className="admin-panel">
-          <h3>{t.database}</h3>
-          <p>DATABASE_URL: {masked(process.env.DATABASE_URL)}</p>
-          <p>CMS: {cmsStorageMode()}</p>
-          <p>{t.email}: {enquiryStorageMode()}</p>
-        </article>
-        <article className="admin-panel">
-          <h3>{t.admin}</h3>
-          <p>ADMIN_EMAIL: {process.env.ADMIN_EMAIL || "davidsha@cowinmagnet.com"}</p>
-          <p>{t.passwordSource}</p>
-        </article>
-        <article className="admin-panel">
-          <h3>{t.email}</h3>
-          <p>INQUIRY_TO_EMAIL: {masked(process.env.INQUIRY_TO_EMAIL)}</p>
-          <p>SMTP_HOST: {masked(process.env.SMTP_HOST)}</p>
-          <p>SMTP_USER: {masked(process.env.SMTP_USER)}</p>
-        </article>
-        <article className="admin-panel">
-          <h3>{t.seo}</h3>
-          <p>Search Console: {masked(process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL)}</p>
-          <p>Google Service Account: {masked(process.env.GOOGLE_SERVICE_ACCOUNT_BASE64 || process.env.GOOGLE_SERVICE_ACCOUNT_JSON)}</p>
-        </article>
-        <article className="admin-panel">
-          <h3>{t.analytics}</h3>
-          <p>访问时区：America/Santiago</p>
-          <p>自动排除：预览环境、后台、机器人、Codex/自动化、健康检查与 Collects 采集流量。</p>
-          <p>自定义规则：IP {masked(process.env.ANALYTICS_EXCLUDED_IPS)} · 来源 {masked(process.env.ANALYTICS_EXCLUDED_REFERRERS)} · UA {masked(process.env.ANALYTICS_EXCLUDED_USER_AGENTS)}</p>
-          <p>IP 默认仅显示脱敏结果；完整密钥与原始凭据不会显示在后台页面。</p>
-        </article>
-      </div>
+      <section className="admin-grid two">
+        {sections.map((section) => <article className="admin-panel" key={section.title}><h2>{section.title}</h2><p>{section.text}</p></article>)}
+      </section>
     </section>
   );
 }

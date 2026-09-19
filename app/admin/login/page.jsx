@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import AdminPasswordField from "@/components/admin/AdminPasswordField";
-import { getConfiguredAdminEmail } from "@/lib/adminAccountStore";
 import { isAdminAuthConfigured } from "@/lib/adminAuth";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +8,7 @@ export const metadata = { title: "后台登录 | Cowinmagnet.cl" };
 
 const errorMessages = {
   invalid: "账号或密码不正确。",
-  "not-configured": "后台密码尚未配置，请先配置 ADMIN_PASSWORD_HASH、ADMIN_PASSWORD 或 ADMIN_DEFAULT_PASSWORD。",
+  "not-configured": "后台登录暂不可用，请联系系统负责人。",
   "rate-limited": "登录失败次数过多，请稍后再试。"
 };
 
@@ -34,7 +33,7 @@ export default async function AdminLoginPage({ searchParams }) {
         <form className="admin-login-form" action="/api/admin/login" method="post">
           <label>
             账号邮箱
-            <input name="email" type="email" defaultValue={getConfiguredAdminEmail()} autoComplete="username" required />
+            <input name="email" type="email" autoComplete="username" required />
           </label>
           <AdminPasswordField />
           <label className="admin-checkbox-row">

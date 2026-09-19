@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import AdminLiveStatus from "@/components/admin/AdminLiveStatus";
 
 const text = {
@@ -25,21 +25,13 @@ const navigationGroups = [
   ] },
   { label: "SEO \u4e0e\u7cfb\u7edf", links: [
     { href: "/admin/search-console", label: "SEO \u6570\u636e" }, { href: "/admin/sitemap", label: "Sitemap" },
-    { href: "/admin/link-audit", label: "\u94fe\u63a5\u5ba1\u8ba1" }, { href: "/admin/sync", label: "\u6570\u636e\u540c\u6b65" },
-    { href: "/admin/audit-logs", label: "\u64cd\u4f5c\u65e5\u5fd7" }, { href: "/admin/users", label: "\u7528\u6237\u4e0e\u6743\u9650" },
-    { href: "/admin/settings", label: "\u7cfb\u7edf\u8bbe\u7f6e" }
+    { href: "/admin/sync", label: "\u6570\u636e\u72b6\u6001" }, { href: "/admin/users", label: "\u8d26\u6237\u5b89\u5168" },
+    { href: "/admin/settings", label: "\u540e\u53f0\u8bbe\u7f6e" }
   ] }
 ];
 
-function withCurrentQuery(href, searchParams) {
-  const query = searchParams.toString();
-  if (!query || href.includes("?")) return href;
-  return `${href}?${query}`;
-}
-
-export default function AdminShell({ children, email }) {
+export default function AdminShell({ children }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   return (
     <div className="admin-dashboard">
@@ -53,14 +45,14 @@ export default function AdminShell({ children, email }) {
             <p>{group.label}</p>
             {group.links.map((link) => {
               const active = pathname === link.href || (link.href === "/admin" && pathname === "/admin/dashboard");
-              return <Link className={active ? "is-active" : ""} href={withCurrentQuery(link.href, searchParams)} key={link.href}>{link.label}</Link>;
+              return <Link className={active ? "is-active" : ""} href={link.href} key={link.href}>{link.label}</Link>;
             })}
           </section>)}
         </nav>
         <div className="admin-sidebar-foot">
           <AdminLiveStatus />
           <small>{text.account}</small>
-          <span>{email}</span>
+          <span>已登录</span>
           <form action="/api/admin/logout" method="post">
             <button type="submit">{text.logout}</button>
           </form>

@@ -75,6 +75,7 @@ export async function POST(request) {
     country: payload.country || "Unknown",
     language: payload.language || "",
     referrer: payload.referrer || "",
+    verified: true,
     timestamp: saved.createdAt
   }).catch((error) => console.error("[inquiry] analytics event failed", error?.message || error));
 

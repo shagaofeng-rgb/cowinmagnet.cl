@@ -11,6 +11,19 @@ function clientIp(request) {
   return request.headers.get("x-real-ip") || "";
 }
 
+function isProductionRequest(request) {
+  const host = (request.headers.get("host") || "").toLowerCase().split(":")[0];
+  if (host !== "cowinmagnet.cl" && host !== "www.cowinmagnet.cl") return false;
+  const origin = request.headers.get("origin") || request.headers.get("referer");
+  if (!origin) return true;
+  try {
+    const sourceHost = new URL(origin).hostname.toLowerCase();
+    return sourceHost === "cowinmagnet.cl" || sourceHost === "www.cowinmagnet.cl";
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request) {
   let body = {};
   try {
@@ -28,6 +41,8 @@ export async function POST(request) {
   const os = /android/i.test(userAgent) ? "Android" : /iphone|ipad/i.test(userAgent) ? "iOS" : /mac/i.test(userAgent) ? "macOS" : "Windows";
 
   try {
+    const classified = classifyTraffic({ userAgent, host, referrer: body.referrer, page: body.page, isTest: body.isTest });
+    const exclusion = isProductionRequest(request) ? classified : { excluded: true, reason: "non-production-request" };
     const result = await appendAnalyticsEvent({
       ...body,
       device: body.device || device,
@@ -38,7 +53,8 @@ export async function POST(request) {
       userAgent,
       host,
       ip: clientIp(request),
-      exclusion: classifyTraffic({ userAgent, host, referrer: body.referrer, page: body.page, isTest: body.isTest })
+      verified: !exclusion.excluded,
+      exclusion
     });
     return NextResponse.json({ success: true, data: result }, { headers: { "cache-control": "no-store" } });
   } catch (error) {

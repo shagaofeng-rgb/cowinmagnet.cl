@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { saveEnquiry } from "@/lib/enquiryStore";
 import { appendAnalyticsEvent } from "@/lib/analyticsStore";
+import { buildInquiryNotification } from "@/lib/inquiryNotification";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -77,7 +78,7 @@ export async function POST(request) {
     timestamp: saved.createdAt
   }).catch((error) => console.error("[inquiry] analytics event failed", error?.message || error));
 
-  if (process.env.SMTP_HOST && process.env.SMTP_USER && (process.env.SMTP_PASSWORD || process.env.SMTP_PASS) && process.env.INQUIRY_TO_EMAIL) {
+  if (process.env.SMTP_HOST && process.env.SMTP_USER && (process.env.SMTP_PASSWORD || process.env.SMTP_PASS)) {
     try {
       const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
@@ -85,12 +86,12 @@ export async function POST(request) {
         secure: process.env.SMTP_SECURE !== "false",
         auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS }
       });
+      const notification = buildInquiryNotification(saved);
       await transporter.sendMail({
-        from: process.env.INQUIRY_FROM_EMAIL || "Cowinmagnet LATAM <davidsha@cowinmagnet.com>",
-        to: process.env.INQUIRY_TO_EMAIL,
-        replyTo: payload.email || undefined,
-        subject: `New LATAM inquiry from ${payload.name}`,
-        text: JSON.stringify(saved, null, 2)
+        ...notification,
+        // An SMTP provider may require a pre-verified sender identity. The
+        // recipient is intentionally fixed and cannot be overridden.
+        from: process.env.INQUIRY_FROM_EMAIL || notification.from
       });
     } catch (error) {
       console.error("[inquiry] notification email failed after persistence", error?.message || error);

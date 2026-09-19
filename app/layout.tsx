@@ -59,7 +59,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     alternateName: ["Cowinmagnet LATAM", "Cowinmagnet Chile and South America"],
     url: "https://cowinmagnet.cl",
     logo: "https://cowinmagnet.cl/assets/cowinmagnet-logo.png",
-    email: "davidsha@cowinmagnet.com",
+    email: "info@cowinmagnet.com",
     areaServed: ["Chile", "Peru", "Brazil", "Argentina", "Bolivia", "Colombia", "Ecuador", "Mexico", "Canada", "United States"],
     sameAs: ["https://www.cowinmagnet.com"]
   };

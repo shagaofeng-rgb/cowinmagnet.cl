@@ -26,7 +26,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
         summary={t(locale, "Envie datos de proyecto por formulario, email o WhatsApp.", "Envie dados do projeto por formulario, email ou WhatsApp.", "Send project data by form, email or WhatsApp.")}
         image="/assets/products/rcde-type-oil-cooled-electromagnetic-iron-remover/rcde-type-oil-cooled-electromagnetic-iron-remover-01.jpg"
       />
-      <section className="band"><div className="geo-grid"><article><h3>Email</h3><p>{siteConfig.email}</p></article><article><h3>WhatsApp</h3><p>+86 156 6513 5205</p></article><article><h3>{t(locale, "Empresa", "Empresa", "Company")}</h3><p>{siteConfig.company}</p></article></div></section>
+      <section className="band"><div className="geo-grid"><article><h3>Email</h3><p><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></p></article><article><h3>WhatsApp</h3><p>+86 156 6513 5205</p></article><article><h3>{t(locale, "Empresa", "Empresa", "Company")}</h3><p>{siteConfig.company}</p></article></div></section>
       <section className="band muted contact-map-band">
         <div className="contact-map-layout">
           <div className="contact-map-copy">

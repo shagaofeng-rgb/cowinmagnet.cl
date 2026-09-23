@@ -6,6 +6,7 @@ import Link from "next/link";
 import { BarList, CsvExportButton, MetricCard, TrendChart } from "@/components/admin/AdminWidgets";
 
 const rows = (value) => Array.isArray(value) ? value : [];
+const pageTrail = (value) => Array.isArray(value) ? value.join(" → ") : value ? Array.from(value).join(" → ") : "";
 
 function dateTime(value) {
   const date = new Date(value);
@@ -79,7 +80,7 @@ export function AdminVisitorsRealtime({ initialData }) {
   const visitors = rows(data.visitors);
   const exported = useMemo(() => visitors.map((item) => ({ time: dateTime(item.lastSeen), customer: item.customerId, type: item.customerType, visits: item.visitCount, country: item.country, source: item.source, page: item.lastPage, ip: item.ipMasked })), [visitors]);
   return <>
-    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">访客中心</p><h2>真实访问记录</h2></div><CsvExportButton rows={exported} filename="cowin-visitors.csv" /></div><VisitorFilters data={data} /><div className="admin-table-wrap"><table className="admin-table admin-visitors-table"><thead><tr><th>最近访问</th><th>访客</th><th>类型</th><th>次数</th><th>国家</th><th>来源</th><th>最后页面</th><th>浏览页面</th><th>脱敏 IP</th></tr></thead><tbody>{visitors.map((item) => <tr key={item.visitorId}><td>{dateTime(item.lastSeen)}</td><td><Link className="admin-detail-link" href={`/admin/visitors/${encodeURIComponent(item.visitorId)}`}>{item.customerId}</Link></td><td><span className={"admin-visitor-chip " + String(item.customerType).toLowerCase().replace(/\s+/g, "-")}>{item.customerType}</span></td><td>{item.visitCount}</td><td>{item.country}</td><td>{item.source}</td><td>{item.lastPage}</td><td title={item.pages?.join(" → ")}>{item.pageCount} 页</td><td>{item.ipMasked}</td></tr>)}{!visitors.length ? <EmptyRow columns={9} /> : null}</tbody></table></div><Pagination meta={data.visitorMeta} /></section>
+    <section className="admin-panel"><div className="admin-panel-head"><div><p className="eyebrow">访客中心</p><h2>真实访问记录</h2></div><CsvExportButton rows={exported} filename="cowin-visitors.csv" /></div><VisitorFilters data={data} /><div className="admin-table-wrap"><table className="admin-table admin-visitors-table"><thead><tr><th>最近访问</th><th>访客</th><th>类型</th><th>次数</th><th>国家</th><th>来源</th><th>最后页面</th><th>浏览页面</th><th>脱敏 IP</th></tr></thead><tbody>{visitors.map((item) => <tr key={item.visitorId}><td>{dateTime(item.lastSeen)}</td><td><Link className="admin-detail-link" href={`/admin/visitors/${encodeURIComponent(item.visitorId)}`}>{item.customerId}</Link></td><td><span className={"admin-visitor-chip " + String(item.customerType).toLowerCase().replace(/\s+/g, "-")}>{item.customerType}</span></td><td>{item.visitCount}</td><td>{item.country}</td><td>{item.source}</td><td>{item.lastPage}</td><td title={pageTrail(item.pages)}>{item.pageCount} 页</td><td>{item.ipMasked}</td></tr>)}{!visitors.length ? <EmptyRow columns={9} /> : null}</tbody></table></div><Pagination meta={data.visitorMeta} /></section>
   </>;
 }
 

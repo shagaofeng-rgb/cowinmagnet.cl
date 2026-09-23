@@ -1670,3 +1670,177 @@ body {
   .admin-search-control { grid-column: auto; }
   .admin-quality-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 }
+
+/* Admin reliability pass: one persistent surface, readable metrics, and dense
+   desktop controls. These rules intentionally sit after legacy admin styles
+   while the duplicated declarations are retired incrementally. */
+body:has(.admin-dashboard) {
+  background: #061613;
+}
+
+.admin-dashboard {
+  min-height: 100dvh;
+  align-items: stretch;
+  background: linear-gradient(135deg, #061613 0%, #092d27 54%, #063e34 100%);
+}
+
+.admin-main {
+  min-width: 0;
+  min-height: 100dvh;
+  background: transparent;
+}
+
+.admin-sidebar {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.admin-sidebar nav {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+}
+
+.admin-sidebar-foot {
+  flex: 0 0 auto;
+}
+
+.admin-page-head {
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.admin-page-head h1 {
+  max-width: 18ch;
+  font-size: clamp(2rem, 3.4vw, 3.2rem);
+  line-height: 1.1;
+}
+
+.admin-kpi-grid {
+  margin: 0 0 16px;
+}
+
+.admin-kpi-grid .admin-card,
+.admin-mini-metrics .admin-card {
+  display: grid;
+  align-content: space-between;
+  gap: 8px;
+  min-height: 132px;
+  padding: 18px;
+  border: 1px solid rgba(133, 203, 181, .20);
+  border-radius: 10px;
+  background: rgba(6, 25, 31, .88);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .16);
+}
+
+.admin-card > span {
+  color: #c4dcd5;
+  font-size: .9rem;
+  font-weight: 800;
+}
+
+.admin-card > strong {
+  color: #fff;
+  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+  line-height: 1;
+}
+
+.admin-card > small {
+  color: #a9c7bd;
+  font-size: .82rem;
+}
+
+.admin-list-controls {
+  display: grid;
+  grid-template-columns: minmax(260px, 2fr) minmax(150px, 1fr) minmax(120px, .7fr) auto auto;
+  align-items: end;
+  gap: 12px;
+  margin: 0 0 16px;
+  padding: 14px;
+  border: 1px solid rgba(133, 203, 181, .16);
+  border-radius: 10px;
+  background: rgba(3, 18, 22, .32);
+}
+
+.admin-list-controls label {
+  display: grid;
+  gap: 6px;
+  color: #c4dcd5;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.admin-list-controls input,
+.admin-list-controls select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid rgba(193, 224, 216, .22);
+  border-radius: 6px;
+  padding: 9px 11px;
+  background: rgba(3, 17, 23, .8);
+  color: #f4fbf8;
+  font: inherit;
+}
+
+.admin-list-controls button {
+  min-height: 42px;
+  border: 1px solid rgba(229, 184, 75, .58);
+  border-radius: 6px;
+  padding: 9px 14px;
+  background: #e5b84b;
+  color: #12231e;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-list-controls .admin-control-reset {
+  background: transparent;
+  color: #d8ebe4;
+}
+
+.admin-state-panel {
+  max-width: 760px;
+}
+
+.admin-state-skeleton {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.admin-state-skeleton i {
+  display: block;
+  height: 78px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(120, 216, 194, .08), rgba(120, 216, 194, .20), rgba(120, 216, 194, .08));
+  background-size: 200% 100%;
+  animation: admin-loading-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes admin-loading-shimmer {
+  to { background-position: -200% 0; }
+}
+
+@media (max-width: 1280px) {
+  .admin-list-controls { grid-template-columns: minmax(230px, 2fr) repeat(2, minmax(130px, 1fr)) auto; }
+  .admin-list-controls .admin-control-reset { grid-column: 4; }
+}
+
+@media (max-width: 860px) {
+  body:has(.admin-dashboard) { background: #061613; }
+  .admin-main { min-height: auto; }
+  .admin-sidebar { overflow: visible; }
+  .admin-sidebar nav { overflow-x: auto; overflow-y: hidden; }
+  .admin-list-controls { grid-template-columns: 1fr 1fr; }
+  .admin-list-controls .admin-search-control { grid-column: 1 / -1; }
+  .admin-list-controls button { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .admin-list-controls, .admin-state-skeleton { grid-template-columns: 1fr; }
+}

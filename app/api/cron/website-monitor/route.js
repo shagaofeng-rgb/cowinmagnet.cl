@@ -1,6 +1,6 @@
-import { getAnalyticsSnapshot, getLatestSyncStatus } from "@/lib/analyticsStore";
-import { getCmsItems } from "@/lib/cmsStore";
-import { getEnquiries } from "@/lib/enquiryStore";
+import { getAnalyticsHealthSummary, getLatestSyncStatus } from "@/lib/analyticsStore";
+import { getCmsContentSummary } from "@/lib/cmsStore";
+import { getEnquiriesPage } from "@/lib/enquiryStore";
 import { getSitemapStatus } from "@/lib/sitemapManager";
 
 export const runtime = "nodejs";
@@ -19,34 +19,32 @@ export async function GET(request) {
   const now = new Date();
   const analyticsRange = { startDate: new Date(now.getTime() - 24 * 60 * 60 * 1000), endDate: now };
   const checks = await Promise.allSettled([
-    getCmsItems("product", { includeInactive: true }),
-    getCmsItems("news", { includeInactive: true }),
-    getCmsItems("blog", { includeInactive: true }),
-    getEnquiries(),
+    getCmsContentSummary(),
+    getEnquiriesPage({ page: 1, pageSize: 25 }),
     getLatestSyncStatus(),
-    getAnalyticsSnapshot(analyticsRange),
+    getAnalyticsHealthSummary(analyticsRange),
     getSitemapStatus()
   ]);
-  const names = ["cmsProducts", "cmsNews", "cmsBlogs", "enquiries", "analyticsSync", "analyticsSnapshot", "sitemap"];
+  const names = ["cmsSummary", "enquiries", "analyticsSync", "analyticsSummary", "sitemap"];
   const failures = checks.flatMap((result, index) => result.status === "rejected" ? [{
     check: names[index],
     error: String(result.reason?.message || result.reason || "Unknown error").slice(0, 240)
   }] : []);
-  const [products, news, blogs, enquiries, sync, analytics, sitemap] = checks.map((result) => result.status === "fulfilled" ? result.value : null);
+  const [contentSummary, enquiries, sync, analytics, sitemap] = checks.map((result) => result.status === "fulfilled" ? result.value : null);
   const payload = {
     success: failures.length === 0,
     status: failures.length ? "degraded" : "ok",
     checks: {
-      cmsProducts: Array.isArray(products) ? products.length : null,
-      cmsNews: Array.isArray(news) ? news.length : null,
-      cmsBlogs: Array.isArray(blogs) ? blogs.length : null,
-      enquiries: Array.isArray(enquiries) ? enquiries.length : null,
+      cmsProducts: contentSummary?.product ?? null,
+      cmsNews: contentSummary?.news ?? null,
+      cmsBlogs: contentSummary?.blog ?? null,
+      enquiries: enquiries?.meta?.total ?? null,
       analyticsSync: sync?.status || null,
-      analyticsLast24Hours: analytics?.overview ? {
-        pageViews: analytics.overview.pageViews,
-        uniqueVisitors: analytics.overview.uniqueVisitors,
-        sessions: analytics.overview.sessions,
-        inquiries: analytics.overview.inquiries
+      analyticsLast24Hours: analytics ? {
+        pageViews: analytics.pageViews,
+        uniqueVisitors: analytics.uniqueVisitors,
+        sessions: analytics.sessions,
+        inquiries: analytics.inquiries
       } : null,
       sitemapStorage: sitemap?.storage || null,
       sitemapLastRun: sitemap?.runs?.[0]?.finished_at || sitemap?.runs?.[0]?.finishedAt || null

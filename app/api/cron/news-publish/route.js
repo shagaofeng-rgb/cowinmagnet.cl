@@ -3,6 +3,7 @@ import { runNewsPublication } from "@/lib/newsEditorial";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
+const NEWS_AUTOMATION_ENABLED = process.env.NEWS_AUTOMATION_ENABLED === "true";
 
 function authorized(request) {
   const secret = process.env.CRON_SECRET;
@@ -11,6 +12,9 @@ function authorized(request) {
 
 export async function GET(request) {
   if (!authorized(request)) return Response.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  if (!NEWS_AUTOMATION_ENABLED) {
+    return Response.json({ success: true, skipped: true, reason: "News automation is disabled" });
+  }
   try {
     const url = new URL(request.url);
     const result = await runNewsPublication({

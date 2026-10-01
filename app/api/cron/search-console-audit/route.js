@@ -24,9 +24,8 @@ function readPositiveInteger(value, fallback, max) {
 
 function rotatingOffset(total, limit) {
   if (!total) return 0;
-  // The cron runs every two hours. Advancing by one inspected batch per slot
-  // covers the sitemap in roughly two days without storing mutable cursor state.
-  const slot = Math.floor(Date.now() / (2 * 60 * 60 * 1000));
+  // The weekly Monday audit advances one batch without storing a mutable cursor.
+  const slot = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000));
   return (slot * limit) % total;
 }
 

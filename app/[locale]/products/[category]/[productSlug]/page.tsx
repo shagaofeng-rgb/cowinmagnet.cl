@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { OperationDocuments, OptionsGrid, ProductApplications, ProductFaq, ProductHero, ProductHowItWorks, ProductQuoteIntro, ProductStickyActions, RelatedProducts, SelectionGuide, SpecGroups } from "@/components/ProductDetailBlocks";
 import { ProductInquiryForm } from "@/components/ProductInquiryForm";
 import { ProductContentTabs } from "@/components/ProductContentTabs";
+import { ProductLocalMarketContext } from "@/components/ProductLocalMarketContext";
 import { getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { getProductDetailContent } from "@/data/productDetailContent";
@@ -92,7 +93,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     <ProductHero product={product} content={content} categoryTitle={categoryDisplay.title} locale={locale} />
     <ProductContentTabs tabs={[
-      { id: "overview", label: navigation.overview, content: <><ProductHowItWorks product={product} content={content} locale={locale} /><ProductApplications product={product} locale={locale} /></> },
+      { id: "overview", label: navigation.overview, content: <><ProductHowItWorks product={product} content={content} locale={locale} /><ProductApplications product={product} locale={locale} /><ProductLocalMarketContext product={product} locale={locale} /></> },
       { id: "selection", label: navigation.selection, content: <SelectionGuide product={product} content={content} locale={locale} /> },
       { id: "specifications", label: navigation.specifications, content: <><SpecGroups content={content} locale={locale} /><OptionsGrid content={content} locale={locale} /><OperationDocuments content={content} locale={locale} /></> },
       { id: "faq", label: navigation.faq, content: <ProductFaq content={content} locale={locale} /> },

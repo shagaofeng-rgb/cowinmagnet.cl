@@ -13,10 +13,11 @@ const cmsStoreSource = fs.readFileSync(new URL("../lib/cmsStore.js", import.meta
 test("public News reads use the tagged CMS cache instead of bypassing it", () => {
   assert.match(newsDataSource, /getCachedPublishedNews\(\)/);
   assert.doesNotMatch(newsDataSource, /unstable_noStore|noStore\(\)/);
-  assert.match(publicCmsSource, /revalidate:\s*300/);
-  assert.match(publicCmsSource, /tags:\s*\["public-news"\]/);
+  assert.match(publicCmsSource, /unstable_cache\([\s\S]+revalidate:\s*REVALIDATE_SECONDS/);
+  assert.match(publicCmsSource, /cacheArticles\("news"\)/);
+  assert.match(publicCmsSource, /tags:\s*\[`public-\$\{type\}`\]/);
   assert.match(publicCmsSource, /getCachedPublishedNewsItem/);
-  assert.match(publicCmsSource, /omitBody:\s*true/);
+  assert.match(publicCmsSource, /withoutBody\(await publishedNews\(\)\)/);
 });
 
 test("successful News publication invalidates the public News cache", () => {
@@ -26,7 +27,7 @@ test("successful News publication invalidates the public News cache", () => {
 test("public Blog reads use the tagged CMS cache", () => {
   assert.match(blogContentSource, /getCachedPublishedBlog\(\)/);
   assert.doesNotMatch(blogContentSource, /unstable_noStore|noStore\(\)|getCmsItem\(/);
-  assert.match(publicCmsSource, /tags:\s*\["public-blog"\]/);
+  assert.match(publicCmsSource, /cacheArticles\("blog"\)/);
   assert.match(publicCmsSource, /getCachedPublishedBlogItem/);
 });
 

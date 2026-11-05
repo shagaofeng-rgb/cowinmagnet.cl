@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ContentCard } from "@/components/ContentCard";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorCard, InteriorHero, InteriorLink, InteriorRow, InteriorSection } from "@/components/Interior";
 import { PaginationNav } from "@/components/PaginationNav";
-import { chileRegions, getProductSummary, markets, products } from "@/data/catalog";
+import { chileRegions, markets, products } from "@/data/catalog";
+import { productPresentation } from "@/data/productPresentation";
 import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates, localizedEntityCopy } from "@/lib/seo";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
@@ -30,19 +30,22 @@ export default async function MarketCountryPage({ params, searchParams }: { para
   if (!market) notFound();
   const isChile = market.slug === "chile";
   const display = localizedEntityCopy(locale, "market", country, market.title, market.summary);
-  const regionPagination = parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] });
+  const regionPagination = parseListPagination(query, { defaultPageSize: 6, allowedPageSizes: [6] });
   const { items: visibleRegions, meta: regionMeta } = paginateList(chileRegions, regionPagination);
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "markets") }, { label: display.title }]} />
-      <HeroBanner eyebrow={display.label} title={display.title} summary={display.summary} image={market.image} />
-      <section className="band"><div className="geo-grid">
-        <article><h3>{t(locale, "Industrias locales", "Industrias locais", "Local industries")}</h3><p>{t(locale, "Mineria, transportadores, cemento, agregados, reciclaje o graneles segun pais.", "Mineracao, transportadores, cimento, agregados, reciclagem ou granéis conforme o pais.", "Mining, conveyors, cement, aggregates, recycling or bulk handling according to the country.")}</p></article>
-        <article><h3>{t(locale, "Condiciones ambientales", "Condicoes ambientais", "Environmental conditions")}</h3><p>{t(locale, "Confirmar polvo, altitud, temperatura, humedad, voltaje y frecuencia.", "Confirmar poeira, altitude, temperatura, umidade, tensao e frequencia.", "Confirm dust, altitude, temperature, humidity, voltage and frequency.")}</p></article>
-        <article><h3>{t(locale, "Logistica y transporte", "Logistica e transporte", "Logistics and transport")}</h3><p>{t(locale, "Validar destino, puerto, embalaje y requisitos de exportacion.", "Validar destino, porto, embalagem e requisitos de exportacao.", "Validate destination, port, packaging and export requirements.")}</p></article>
-      </div></section>
-      {isChile ? <section className="band muted"><div className="section-heading"><p className="eyebrow">{t(locale, "Regiones de Chile", "Regioes do Chile", "Chile regions")}</p><h2>{t(locale, "Regiones chilenas", "Regioes chilenas", "Chilean regions")}</h2></div><div className="page-grid">{visibleRegions.map((region) => { const regionDisplay = localizedEntityCopy(locale, "region", region.slug, region.title, region.summary); return <ContentCard key={region.slug} title={regionDisplay.title} summary={regionDisplay.summary} image={region.image} href={localizedPath(locale, `markets/chile/${region.slug}`)} />; })}</div><PaginationNav meta={regionMeta} pathname={`/${locale}/markets/${country}`} params={query} locale={locale} /></section> : null}
-      <section className="band"><div className="section-heading"><p className="eyebrow">{t(locale, "Productos recomendados", "Produtos recomendados", "Recommended products")}</p><h2>{t(locale, "Equipos que pueden evaluarse", "Equipamentos que podem ser avaliados", "Equipment to evaluate")}</h2></div><div className="page-grid">{products.slice(0, 3).map((product) => <ContentCard key={product.slug} title={product.title} summary={getProductSummary(product, locale)} image={product.image} href={localizedPath(locale, `products/${product.category}/${product.slug}`)} />)}</div></section>
-    </>
-  );
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "markets") }, { label: display.title }]} />
+    <InteriorHero title={isChile ? t(locale, "Equipos magnéticos para Chile", "Equipamentos magnéticos para o Chile", "Magnetic equipment for Chile") : display.title} summary={display.summary} image={isChile ? "/assets/markets/markets-hero.jpg" : market.image}
+      action={<InteriorLink variant="primary" href={localizedPath(locale, "request-a-quote")}>{t(locale, "Consultar por un proyecto", "Consultar sobre um projeto", "Discuss a project")}</InteriorLink>} />
+    {isChile ? <InteriorSection tinted><h2>{t(locale, "Regiones de Chile", "Regiões do Chile", "Regions of Chile")}</h2>
+      <div className="grid">{visibleRegions.map((region) => { const item = localizedEntityCopy(locale, "region", region.slug, region.title, region.summary); return <InteriorCard key={region.slug} title={item.title} summary={item.summary} image={region.image} href={localizedPath(locale, "markets/chile/" + region.slug)} label={t(locale, "Ver región", "Ver região", "View region")} />; })}</div>
+      <PaginationNav meta={regionMeta} pathname={localizedPath(locale, "markets/" + country)} params={query} locale={locale} />
+    </InteriorSection> : null}
+    <InteriorSection><div className="split"><div><h2>{t(locale, "Datos para el proyecto", "Dados para o projeto", "Project details")}</h2>
+      <InteriorRow icon="settings" title={t(locale, "Condiciones ambientales", "Condições ambientais", "Environmental conditions")} summary={t(locale, "Confirme polvo, altitud, temperatura, humedad, voltaje y frecuencia.", "Confirme poeira, altitude, temperatura, umidade, tensão e frequência.", "Confirm dust, altitude, temperature, humidity, voltage and frequency.")} />
+      <InteriorRow icon="truck" title={t(locale, "Logística y transporte", "Logística e transporte", "Logistics and transport")} summary={t(locale, "Valide destino, puerto, embalaje y requisitos de exportación.", "Valide destino, porto, embalagem e requisitos de exportação.", "Confirm destination, port, packaging and export requirements.")} />
+    </div><div><h2>{t(locale, "Equipos que puede evaluar", "Equipamentos que pode avaliar", "Equipment to evaluate")}</h2><div className="grid">{products.slice(0, 3).map((product) => {
+      const item = productPresentation(product, locale);
+      return <InteriorCard key={product.slug} title={item.title} summary={item.applications[0]} image={product.image} href={localizedPath(locale, "products/" + product.category + "/" + product.slug)} label={t(locale, "Ver ficha", "Ver ficha", "View product")} equipment />;
+    })}</div></div></div></InteriorSection>
+  </Interior>;
 }

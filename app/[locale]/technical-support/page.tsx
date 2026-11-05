@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorLink, InteriorSection, Intro, InteriorRow } from "@/components/Interior";
 import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -16,18 +15,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function TechnicalSupportPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
-
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Soporte tecnico", "Suporte tecnico", "Technical Support") }]} />
-      <HeroBanner
-        eyebrow={t(locale, "Soporte tecnico", "Suporte tecnico", "Technical Support")}
-        title={t(locale, "Guias de seleccion, instalacion y mantenimiento", "Guias de selecao, instalacao e manutencao", "Selection, installation and maintenance guides")}
-        summary={t(locale, "Soporte tecnico para compradores B2B sin inventar parametros, certificaciones ni casos.", "Suporte tecnico para compradores B2B sem inventar parametros, certificacoes ou casos.", "Technical support for B2B buyers without inventing parameters, certifications or cases.")}
-        image="/assets/products/cbs-drawer-type-magnetic-filter/cbs-drawer-type-magnetic-filter-01.jpg"
-      />
-      <section className="band"><div className="geo-grid"><article><h3>{t(locale, "Guia de seleccion", "Guia de selecao", "Selection guide")}</h3><p>{t(locale, "Material, tamano maximo, capacidad, cinta, altura, limpieza, altitud, temperatura y energia.", "Material, tamanho maximo, capacidade, correia, altura, limpeza, altitude, temperatura e energia.", "Material, maximum size, capacity, belt, height, cleaning, altitude, temperature and power.")}</p></article><article><h3>{t(locale, "Instalacion", "Instalacao", "Installation")}</h3><p>{t(locale, "Montaje transversal o en linea, acceso para limpieza, estructura y seguridad.", "Montagem transversal ou em linha, acesso para limpeza, estrutura e seguranca.", "Cross-belt or in-line mounting, cleaning access, structure and safety.")}</p></article><article><h3>{t(locale, "Mantenimiento", "Manutencao", "Maintenance")}</h3><p>{t(locale, "Revision, limpieza, repuestos, bandas, rodamientos y gabinete de control.", "Revisao, limpeza, pecas, correias, rolamentos e painel de controle.", "Inspection, cleaning, spare parts, belts, bearings and control cabinet.")}</p></article></div></section>
-      <section className="band muted"><Link className="button primary" href={localizedPath(locale, "downloads")}>{t(locale, "Ver descargas", "Ver downloads", "View downloads")}</Link></section>
-    </>
-  );
+  const title = t(locale, "Soporte técnico", "Suporte técnico", "Technical support");
+  const downloads = localizedPath(locale, "downloads");
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: title }]} />
+    <Intro title={title} summary={t(locale, "Prepare los datos necesarios para elegir, instalar y revisar su equipo.", "Prepare os dados para escolher, instalar e revisar seu equipamento.", "Prepare the data needed to select, install and maintain your equipment.")} />
+    <InteriorSection><div className="split catalog-overview"><div>
+      <h2>{t(locale, "Guías de trabajo", "Guias de trabalho", "Technical guides")}</h2>
+      <InteriorRow icon="magnet" title={t(locale, "Selección", "Seleção", "Selection")} summary={t(locale, "Material, granulometría, capacidad, cinta y altura de montaje.", "Material, granulometria, capacidade, correia e altura de montagem.", "Material, particle size, capacity, belt and mounting height.")} action={<InteriorLink href={localizedPath(locale, "products")}>{t(locale, "Ver equipos", "Ver equipamentos", "Browse equipment")}</InteriorLink>} />
+      <InteriorRow icon="tool" title={t(locale, "Instalación", "Instalação", "Installation")} summary={t(locale, "Ubicación, soporte mecánico y trayectoria de descarga.", "Localização, suporte mecânico e trajetória de descarga.", "Location, mechanical support and discharge path.")} action={<InteriorLink href={downloads}>{t(locale, "Ver checklist", "Ver checklist", "View checklist")}</InteriorLink>} />
+      <InteriorRow icon="settings" title={t(locale, "Mantenimiento", "Manutenção", "Maintenance")} summary={t(locale, "Inspección, limpieza, bandas, rodamientos y acceso seguro.", "Inspeção, limpeza, correias, rolamentos e acesso seguro.", "Inspection, cleaning, belts, bearings and safe access.")} action={<InteriorLink href={downloads}>{t(locale, "Ver documentos", "Ver documentos", "View documents")}</InteriorLink>} />
+    </div><aside className="panel"><h3>{t(locale, "¿Necesita revisar una aplicación?", "Precisa revisar uma aplicação?", "Need to review an application?")}</h3><p>{t(locale, "Envíe el material, la capacidad y el punto de instalación.", "Envie o material, a capacidade e o ponto de instalação.", "Send your material, capacity and installation point.")}</p><InteriorLink href={localizedPath(locale, "request-a-quote")}>{t(locale, "Enviar datos del proyecto", "Enviar dados do projeto", "Send project details")}</InteriorLink></aside></div></InteriorSection>
+  </Interior>;
 }

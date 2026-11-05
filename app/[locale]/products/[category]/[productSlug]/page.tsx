@@ -1,23 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { OperationDocuments, OptionsGrid, ProductApplications, ProductFaq, ProductHero, ProductHowItWorks, ProductQuoteIntro, ProductStickyActions, RelatedProducts, SelectionGuide, SpecGroups } from "@/components/ProductDetailBlocks";
-import { ProductInquiryForm } from "@/components/ProductInquiryForm";
-import { ProductContentTabs } from "@/components/ProductContentTabs";
-import { ProductLocalMarketContext } from "@/components/ProductLocalMarketContext";
+import { Interior } from "@/components/Interior";
+import { ProductInterior } from "@/components/ProductInterior";
 import { getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { getProductDetailContent } from "@/data/productDetailContent";
-import { Locale, localizedPath } from "@/data/site";
+import { Locale, localizedPath, t } from "@/data/site";
 import { canonicalLocale, localizedAlternates, localizedProductSeo } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
-
-function sectionCopy(locale: Locale) {
-  if (locale === "en") return { overview: "Overview", selection: "Selection guide", specifications: "Specifications & options", faq: "FAQ", related: "Related equipment" };
-  if (locale === "pt-br") return { overview: "Resumo", selection: "Guia de seleção", specifications: "Especificações e opções", faq: "Perguntas frequentes", related: "Equipamentos relacionados" };
-  return { overview: "Resumen", selection: "Guía de selección", specifications: "Especificaciones y opciones", faq: "FAQ", related: "Equipos relacionados" };
-}
 
 function relatedProductsFor<T extends { slug: string; category: string; title: string }>(current: T, catalogProducts: T[]) {
   const source = `${current.slug} ${current.title}`.toLowerCase();
@@ -26,7 +18,7 @@ function relatedProductsFor<T extends { slug: string; category: string; title: s
   const recycling = /(eddy|stainless|head-pulley|drum-magnet)/.test(source);
   const score = (item: T) => {
     const value = `${item.slug} ${item.title}`.toLowerCase();
-    let result = item.category === current.category ? 3 : 0;
+    let result = item.category === current.category ? 10 : 0;
     if (suspended && /(suspended|overband|rcyd|rcye|rcyb|rcyp|rcdb|rcda|rcde|rcdc|rcdd|rcdf|rcps|head-pulley|drum-magnet)/.test(value)) result += 8;
     if (wet && /(wet|ctb|ctn|cts|tailing|hjlh|hjpc|gtc|wbc|nct|clt)/.test(value)) result += 8;
     if (recycling && /(eddy|drum-magnet|metal-detector|stainless|head-pulley)/.test(value)) result += 8;
@@ -62,7 +54,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   const copy = productCopy[locale] ?? productCopy["es-cl"];
   const content = getProductDetailContent(product, locale);
-  const navigation = sectionCopy(locale);
   const categoryDisplay = productCategories.some((item) => item.slug === category.slug)
     ? getCategoryDisplay(category as (typeof productCategories)[number], locale)
     : { title: category.title, summary: category.summary };
@@ -87,19 +78,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     ]
   };
 
-  return <main className="pd-page">
-    <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: content.title }]} />
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: category.key === "permanent" ? t(locale, "Separadores suspendidos", "Separadores suspensos", "Suspended separators") : categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: content.series || content.title }]} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-    <ProductHero product={product} content={content} categoryTitle={categoryDisplay.title} locale={locale} />
-    <ProductContentTabs tabs={[
-      { id: "overview", label: navigation.overview, content: <><ProductHowItWorks product={product} content={content} locale={locale} /><ProductApplications product={product} locale={locale} /><ProductLocalMarketContext product={product} locale={locale} /></> },
-      { id: "selection", label: navigation.selection, content: <SelectionGuide product={product} content={content} locale={locale} /> },
-      { id: "specifications", label: navigation.specifications, content: <><SpecGroups content={content} locale={locale} /><OptionsGrid content={content} locale={locale} /><OperationDocuments content={content} locale={locale} /></> },
-      { id: "faq", label: navigation.faq, content: <ProductFaq content={content} locale={locale} /> },
-      { id: "related", label: navigation.related, content: <RelatedProducts products={relatedProducts} locale={locale} /> }
-    ]} />
-    <section id="cotizacion" className="pd-quote-section"><div className="pd-shell pd-quote-grid"><ProductQuoteIntro locale={locale} /><ProductInquiryForm locale={locale} productName={content.title} model={content.series} /></div></section>
-    <ProductStickyActions locale={locale} />
-  </main>;
+    <ProductInterior product={product} content={content} categoryTitle={categoryDisplay.title} related={relatedProducts} locale={locale} />
+  </Interior>;
 }

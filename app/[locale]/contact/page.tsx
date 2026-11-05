@@ -1,7 +1,8 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
-import { QuoteForm } from "@/components/QuoteForm";
-import { Locale, siteConfig, t } from "@/data/site";
+import { Interior, InteriorLink, InteriorSection, Intro, InteriorRow } from "@/components/Interior";
+import { ContactMap } from "@/components/ContactMap";
+import { InteriorIcon } from "@/components/InteriorIcon";
+import { Locale, localizedPath, siteConfig, t } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -16,37 +17,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
-
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Contacto", "Contato", "Contact") }]} />
-      <HeroBanner
-        eyebrow={t(locale, "Contacto", "Contato", "Contact")}
-        title={t(locale, "Contacto Cowinmagnet LATAM", "Contato Cowinmagnet LATAM", "Contact Cowinmagnet LATAM")}
-        summary={t(locale, "Envie datos de proyecto por formulario, email o WhatsApp.", "Envie dados do projeto por formulario, email ou WhatsApp.", "Send project data by form, email or WhatsApp.")}
-        image="/assets/products/rcde-type-oil-cooled-electromagnetic-iron-remover/rcde-type-oil-cooled-electromagnetic-iron-remover-01.jpg"
-      />
-      <section className="band"><div className="geo-grid"><article><h3>Email</h3><p><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></p></article><article><h3>WhatsApp</h3><p>+86 156 6513 5205</p></article><article><h3>{t(locale, "Empresa", "Empresa", "Company")}</h3><p>{siteConfig.company}</p></article></div></section>
-      <section className="band muted contact-map-band">
-        <div className="contact-map-layout">
-          <div className="contact-map-copy">
-            <p className="eyebrow">{t(locale, "Ubicación", "Localização", "Location")}</p>
-            <h2>{t(locale, "Visite nuestra ubicación", "Visite nossa localização", "Visit our location")}</h2>
-            <p>{siteConfig.companyAddress}</p>
-            <p>{t(locale, "Use el mapa para planificar su visita o abrir las indicaciones en Google Maps.", "Use o mapa para planejar sua visita ou abrir as direções no Google Maps.", "Use the map to plan your visit or open directions in Google Maps.")}</p>
-            <a className="button secondary" href={siteConfig.companyMapUrl} target="_blank" rel="noopener noreferrer">{t(locale, "Abrir en Google Maps", "Abrir no Google Maps", "Open in Google Maps")}</a>
-          </div>
-          <div className="contact-map-frame">
-            <iframe
-              title={t(locale, "Mapa de ubicación de Cowinmagnet", "Mapa de localização da Cowinmagnet", "Cowinmagnet location map")}
-              src={`https://www.google.com/maps?q=${siteConfig.companyMapCoordinates}&z=17&output=embed`}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
-        </div>
-      </section>
-      <section className="band muted"><QuoteForm locale={locale} /></section>
-    </>
-  );
+  const title = t(locale, "Contacto", "Contato", "Contact");
+  const quote = localizedPath(locale, "request-a-quote");
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: title }]} />
+    <Intro title={title} summary={t(locale, "Hable con Cowinmagnet sobre equipos, selección o cotizaciones.", "Fale com a Cowinmagnet sobre equipamentos, seleção ou cotações.", "Talk to Cowinmagnet about equipment, selection or quotations.")} />
+    <InteriorSection><div className="split equal">
+      <section><h2>{t(locale, "Canales de contacto", "Canais de contato", "Contact options")}</h2>
+        <InteriorRow icon="mail" title={t(locale, "Correo electrónico", "E-mail", "Email")} summary={siteConfig.email} action={<a className="quiet" href={"mailto:" + siteConfig.email}>{t(locale, "Enviar correo", "Enviar e-mail", "Send email")} <InteriorIcon name="arrow-right" /></a>} />
+        <InteriorRow icon="brand-whatsapp" title="WhatsApp" summary="+86 156 6513 5205" action={<a className="quiet" href={"https://wa.me/" + siteConfig.whatsapp} target="_blank" rel="noopener noreferrer nofollow">{t(locale, "Abrir WhatsApp", "Abrir WhatsApp", "Open WhatsApp")} <InteriorIcon name="arrow-right" /></a>} />
+        <InteriorRow icon="file-text" title={t(locale, "Consulta de proyecto", "Consulta de projeto", "Project enquiry")} summary={t(locale, "Envíe el material, la capacidad y sus datos de contacto.", "Envie o material, a capacidade e seus dados de contato.", "Send material, capacity and your contact details.")} action={<InteriorLink href={quote}>{t(locale, "Abrir formulario", "Abrir formulário", "Open form")}</InteriorLink>} />
+      </section><ContactMap locale={locale} />
+    </div></InteriorSection>
+  </Interior>;
 }

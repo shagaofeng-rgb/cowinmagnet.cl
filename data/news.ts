@@ -114,8 +114,8 @@ function localizeNews(article: NewsArticle, locale: Locale): NewsArticle {
   };
 }
 
-export async function getPublishedNews(locale: Locale = defaultLocale): Promise<NewsArticle[]> {
-  const items = await getCachedPublishedNews();
+export async function getPublishedNews(locale: Locale = defaultLocale, options = {}): Promise<NewsArticle[]> {
+  const items = await getCachedPublishedNews(options);
   return items
     .map(normalizeNewsItem)
     .map((article) => localizeNews(article, locale))

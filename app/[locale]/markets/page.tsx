@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
-import { focusMarkets, getIndustryMarketRows } from "@/data/brief";
+import { Interior, InteriorCard, InteriorHero, InteriorLink, InteriorRow, InteriorSection } from "@/components/Interior";
+import { getIndustryMarketRows } from "@/data/brief";
+import { markets } from "@/data/catalog";
 import { Locale, localizedPath, t } from "@/data/site";
-import { localizedAlternates } from "@/lib/seo";
+import { localizedAlternates, localizedEntityCopy } from "@/lib/seo";
 import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
@@ -18,59 +17,21 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function MarketsPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
-  const industryMarketRows = getIndustryMarketRows(locale);
-
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Mercados", "Mercados", "Markets") }]} />
-      <HeroBanner
-        eyebrow={t(locale, "Mercados", "Mercados", "Markets")}
-        title={t(locale, "Mercados de Chile y Sudamerica", "Mercados do Chile e America do Sul", "Chile and South America markets")}
-        summary={t(locale, "Aplicaciones y paises prioritarios presentados en una vista simple para compras tecnicas.", "Aplicacoes e paises prioritarios apresentados em uma visao simples para compras tecnicas.", "Priority applications and countries presented in a simple view for technical buyers.")}
-        image="/assets/markets/chile-copper-ore.jpg"
-      />
-      <section className="band brief-page">
-        <div className="brief-intro">
-          <p className="eyebrow">{t(locale, "Ajuste industria-mercado", "Ajuste industria-mercado", "Industry and market fit")}</p>
-          <h2>{t(locale, "Aplicacion, problema y equipo recomendado", "Aplicacao, problema e equipamento recomendado", "Application, problem and recommended equipment")}</h2>
-          <p>{t(locale, "La pagina combina mercado e industria para que el comprador encuentre rapido el equipo adecuado.", "A pagina combina mercado e industria para que o comprador encontre rapidamente o equipamento adequado.", "This page combines market and industry context so buyers can find the right equipment faster.")}</p>
-        </div>
-        <div className="brief-table-image">
-          <Image src="/assets/brief/industry-market-table.png" alt="Industry market equipment table" width={850} height={402} />
-        </div>
-        <div className="brief-table-wrap">
-          <table className="brief-table">
-            <thead>
-              <tr>
-                <th>{t(locale, "Industria", "Industria", "Industry")}</th>
-                <th>{t(locale, "Problemas que resolvemos", "Problemas que resolvemos", "Problems solved")}</th>
-                <th>{t(locale, "Equipos principales", "Equipamentos principais", "Main equipment")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {industryMarketRows.map((row) => (
-                <tr key={row.industry}>
-                  <th>{row.industry}</th>
-                  <td>{row.problem}</td>
-                  <td>{row.equipment}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <section className="brief-group">
-          <div className="brief-group-head">
-            <p className="eyebrow">{t(locale, "Paises foco", "Paises foco", "Focus countries")}</p>
-            <h2>{t(locale, "Paises prioritarios", "Paises prioritarios", "Priority countries")}</h2>
-            <p>{t(locale, "Mantenemos pocos mercados visibles para que el sitio sea simple y enfocado.", "Mantemos poucos mercados visiveis para que o site seja simples e focado.", "We keep the visible market list focused so the site stays simple and useful.")}</p>
-          </div>
-          <div className="brief-chip-list">
-            {focusMarkets.map((market) => (
-              <Link href={localizedPath(locale, `markets/${market.toLowerCase()}`)} key={market}>{market}</Link>
-            ))}
-          </div>
-        </section>
-      </section>
-    </>
-  );
+  const others = markets.filter((item) => item.slug !== "chile");
+  const view = (item: typeof markets[number]) => localizedEntityCopy(locale, "market", item.slug, item.title, item.summary);
+  const viewMarket = t(locale, "Ver mercado", "Ver mercado", "View market");
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: t(locale, "Mercados", "Mercados", "Markets") }]} />
+    <InteriorHero title={t(locale, "Mercados de Sudamérica", "Mercados da América do Sul", "South American markets")} summary={t(locale, "Aplicaciones de separación magnética para minería, reciclaje e industria.", "Aplicações de separação magnética para mineração, reciclagem e indústria.", "Magnetic separation applications for mining, recycling and industry.")} image="/assets/home-design/south-america-map.jpg" fit
+      action={<InteriorLink variant="primary" href={localizedPath(locale, "markets/chile")}>{t(locale, "Explorar Chile", "Explorar Chile", "Explore Chile")}</InteriorLink>} />
+    <InteriorSection tinted>
+      <h2>{t(locale, "Países y aplicaciones", "Países e aplicações", "Countries and applications")}</h2>
+      <div className="grid">{others.slice(0, 3).map((item) => <InteriorCard key={item.slug} image={item.image} title={view(item).title} summary={view(item).summary} href={localizedPath(locale, "markets/" + item.slug)} label={viewMarket} equipment />)}</div>
+      <div className="editorial-list">{others.slice(3, 8).map((item) => <InteriorRow key={item.slug} icon="world" title={view(item).title} summary={view(item).summary} action={<InteriorLink href={localizedPath(locale, "markets/" + item.slug)}>{viewMarket}</InteriorLink>} />)}</div>
+    </InteriorSection>
+    <InteriorSection><details className="form-extra"><summary>{t(locale, "Aplicaciones por industria", "Aplicações por indústria", "Applications by industry")}</summary>
+      <table className="route-table"><thead><tr><th scope="col">{t(locale, "Industria", "Indústria", "Industry")}</th><th scope="col">{t(locale, "Problema", "Problema", "Challenge")}</th><th scope="col">{t(locale, "Equipos", "Equipamentos", "Equipment")}</th></tr></thead>
+      <tbody>{getIndustryMarketRows(locale).map((row) => <tr key={row.industry}><th scope="row">{row.industry}</th><td>{row.problem}</td><td>{row.equipment}</td></tr>)}</tbody></table>
+    </details></InteriorSection>
+  </Interior>;
 }

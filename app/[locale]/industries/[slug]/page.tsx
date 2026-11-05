@@ -1,9 +1,6 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ContentCard } from "@/components/ContentCard";
-import { FAQAccordion } from "@/components/FAQAccordion";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorCard, InteriorHero, InteriorLink, InteriorRow, InteriorSection, mineIllustration, solutionIcon } from "@/components/Interior";
 import { industries, products, solutions } from "@/data/catalog";
 import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates, localizedEntityCopy } from "@/lib/seo";
@@ -50,14 +47,18 @@ export default async function IndustryDetailPage({ params }: { params: Promise<{
     t(locale, "Altura de instalacion y contaminante objetivo", "Altura de instalacao e contaminante alvo", "Installation height and target contaminant"),
     t(locale, "Altitud, temperatura y ciclo de trabajo", "Altitude, temperatura e ciclo de trabalho", "Altitude, temperature and duty cycle")
   ];
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "industries") }, { label: display.title }]} />
-      <HeroBanner eyebrow={display.label} title={display.title} summary={display.summary} image={industry.image} />
-      <section className="band"><div className="geo-grid"><article><h3>{t(locale, "Contexto del sector", "Contexto do setor", "Industry context")}</h3><p>{overview}</p></article><article><h3>{t(locale, "Problemas que se deben confirmar", "Pontos que devem ser confirmados", "Issues to confirm")}</h3><ul>{problems.map((item) => <li key={item}>{item}</li>)}</ul></article><article><h3>{t(locale, "Datos para seleccionar", "Dados para selecao", "Selection data")}</h3><ul>{selection.map((item) => <li key={item}>{item}</li>)}</ul></article></div></section>
-      <section className="band muted"><div className="section-heading"><p className="eyebrow">{t(locale, "Equipos", "Equipamentos", "Equipment")}</p><h2>{t(locale, "Equipos que pueden evaluarse", "Equipamentos que podem ser avaliados", "Equipment to evaluate")}</h2></div><div className="page-grid">{recommended.map((product) => product ? <ContentCard key={product.slug} title={productPresentation(product, locale).title} summary={productPresentation(product, locale).summary} image={product.image} href={localizedPath(locale, `products/${product.category}/${product.slug}`)} /> : null)}</div></section>
-      <section className="band"><div className="section-heading"><p className="eyebrow">{t(locale, "Soluciones relacionadas", "Solucoes relacionadas", "Related solutions")}</p><h2>{t(locale, "Soluciones relacionadas", "Solucoes relacionadas", "Related solutions")}</h2></div><div className="page-grid">{solutions.slice(0, 3).map((solution) => { const solutionDisplay = localizedEntityCopy(locale, "solution", solution.slug, solution.title, solution.summary); return <ContentCard key={solution.slug} title={solutionDisplay.title} summary={solutionDisplay.summary} image={solution.image} href={localizedPath(locale, `solutions/${solution.slug}`)} />; })}</div></section>
-      <section className="band muted"><FAQAccordion items={[[t(locale, "¿COWIN opera una oficina o inventario local?", "A COWIN opera um escritorio ou estoque local?", "Does COWIN operate a local office or inventory?"), t(locale, "No se declara oficina ni inventario local. COWIN presta soporte para proyectos en Chile y Latinoamerica desde su estructura de exportacion.", "Nao declaramos escritorio ou estoque local. A COWIN apoia projetos na America Latina por meio de sua estrutura de exportacao.", "No local office or inventory is claimed. COWIN supports Latin American projects through its export organization.")], [t(locale, "¿Que se necesita para cotizar?", "Quais dados sao necessarios para cotacao?", "What is needed for a quotation?"), t(locale, "Datos del material, proceso, capacidad, punto de instalacion y condiciones ambientales.", "Dados do material, processo, capacidade, ponto de instalacao e condicoes ambientais.", "Material, process, capacity, installation point and environmental conditions.")]]} /><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>{t(locale, "Solicitar cotizacion", "Solicitar cotacao", "Request a quote")}</Link></section>
-    </>
-  );
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "industries") }, { label: display.title }]} />
+    <InteriorHero title={slug === "mineria-de-cobre" ? t(locale, "Separación magnética en minería de cobre", "Separação magnética na mineração de cobre", "Magnetic separation in copper mining") : display.title} summary={display.summary}
+      image={slug === "mineria-de-cobre" ? mineIllustration : industry.image} caption={slug === "mineria-de-cobre" ? t(locale, "Imagen ilustrativa", "Imagem ilustrativa", "Illustration") : undefined}
+      action={<InteriorLink variant="primary" href={localizedPath(locale, slug === "mineria-de-cobre" ? "solutions/proteccion-de-chancadores" : "solutions")}>{slug === "mineria-de-cobre" ? t(locale, "Ver protección de chancadores", "Ver proteção de britadores", "See crusher protection") : t(locale, "Ver soluciones", "Ver soluções", "Explore solutions")}</InteriorLink>} />
+    <InteriorSection tinted><div className="split"><div>
+      <h2>{t(locale, "Puntos de proceso", "Pontos de processo", "Process points")}</h2><p>{overview}</p>
+      <InteriorRow icon="shield-check" title={t(locale, "Riesgos", "Riscos", "Risks")} summary={problems.join(" · ")} />
+      <InteriorRow icon="settings" title={t(locale, "Datos para seleccionar", "Dados para seleção", "Selection data")} summary={selection.join(" · ")} />
+    </div><div><h2>{t(locale, "Equipos que puede evaluar", "Equipamentos que pode avaliar", "Equipment to evaluate")}</h2><div className="grid">{recommended.slice(0, 3).map((product) => product ? <InteriorCard key={product.slug} equipment image={product.image} title={productPresentation(product, locale).title} summary={productPresentation(product, locale).applications[0]} href={localizedPath(locale, "products/" + product.category + "/" + product.slug)} label={t(locale, "Ver ficha", "Ver ficha", "View product")} /> : null)}</div></div></div></InteriorSection>
+    <InteriorSection><h2>{t(locale, "Soluciones relacionadas", "Soluções relacionadas", "Related solutions")}</h2>
+      {solutions.slice(0, 3).map((item) => { const view = localizedEntityCopy(locale, "solution", item.slug, item.title, item.summary); return <InteriorRow key={item.slug} icon={solutionIcon(item.slug)} title={view.title} summary={view.summary} action={<InteriorLink href={localizedPath(locale, "solutions/" + item.slug)}>{t(locale, "Ver solución", "Ver solução", "View solution")}</InteriorLink>} />; })}
+    </InteriorSection>
+  </Interior>;
 }

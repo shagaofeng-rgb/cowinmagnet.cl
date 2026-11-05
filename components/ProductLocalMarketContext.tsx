@@ -54,8 +54,9 @@ export function ProductLocalMarketContext({ product, locale }: { product: Produc
     { href: localizedPath(locale, `solutions/${routes.solution}`), label: copy.links[2] }
   ];
 
-  return <section className="pd-section"><div className="pd-shell pd-two-column">
-    <div><p className="pd-eyebrow">{copy.eyebrow}</p><h2>{copy.title}</h2><p className="pd-section-lead">{copy.text}</p></div>
-    <div><ul className="pd-feature-list">{copy.points.map((point) => <li key={point}>{point}</li>)}</ul><nav aria-label={copy.eyebrow}>{links.map((link) => <Link className="pd-text-link" key={link.href} href={link.href}>{link.label}</Link>)}</nav></div>
-  </div></section>;
+  return <div className="panel">
+    <h3>{copy.title}</h3><p>{copy.text}</p>
+    <ul>{copy.points.map((point) => <li key={point}>{point}</li>)}</ul>
+    <nav className="actions" aria-label={copy.eyebrow}>{links.map((link) => <Link className="quiet" key={link.href} href={link.href}>{link.label}</Link>)}</nav>
+  </div>;
 }

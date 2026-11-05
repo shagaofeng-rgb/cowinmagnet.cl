@@ -41,8 +41,8 @@ function localizeArticle(article: BlogArticle, locale: Locale): BlogArticle {
   return selected ? { ...article, ...selected, sourceContent } : { ...article, sourceContent };
 }
 
-export async function getPublishedBlogArticles(locale: Locale = defaultLocale): Promise<BlogArticle[]> {
-  const items = await getCachedPublishedBlog();
+export async function getPublishedBlogArticles(locale: Locale = defaultLocale, options = {}): Promise<BlogArticle[]> {
+  const items = await getCachedPublishedBlog(options);
   return items
     .map(normalizeArticle)
     .map((article) => localizeArticle(article, locale))

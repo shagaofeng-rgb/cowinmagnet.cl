@@ -1,6 +1,5 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ContentCard } from "@/components/ContentCard";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorLink, InteriorRow, InteriorSection, Intro, solutionIcon } from "@/components/Interior";
 import { PaginationNav } from "@/components/PaginationNav";
 import { solutions } from "@/data/catalog";
 import { Locale, localizedPath, t } from "@/data/site";
@@ -23,18 +22,15 @@ export default async function SolutionsPage({ params, searchParams }: { params: 
   const pagination = parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] });
   const { items, meta } = paginateList(solutions, pagination);
 
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Soluciones", "Solucoes", "Solutions") }]} />
-      <HeroBanner
-        eyebrow={t(locale, "Soluciones", "Solucoes", "Solutions")}
-        title={t(locale, "Soluciones por problema industrial", "Solucoes por problema industrial", "Solutions by industrial problem")}
-        summary={t(locale, "Eliminacion de hierro trampa, proteccion de chancadores, proteccion de cintas y ambientes exigentes.", "Remocao de ferro tramp, protecao de britadores, protecao de correias e ambientes exigentes.", "Tramp iron removal, crusher protection, belt protection and demanding environments.")}
-      />
-      <section className="band"><div className="page-grid">{items.map((item) => {
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: t(locale, "Soluciones", "Soluções", "Solutions") }]} />
+    <Intro title={t(locale, "Soluciones por problema de proceso", "Soluções por problema de processo", "Solutions by process challenge")} summary={t(locale, "Encuentre un enfoque según el riesgo o el objetivo de su planta.", "Encontre uma abordagem conforme o risco ou objetivo da planta.", "Find an approach for your plant risk or process objective.")} />
+    <InteriorSection><div className="sidebar-layout">
+      <aside className="panel"><h3>{t(locale, "¿Cómo empezar?", "Como começar?", "Where to start")}</h3><p>{t(locale, "Defina el punto de proceso, el material y el metal objetivo.", "Defina o ponto de processo, o material e o metal alvo.", "Define the process point, material and target metal.")}</p><InteriorLink href={localizedPath(locale, "technical-support")}>{t(locale, "Ver guía técnica", "Ver guia técnico", "View technical guide")}</InteriorLink></aside>
+      <div>{items.map((item) => {
         const display = localizedEntityCopy(locale, "solution", item.slug, item.title, item.summary);
-        return <ContentCard key={item.slug} title={display.title} summary={display.summary} image={item.image} href={localizedPath(locale, `solutions/${item.slug}`)} />;
-      })}</div><PaginationNav meta={meta} pathname={`/${locale}/solutions`} params={query} locale={locale} /></section>
-    </>
-  );
+        return <InteriorRow key={item.slug} icon={solutionIcon(item.slug)} title={display.title} summary={display.summary} action={<InteriorLink href={localizedPath(locale, "solutions/" + item.slug)}>{t(locale, "Ver solución", "Ver solução", "View solution")}</InteriorLink>} />;
+      })}<PaginationNav meta={meta} pathname={localizedPath(locale, "solutions")} params={query} locale={locale} /></div>
+    </div></InteriorSection>
+  </Interior>;
 }

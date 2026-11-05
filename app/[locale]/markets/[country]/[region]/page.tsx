@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
-import { chileRegions } from "@/data/catalog";
+import { Interior, InteriorCard, InteriorHero, InteriorLink, InteriorRow, InteriorSection } from "@/components/Interior";
+import { chileRegions, products } from "@/data/catalog";
+import { productPresentation } from "@/data/productPresentation";
 import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates, localizedEntityCopy } from "@/lib/seo";
 
@@ -25,15 +26,15 @@ export default async function ChileRegionPage({ params }: { params: Promise<{ lo
   const region = chileRegions.find((item) => item.slug === regionSlug && country === "chile");
   if (!region) notFound();
   const display = localizedEntityCopy(locale, "region", regionSlug, region.title, region.summary);
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "markets") }, { label: "Chile", href: localizedPath(locale, "markets/chile") }, { label: display.title }]} />
-      <HeroBanner eyebrow={display.label} title={display.title} summary={display.summary} image={region.image} />
-      <section className="band"><div className="geo-grid">
-        <article><h3>{t(locale, "Minerales principales", "Minerais principais", "Main minerals")}</h3><p>{t(locale, "Confirmar mineral, granulometria, humedad y tonelaje del proyecto.", "Confirmar mineral, granulometria, umidade e tonelagem do projeto.", "Confirm the mineral, particle size, moisture and project tonnage.")}</p></article>
-        <article><h3>{t(locale, "Aplicaciones de cintas", "Aplicacoes em correias", "Conveyor applications")}</h3><p>{t(locale, "Proteccion de chancadores, correas transportadoras y puntos de transferencia.", "Protecao de britadores, correias transportadoras e pontos de transferencia.", "Crusher, conveyor belt and transfer-point protection.")}</p></article>
-        <article><h3>{t(locale, "Confirmacion electrica", "Confirmacao eletrica", "Electrical confirmation")}</h3><p>{t(locale, "Voltaje, frecuencia, fases, altitud y ambiente son obligatorios antes de seleccionar.", "Tensao, frequencia, fases, altitude e ambiente devem ser confirmados antes da selecao.", "Voltage, frequency, phases, altitude and environment must be confirmed before selection.")}</p></article>
-      </div></section>
-    </>
-  );
+  const title = t(locale, "Separación magnética en ", "Separação magnética em ", "Magnetic separation in ") + display.title;
+  const equipment = regionSlug === "santiago" ? products.filter((item) => item.category === "metal-detection-recycling-sorting").slice(0, 3) : products.slice(0, 3);
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "markets") }, { label: "Chile", href: localizedPath(locale, "markets/chile") }, { label: display.title }]} />
+    <InteriorHero title={title} summary={display.summary} image={region.image} action={<InteriorLink variant="primary" href={localizedPath(locale, "request-a-quote")}>{t(locale, "Consultar por un proyecto", "Consultar sobre um projeto", "Discuss a project")}</InteriorLink>} />
+    <InteriorSection tinted><div className="split"><div><h2>{t(locale, "Condiciones a revisar", "Condições a revisar", "Conditions to review")}</h2>
+      <InteriorRow icon="pick" title={t(locale, "Material y granulometría", "Material e granulometria", "Material and particle size")} summary={t(locale, "Indique tipo de mineral, humedad y tonelaje.", "Informe o tipo de minério, umidade e tonelagem.", "Provide the mineral type, moisture and tonnage.")} />
+      <InteriorRow icon="route" title={t(locale, "Cinta y altura", "Correia e altura", "Conveyor and height")} summary={t(locale, "Incluya el perfil de carga, la velocidad y la altura de montaje.", "Inclua o perfil de carga, velocidade e altura de montagem.", "Include the load profile, speed and mounting height.")} />
+      <InteriorRow icon="tool" title={t(locale, "Mantenimiento", "Manutenção", "Maintenance")} summary={t(locale, "Revise el acceso, la descarga y las condiciones eléctricas.", "Revise o acesso, a descarga e as condições elétricas.", "Review access, discharge and electrical conditions.")} />
+    </div><div><h2>{t(locale, "Equipos relacionados", "Equipamentos relacionados", "Related equipment")}</h2><div className="grid">{equipment.map((item) => { const product = productPresentation(item, locale); return <InteriorCard key={item.slug} equipment title={product.title} summary={product.applications[0]} image={item.image} href={localizedPath(locale, "products/" + item.category + "/" + item.slug)} label={t(locale, "Ver ficha", "Ver ficha", "View product")} />; })}</div></div></div></InteriorSection>
+  </Interior>;
 }

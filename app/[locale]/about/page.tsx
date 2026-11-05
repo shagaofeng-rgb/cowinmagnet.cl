@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorHero, InteriorLink, InteriorRow, InteriorSection } from "@/components/Interior";
 import { companySections } from "@/data/brief";
-import { Locale, localizedPath, t } from "@/data/site";
+import { Locale, localizedPath, siteConfig, t } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -74,39 +73,16 @@ function localizedCompanySections(locale: Locale) {
 export default async function AboutPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const sections = localizedCompanySections(locale);
-
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Nosotros", "Sobre", "About Us") }]} />
-      <HeroBanner
-        eyebrow={t(locale, "Nosotros", "Sobre", "About")}
-        title={t(locale, "Cowinmagnet Chile y Sudamerica", "Cowinmagnet Chile e America do Sul", "Cowinmagnet Chile and South America")}
-        summary={t(locale, "Proveedor profesional de equipos de separacion magnetica y recuperacion de metales para mineria, reciclaje, agregados y manejo de graneles.", "Fornecedor profissional de equipamentos de separacao magnetica e recuperacao de metais para mineracao, reciclagem, agregados e manuseio de granels.", "Professional supplier of magnetic separation equipment and metal recovery solutions for mining, recycling, aggregates and bulk material handling.")}
-        image="/assets/brief/rcdc-air-cooled-self-cleaning-electromagnetic-separator.png"
-      />
-      <section className="band brief-page">
-        <div className="brief-stack">
-          {sections.map((section) => (
-            <article className="brief-text-section" key={section.title}>
-              <h2>{section.title}</h2>
-              {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-              {section.bullets ? (
-                <ul>
-                  {section.bullets.map((item) => <li key={item}>{item}</li>)}
-                </ul>
-              ) : null}
-            </article>
-          ))}
-        </div>
-        <div className="brief-cta">
-          <div>
-            <p className="eyebrow">{t(locale, "Contacto", "Contato", "Contact")}</p>
-            <h2>{t(locale, "Indiquenos su material y condiciones de operacion", "Informe seu material e condicoes de operacao", "Tell us your material and operating conditions")}</h2>
-            <p>{t(locale, "Podemos recomendar el separador magnetico adecuado despues de revisar material, ancho de cinta, capacidad y objetivo de separacion.", "Podemos recomendar o separador magnetico adequado apos revisar material, largura da correia, capacidade e objetivo de separacao.", "We can recommend the suitable magnetic separator after reviewing material type, conveyor width, capacity and separation target.")}</p>
-          </div>
-          <Link className="button primary" href={localizedPath(locale, "contact")}>{t(locale, "Contactar", "Contato", "Contact us")}</Link>
-        </div>
-      </section>
-    </>
-  );
+  const contact = localizedPath(locale, "contact");
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: t(locale, "Nosotros", "Sobre", "About") }]} />
+    <InteriorHero title={t(locale, "Sobre Cowinmagnet", "Sobre a Cowinmagnet", "About Cowinmagnet")} summary={t(locale, "Equipos de separación magnética y coordinación de proyectos para Sudamérica.", "Equipamentos de separação magnética e coordenação de projetos para a América do Sul.", "Magnetic separation equipment and project coordination for South America.")} image="/assets/home-design/applications-strip.jpg" caption={t(locale, "Imagen de aplicación", "Imagem de aplicação", "Application illustration")}
+      action={<InteriorLink href={contact} variant="primary">{t(locale, "Contactar", "Entrar em contato", "Contact us")}</InteriorLink>} />
+    <InteriorSection tinted><div className="split catalog-overview"><div><h2>{t(locale, "Cómo trabajamos", "Como trabalhamos", "How we work")}</h2>
+      <InteriorRow icon="file-text" title={t(locale, "Revisión técnica", "Revisão técnica", "Technical review")} summary={t(locale, "Revisamos el material, la aplicación y los datos de instalación.", "Revisamos o material, a aplicação e os dados da instalação.", "We review the material, application and installation details.")} />
+      <InteriorRow icon="package" title={t(locale, "Selección y suministro", "Seleção e fornecimento", "Selection and supply")} summary={t(locale, "Coordinamos la configuración y la documentación del equipo.", "Coordenamos a configuração e a documentação do equipamento.", "We coordinate the equipment configuration and documentation.")} />
+      <InteriorRow icon="truck" title={t(locale, "Exportación", "Exportação", "Export")} summary={t(locale, "Organizamos los datos y documentos del pedido.", "Organizamos os dados e documentos do pedido.", "We organize order details and export documents.")} />
+    </div><aside className="panel"><h3>{t(locale, "Razón social", "Razão social", "Registered company")}</h3><p>{siteConfig.company}</p><InteriorLink href={contact}>{t(locale, "Ver ubicación y contacto", "Ver localização e contato", "View address and contacts")}</InteriorLink></aside></div></InteriorSection>
+    <InteriorSection><div className="stack">{sections.map((item) => <details key={item.title} className="form-extra"><summary>{item.title}</summary>{item.paragraphs?.map((text) => <p key={text}>{text}</p>)}{item.bullets?.length ? <ul>{item.bullets.map((text) => <li key={text}>{text}</li>)}</ul> : null}</details>)}</div></InteriorSection>
+  </Interior>;
 }

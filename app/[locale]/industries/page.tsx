@@ -1,7 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorCard, InteriorHero, InteriorLink, InteriorSection } from "@/components/Interior";
 import { PaginationNav } from "@/components/PaginationNav";
 import { briefIndustryCards } from "@/data/brief";
 import { Locale, localizedPath, t } from "@/data/site";
@@ -21,37 +19,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 export default async function IndustriesPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { locale } = await params;
   const query = await searchParams;
-  const pagination = parseListPagination(query, { defaultPageSize: 8, allowedPageSizes: [8] });
+  const pagination = parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] });
   const { items, meta } = paginateList(briefIndustryCards, pagination);
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Industrias", "Industrias", "Industries") }]} />
-      <HeroBanner
-        eyebrow={t(locale, "Soluciones por industria", "Solucoes por industria", "Solutions by industry")}
-        title={t(locale, "Seleccione su proceso, no una lista interminable", "Selecione seu processo, nao uma lista interminavel", "Select your process, not an endless list")}
-        summary={t(locale, "Cada sector parte por sus contaminantes, material y punto de instalacion. Desde ahi conectamos la familia de equipo adecuada.", "Cada setor parte de seus contaminantes, material e ponto de instalacao. A partir dai conectamos a familia de equipamento adequada.", "Each sector starts with its contaminants, material and installation point. From there we connect the suitable equipment family.")}
-        image="/assets/brief/south-africa/industries/mining-mineral-processing.png"
-      />
-      <section className="band brief-page">
-        <div className="brief-intro">
-          <p className="eyebrow">{t(locale, "Aplicaciones", "Aplicacoes", "Applications")}</p>
-          <h2>{t(locale, "Necesidades industriales que atendemos en Sudamerica", "Necessidades industriais que atendemos na America do Sul", "Industrial needs we support in South America")}</h2>
-          <p>{t(locale, "Use estas rutas para identificar el problema de planta. Las paginas de detalle conservan criterios de seleccion, equipos recomendados y enlaces de consulta.", "Use estas rotas para identificar o problema da planta. As paginas de detalhe mantem criterios de selecao, equipamentos recomendados e links de consulta.", "Use these paths to identify the plant problem. Detail pages retain selection criteria, recommended equipment and enquiry links.")}</p>
-        </div>
-        <div className="industry-card-grid">
-          {items.map((card) => (
-            <Link className="industry-visual-card" href={localizedPath(locale, `industries/${card.slug}`)} key={`${card.slug}-${card.image}`}>
-              <Image src={card.image} alt={card.title[locale]} width={720} height={500} />
-              <div><h2>{card.title[locale]}</h2><p>{card.summary[locale]}</p><span>{t(locale, "Ver solucion", "Ver solucao", "View solution")}</span></div>
-            </Link>
-          ))}
-        </div>
-        <PaginationNav meta={meta} pathname={`/${locale}/industries`} params={query} locale={locale} />
-      </section>
-      <section className="band muted selection-cta">
-        <div><p className="eyebrow">{t(locale, "Soporte de aplicacion", "Suporte de aplicacao", "Application support")}</p><h2>{t(locale, "Indique el material y el punto donde necesita separar o proteger", "Informe o material e o ponto onde precisa separar ou proteger", "Tell us the material and the point where you need separation or protection")}</h2><p>{t(locale, "Con una descripcion breve, capacidad aproximada y pais podemos orientar la familia de equipo y los datos que vale la pena confirmar.", "Com uma breve descricao, capacidade aproximada e pais podemos orientar a familia de equipamento e os dados que vale a pena confirmar.", "With a short description, approximate capacity and country, we can point you to the equipment family and the details worth confirming.")}</p></div>
-        <Link className="button primary" href={localizedPath(locale, "contact")}>{t(locale, "Contactar", "Entrar em contato", "Contact us")}</Link>
-      </section>
-    </>
-  );
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: t(locale, "Industrias", "Indústrias", "Industries") }]} />
+    <InteriorHero title={t(locale, "Equipos por industria", "Equipamentos por indústria", "Equipment by industry")} summary={t(locale, "Identifique el punto de proceso y el equipo apropiado para su material.", "Identifique o ponto de processo e o equipamento adequado ao material.", "Identify the process point and the right equipment for your material.")}
+      image="/assets/home-design/applications-strip.jpg" caption={t(locale, "Imagen de aplicación", "Imagem de aplicação", "Application illustration")} action={<InteriorLink variant="primary" href={localizedPath(locale, "industries/mineria-de-cobre")}>{t(locale, "Explorar minería de cobre", "Explorar mineração de cobre", "Explore copper mining")}</InteriorLink>} />
+    <InteriorSection tinted><h2>{t(locale, "Sectores y procesos", "Setores e processos", "Sectors and processes")}</h2>
+      <div className="grid">{items.map((card) => <InteriorCard key={card.slug + card.image} title={card.title[locale]} summary={card.summary[locale]} image={card.image} href={localizedPath(locale, "industries/" + card.slug)} label={t(locale, "Ver industria", "Ver indústria", "View industry")} />)}</div>
+      <PaginationNav meta={meta} pathname={localizedPath(locale, "industries")} params={query} locale={locale} />
+    </InteriorSection>
+  </Interior>;
 }

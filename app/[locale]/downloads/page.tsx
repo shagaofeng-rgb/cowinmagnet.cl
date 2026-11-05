@@ -1,7 +1,9 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorLink, InteriorSection, Intro, InteriorRow, type PageQuery } from "@/components/Interior";
+import { InteriorIcon } from "@/components/InteriorIcon";
+import { technicalResources } from "@/data/technicalResources";
 import { PaginationNav } from "@/components/PaginationNav";
-import { Locale, t } from "@/data/site";
+import { Locale, localizedPath, t } from "@/data/site";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
 import { localizedAlternates } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -15,60 +17,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   };
 }
 
-const downloads = [
-  {
-    title: "Cuestionario de seleccion para cinta transportadora",
-    href: "/downloads/selection-questionnaire.txt",
-    note: "Datos de material, cinta, capacidad, altura, contaminante, ambiente y energia."
-  },
-  {
-    title: "Checklist de instalacion y mantenimiento",
-    href: "/downloads/installation-maintenance-checklist.txt",
-    note: "Puntos de revision antes de instalacion, puesta en marcha y mantenimiento."
-  },
-  {
-    title: "Campos tecnicos para cotizacion",
-    href: "/downloads/quotation-data-fields.csv",
-    note: "CSV con los campos requeridos por el formulario tecnico."
-  }
-];
-
-export default async function DownloadsPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const { locale } = await params;
-  const query = await searchParams;
-  const pagination = parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] });
-  const { items, meta } = paginateList(downloads, pagination);
-
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: t(locale, "Descargas", "Downloads", "Downloads") }]} />
-      <HeroBanner
-        eyebrow={t(locale, "Descargas", "Downloads", "Downloads")}
-        title={t(locale, "Catalogos, hojas tecnicas y cuestionarios", "Catalogos, folhas tecnicas e questionarios", "Catalogs, technical sheets and questionnaires")}
-        summary={t(locale, "Archivos locales disponibles para preparar una solicitud tecnica antes de cotizar.", "Arquivos locais disponiveis para preparar uma solicitacao tecnica antes da cotacao.", "Local files available to prepare a technical request before quotation.")}
-        image="/assets/products/cbs-drawer-type-magnetic-filter/cbs-drawer-type-magnetic-filter-01.jpg"
-      />
-      <section className="band">
-        <div className="page-grid">
-          {items.map((item) => (
-            <article className="content-card" key={item.href}>
-              <div className="content-card-body">
-                <h3>{item.title}</h3>
-                <p>{item.note}</p>
-                <a href={item.href} download>{t(locale, "Descargar archivo", "Baixar arquivo", "Download file")}</a>
-              </div>
-            </article>
-          ))}
-        </div>
-        <PaginationNav meta={meta} pathname={`/${locale}/downloads`} params={query} locale={locale} />
-      </section>
-      <section className="band muted">
-        <div className="section-heading">
-          <p className="eyebrow">{t(locale, "Aviso", "Aviso", "Notice")}</p>
-          <h2>{t(locale, "Documentos locales de preparacion", "Documentos locais de preparacao", "Local preparation documents")}</h2>
-          <p>{t(locale, "Estos archivos sirven para recopilar datos. Catalogos, planos y hojas tecnicas definitivas deben sustituirse por documentos reales aprobados antes de produccion.", "Estes arquivos servem para coletar dados. Catalogos, desenhos e folhas tecnicas definitivas devem ser substituidos por documentos reais aprovados antes da producao.", "These files help collect project data. Final catalogs, drawings and technical sheets should be replaced by approved documents before production.")}</p>
-        </div>
-      </section>
-    </>
-  );
+export default async function DownloadsPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<PageQuery> }) {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
+  const { items, meta } = paginateList(technicalResources(locale), parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] }));
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: t(locale, "Descargas", "Downloads", "Downloads") }]} />
+    <Intro title={t(locale, "Documentos técnicos", "Documentos técnicos", "Technical documents")} summary={t(locale, "Descargue los archivos disponibles para preparar los datos del proyecto.", "Baixe os arquivos disponíveis para preparar os dados do projeto.", "Download the available files to prepare your project details.")} />
+    <InteriorSection>
+      <div className="panel doc-list">{items.map((item) => <InteriorRow key={item.href} icon="file-text" title={item.title} summary={item.summary}
+        action={<a className="btn alt" href={item.href} download aria-label={t(locale, "Descargar ", "Baixar ", "Download ") + item.title}>{item.format} <InteriorIcon name="file-download" /></a>} />)}</div>
+      <PaginationNav meta={meta} pathname={localizedPath(locale, "downloads")} params={query} locale={locale} />
+      <div className="notice">{t(locale, "Para obtener una ficha de un modelo concreto, envíe las condiciones de instalación.", "Para receber a ficha de um modelo específico, envie as condições de instalação.", "For a specific model datasheet, send us the installation conditions.")} <InteriorLink href={localizedPath(locale, "request-a-quote")}>{t(locale, "Solicitar ficha", "Solicitar ficha", "Request a datasheet")}</InteriorLink></div>
+    </InteriorSection>
+  </Interior>;
 }

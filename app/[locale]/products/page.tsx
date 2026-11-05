@@ -1,8 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorImage, InteriorLink, InteriorRow, InteriorSection, Intro } from "@/components/Interior";
+import type { InteriorIconName } from "@/components/InteriorIcon";
 import { PaginationNav } from "@/components/PaginationNav";
 import { categoryImages, getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
@@ -25,29 +24,33 @@ export default async function ProductsPage({ params, searchParams }: { params: P
   const pagination = parseListPagination(query, { defaultPageSize: 8, allowedPageSizes: [8] });
   const { items: paginatedCategories, meta } = paginateList(categories, pagination);
 
-  return <>
+  const heading = t(locale, "Equipos de separación magnética", "Equipamentos de separação magnética", "Magnetic separation equipment");
+  const featured = categories.find((item) => item.key === "permanent") ?? categories[0];
+  const icons: Record<string, InteriorIconName> = { permanent: "magnet", electro: "filter", recycling: "recycle", components: "settings", application: "building-factory-2" };
+
+  return <Interior locale={locale}>
     <Breadcrumbs locale={locale} items={[{ label: copy.products }]} />
-    <HeroBanner
-      eyebrow={copy.products}
-      title={t(locale, "Familias de equipos para proyectos industriales", "Famílias de equipamentos para projetos industriais", "Equipment families for industrial projects")}
-      summary={t(locale, "Explore las familias de equipos COWIN y encuentre la solución adecuada para su proceso. La selección final se confirma según las condiciones de operación.", "Explore as famílias de equipamentos COWIN e encontre a solução adequada para o seu processo. A seleção final é confirmada conforme as condições de operação.", "Explore COWIN equipment families and find the right solution for your process. Final selection is confirmed from operating conditions.")}
-      image="/assets/brief/south-africa/products/rcyd-permanent-self-cleaning.jpg"
-    />
-    <section className="band brief-page compact-catalog">
-      <div className="brief-intro"><p className="eyebrow">{t(locale, "Catálogo de equipos", "Catálogo de equipamentos", "Equipment catalog")}</p><h2>{t(locale, "Encuentre equipos organizados por aplicación", "Encontre equipamentos organizados por aplicação", "Find equipment organized by application")}</h2><p>{t(locale, `${products.length} equipos disponibles para proyectos de minería, reciclaje y manejo de materiales.`, `${products.length} equipamentos disponíveis para projetos de mineração, reciclagem e movimentação de materiais.`, `${products.length} equipment options for mining, recycling, and material-handling projects.`)}</p></div>
-      <div className="family-grid">
-        {paginatedCategories.map((category) => {
-          const display = productCategories.some((item) => item.slug === category.slug) ? getCategoryDisplay(category as (typeof productCategories)[number], locale) : { title: category.title, summary: category.summary };
-          const count = products.filter((product) => product.category === category.slug).length;
-          const image = categoryImages[category.key] || "/assets/products/rcyd-type-permanent-magnet-self-dumping-iron-remover/rcyd-type-permanent-magnet-self-dumping-iron-remover-01.jpg";
-          return <Link className="family-card" href={localizedPath(locale, `products/${category.slug}`)} key={category.slug}>
-            <Image src={image} alt={display.title} width={720} height={520} />
-            <div><span>{count} {t(locale, "productos", "produtos", "products")}</span><h2>{display.title}</h2><p>{display.summary}</p><strong>{t(locale, "Ver familia", "Ver família", "View family")}</strong></div>
-          </Link>;
-        })}
+    <Intro title={heading} summary={t(locale, "Encuentre equipos por familia o por el problema que necesita resolver.", "Encontre equipamentos por família ou pelo problema que precisa resolver.", "Find equipment by family or by the problem you need to solve.")} />
+    <InteriorSection>
+      <div className="split catalog-overview">
+        <div>
+          <h2>{t(locale, "Familias de equipos", "Famílias de equipamentos", "Equipment families")}</h2>
+          {paginatedCategories.map((category) => {
+            const display = getCategoryDisplay(category, locale);
+            return <InteriorRow key={category.slug} icon={icons[category.key] || "magnet"} title={display.title} summary={display.summary}
+              action={<InteriorLink href={localizedPath(locale, "products/" + category.slug)}>{t(locale, "Ver equipos", "Ver equipamentos", "View equipment")}</InteriorLink>} />;
+          })}
+          <PaginationNav meta={meta} pathname={localizedPath(locale, "products")} params={query} locale={locale} />
+        </div>
+        {featured ? <div className="panel">
+          <div className="card-img equipment"><InteriorImage src={categoryImages[featured.key]} alt={getCategoryDisplay(featured, locale).title} /></div>
+          <div className="card-body">
+            <h3>{t(locale, "Separadores para correas", "Separadores para correias", "Conveyor separators")}</h3>
+            <p>{t(locale, "Compare alternativas permanentes y electromagnéticas según su instalación.", "Compare alternativas permanentes e eletromagnéticas conforme a instalação.", "Compare permanent and electromagnetic options for your installation.")}</p>
+            <InteriorLink href={localizedPath(locale, "products/" + featured.slug)}>{t(locale, "Ver separadores suspendidos", "Ver separadores suspensos", "View suspended separators")}</InteriorLink>
+          </div>
+        </div> : null}
       </div>
-      <PaginationNav meta={meta} pathname={`/${locale}/products`} params={query} locale={locale} />
-    </section>
-    <section className="band muted selection-cta"><div><p className="eyebrow">{t(locale, "Selección técnica", "Seleção técnica", "Technical selection")}</p><h2>{t(locale, "Cuéntenos qué necesita separar o proteger", "Conte-nos o que você precisa separar ou proteger", "Tell us what you need to separate or protect")}</h2><p>{t(locale, "Para comenzar, solo necesitamos el material, la capacidad aproximada, el país y el equipo o problema que desea resolver.", "Para começar, precisamos apenas do material, da capacidade aproximada, do país e do equipamento ou problema a resolver.", "To start, we only need the material, approximate capacity, country, and the equipment or problem to solve.")}</p></div><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>{copy.fullQuote}</Link></section>
-  </>;
+    </InteriorSection>
+  </Interior>;
 }

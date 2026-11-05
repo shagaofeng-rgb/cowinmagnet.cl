@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import type { Locale } from "@/data/site";
+import { InteriorIcon } from "@/components/InteriorIcon";
 
 type Props = {
   images: string[];
@@ -22,45 +23,36 @@ export function ProductMediaGallery({ images, alt, locale }: Props) {
       : { unavailable: "Imagen de producto disponible bajo solicitud", enlarge: "Ampliar imagen de", view: "Ver imagen", gallery: "Galería de producto", viewNumber: "vista", expanded: "Galería ampliada", close: "Cerrar imagen", controls: "Controles de galería", previous: "Imagen anterior", next: "Imagen siguiente" };
   const validImages = [...new Set(images.filter(Boolean))];
   const [activeIndex, setActiveIndex] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const activeImage = validImages[activeIndex];
-
-  useEffect(() => {
-    if (!lightboxOpen) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setLightboxOpen(false);
-      if (event.key === "ArrowRight") setActiveIndex((index) => (index + 1) % validImages.length);
-      if (event.key === "ArrowLeft") setActiveIndex((index) => (index - 1 + validImages.length) % validImages.length);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [lightboxOpen, validImages.length]);
+  const [expanded, setExpanded] = useState(false);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const activeImage = validImages[activeIndex] ?? validImages[0];
+  const move = (direction: number) => setActiveIndex((index) => (index + direction + validImages.length) % validImages.length);
 
   if (!activeImage) {
-    return <div className="pd-gallery-empty" aria-label={copy.unavailable}><span /></div>;
+    return <div className="notice">{copy.unavailable}</div>;
   }
 
-  return <div className="pd-gallery">
-    <button className="pd-gallery-main" type="button" onClick={() => setLightboxOpen(true)} aria-label={`${copy.enlarge} ${alt}`}>
-      <Image src={activeImage} alt={alt} width={1200} height={900} priority sizes="(max-width: 960px) 100vw, 58vw" unoptimized={isRemoteImage(activeImage)} />
-      <span className="pd-gallery-zoom-label">{copy.view}</span>
+  return <div>
+    <button className="product-figure" type="button" onClick={() => { setExpanded(true); dialog.current?.showModal(); }} aria-label={copy.enlarge + " " + alt}>
+      <Image src={activeImage} alt={alt} width={1200} height={900} preload={activeIndex === 0} sizes="(max-width: 760px) 100vw, 50vw" unoptimized={isRemoteImage(activeImage)} />
     </button>
-    {validImages.length > 1 ? <div className="pd-gallery-thumbnails" aria-label={copy.gallery}>
-      {validImages.map((image, index) => <button type="button" className={index === activeIndex ? "is-active" : ""} onClick={() => setActiveIndex(index)} key={image} aria-label={`${alt}, ${copy.viewNumber} ${index + 1}`} aria-pressed={index === activeIndex}>
+    {validImages.length > 1 ? <div className="thumbs" aria-label={copy.gallery}>
+      {validImages.map((image, index) => <button type="button" onClick={() => setActiveIndex(index)} key={image} aria-label={alt + ", " + copy.viewNumber + " " + (index + 1)} aria-pressed={index === activeIndex}>
         <Image src={image} alt="" width={72} height={72} sizes="72px" unoptimized={isRemoteImage(image)} />
       </button>)}
     </div> : null}
-    {lightboxOpen ? <div className="pd-lightbox" role="dialog" aria-modal="true" aria-label={`${copy.expanded}: ${alt}`} onMouseDown={() => setLightboxOpen(false)}>
-      <div className="pd-lightbox-content" onMouseDown={(event) => event.stopPropagation()}>
-        <button className="pd-lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label={copy.close}>×</button>
-        <Image src={activeImage} alt={alt} width={1600} height={1200} sizes="96vw" unoptimized={isRemoteImage(activeImage)} />
-        {validImages.length > 1 ? <div className="pd-lightbox-controls" aria-label={copy.controls}>
-          <button type="button" onClick={() => setActiveIndex((index) => (index - 1 + validImages.length) % validImages.length)} aria-label={copy.previous}>{copy.previous}</button>
+    <dialog ref={dialog} aria-label={copy.expanded + ": " + alt} onClose={() => setExpanded(false)} onKeyDown={(event) => {
+      if (event.key === "ArrowLeft") move(-1);
+      if (event.key === "ArrowRight") move(1);
+    }}>
+        <button className="btn alt gallery-close" type="button" onClick={() => dialog.current?.close()} aria-label={copy.close}><InteriorIcon name="x" /></button>
+        {expanded ? <Image src={activeImage} alt={alt} width={1600} height={1200} sizes="96vw" unoptimized={isRemoteImage(activeImage)} /> : null}
+        {validImages.length > 1 ? <div className="gallery-controls" aria-label={copy.controls}>
+          <button className="btn alt" type="button" onClick={() => move(-1)}>{copy.previous}</button>
           <span>{activeIndex + 1} / {validImages.length}</span>
-          <button type="button" onClick={() => setActiveIndex((index) => (index + 1) % validImages.length)} aria-label={copy.next}>{copy.next}</button>
+          <button className="btn alt" type="button" onClick={() => move(1)}>{copy.next}</button>
         </div> : null}
-      </div>
-    </div> : null}
+    </dialog>
   </div>;
 }
 

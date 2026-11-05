@@ -1,9 +1,9 @@
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import { ArticleContent } from "@/components/ArticleContent";
+import { ArticleContent, articleSections } from "@/components/ArticleContent";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorImage, InteriorLink, InteriorSection } from "@/components/Interior";
+import { editorialDate } from "@/components/EditorialList";
 import { getNewsBySlug } from "@/data/news";
 import { Locale, localizedPath, t } from "@/data/site";
 import { contentIndexingMetadata } from "@/lib/localizedContent";
@@ -56,30 +56,38 @@ export default async function NewsPostPage({ params }: { params: Promise<{ local
     about: post.topicClusterId || "magnetic separation equipment"
   };
 
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: "News", href: localizedPath(locale, "news") }, { label: post.title }]} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <HeroBanner eyebrow={post.date} title={post.title} summary={post.summary} image={image} />
-      <section className="band news-article-layout">
-        <article className="news-article">
-          <div className="news-source-box">
+  const sections = articleSections(post.body || "");
+  const date = post.publishedAt || post.date;
+  const label = t(locale, "Noticias", "Notícias", "News");
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label, href: localizedPath(locale, "news") }, { label: post.categoryTitle || label }]} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+    <InteriorSection><div className="article-shell">
+      <article className="article-copy" lang={contentLanguage}>
+        <p className="meta">{date ? <time dateTime={date}>{editorialDate(date, locale)}</time> : null}{post.sourceDomain || post.categoryTitle || label ? <> · {post.sourceDomain || post.categoryTitle || label}</> : null}</p>
+        <h1>{post.title}</h1>{post.summary ? <p className="lead">{post.summary}</p> : null}
+        {post.image ? <figure><InteriorImage src={image} alt={post.title} className="article-cover" priority />{post.imageCredit ? <figcaption>{post.imageCredit}</figcaption> : null}</figure> : null}
+        <div className="panel article-source" id="original-source">
             <p><strong>{t(locale, "Fuente original", "Fonte original", "Original source")}:</strong> {post.sourceUrl ? <a href={post.sourceUrl} target="_blank" rel="nofollow noopener noreferrer">{post.sourceTitle || post.sourceDomain || post.sourceUrl}</a> : t(locale, "No indicada", "Nao informada", "Not provided")}</p>
-            {post.sourcePublishedAt ? <p><strong>{t(locale, "Fecha de publicacion de la fuente", "Data de publicacao da fonte", "Source publication date")}:</strong> {new Intl.DateTimeFormat(locale === "es-cl" ? "es-CL" : locale, { dateStyle: "long", timeZone: "UTC" }).format(new Date(post.sourcePublishedAt))}</p> : null}
-            {post.sourceFetchedAt ? <p><strong>{t(locale, "Fecha de consulta editorial", "Data da consulta editorial", "Editorial access date")}:</strong> {new Intl.DateTimeFormat(locale === "es-cl" ? "es-CL" : locale, { dateStyle: "long", timeZone: "UTC" }).format(new Date(post.sourceFetchedAt))}</p> : null}
+            {post.sourcePublishedAt ? <p><strong>{t(locale, "Fecha de publicacion de la fuente", "Data de publicacao da fonte", "Source publication date")}:</strong> {editorialDate(post.sourcePublishedAt, locale)}</p> : null}
+            {post.sourceFetchedAt ? <p><strong>{t(locale, "Fecha de consulta editorial", "Data da consulta editorial", "Editorial access date")}:</strong> {editorialDate(post.sourceFetchedAt, locale)}</p> : null}
             <p>{post.editorialDisclaimer || t(locale, "Esta es una sintesis editorial independiente. No reproduce el articulo completo de la fuente original.", "Esta e uma sintese editorial independente. Nao reproduz o artigo completo da fonte original.", "This is an independent editorial summary and does not reproduce the full source article.")}</p>
             {post.imageCredit ? <p><strong>{t(locale, "Imagen", "Imagem", "Image")}:</strong> {post.imageCredit}. {t(locale, "Politica", "Politica", "Policy")}: {post.imagePolicy || "remote source image with credit"}.</p> : null}
           </div>
-          {post.image ? <Image className="news-article-image" src={post.image} alt={post.title} width={1080} height={640} unoptimized /> : null}
-          <div lang={contentLanguage}><ArticleContent body={post.body || ""} /></div>
-          {post.citations?.length ? (
+        <div className="article-body"><ArticleContent body={post.body || ""} /></div>
+        {post.citations?.length ? (
             <section>
               <h2>{t(locale, "Fuentes utilizadas", "Fontes utilizadas", "Sources used")}</h2>
               <ul>{post.citations.map((item) => <li key={item.url}><a href={item.url} target="_blank" rel="nofollow noopener noreferrer">{item.title || item.domain}</a></li>)}</ul>
             </section>
           ) : null}
-        </article>
-      </section>
-    </>
-  );
+      </article>
+      <aside className="panel article-aside"><h2>{t(locale, "En este artículo", "Neste artigo", "In this article")}</h2>
+        {sections.length ? <nav aria-label={t(locale, "Índice", "Índice", "Contents")}>{sections.map((section) => <a key={section.id} href={"#" + section.id}>{section.label}</a>)}</nav> : null}
+        {post.sourceUrl ? <a href="#original-source">{t(locale, "Fuente original", "Fonte original", "Original source")}</a> : null}
+        <InteriorLink href={localizedPath(locale, "industries")}>{t(locale, "Ver industrias", "Ver indústrias", "View industries")}</InteriorLink>
+        <InteriorLink href={localizedPath(locale, "technical-support")}>{t(locale, "Soporte técnico", "Suporte técnico", "Technical support")}</InteriorLink>
+      </aside>
+    </div></InteriorSection>
+  </Interior>;
 }

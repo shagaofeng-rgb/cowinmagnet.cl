@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Locale, localeLabels, locales, localizedPath, siteConfig, uiText } from "@/data/site";
+import { Locale, localeLabels, locales, localizedPath, siteConfig, t, uiText } from "@/data/site";
+import { InteriorIcon } from "@/components/InteriorIcon";
 
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
@@ -58,6 +59,36 @@ export function Header({ locale }: { locale: Locale }) {
     { href: "news", label: copy.nav.news },
     { href: "contact", label: locale === "en" ? "Contact" : locale === "pt-br" ? "Contato" : "Contacto" }
   ];
+
+  if (pathname.startsWith(base() + "/")) {
+    const search = t(locale, "Buscar", "Buscar", "Search");
+    const language = t(locale, "Idioma", "Idioma", "Language");
+    const navigation = [
+      ["products", copy.nav.products], ["industries", copy.nav.industries],
+      ["solutions", copy.nav.solutions], ["markets", copy.nav.markets],
+      ["news", copy.nav.news], ["blog", "Blog"], ["contact", links.at(-1)!.label]
+    ];
+    return <header className="cl-site-header" ref={headerRef}><div className="cl-nav-shell">
+      <Link className="cl-logo" href={base()} aria-label={siteConfig.brand + " · " + copy.nav.home}>
+        <Image src="/assets/cowinmagnet-logo.png" alt="" width={39} height={34} priority />Cowinmagnet
+      </Link>
+      <nav id="cl-site-nav" className={"cl-menu" + (mobileOpen ? " is-open" : "")} aria-label={t(locale, "Menú principal", "Menu principal", "Main navigation")}>
+        {navigation.map(([path, label]) => <Link key={path} href={base(path)} aria-current={pathname === base(path) ? "page" : pathname.startsWith(base(path) + "/") ? "location" : undefined}>{label}</Link>)}
+        <Link href={base("search")} className="cl-mobile-search">{search}</Link>
+      </nav>
+      <div className="cl-header-actions">
+        <Link className="cl-search" href={base("search")} aria-label={search}><InteriorIcon name="search" /></Link>
+        <div className="cl-language">
+          <button type="button" aria-label={language + ": " + localeLabels[locale]} aria-expanded={languageOpen} aria-controls="cl-language-menu" onClick={() => setLanguageOpen((open) => !open)}>{locale.toUpperCase()}</button>
+          <div className="cl-languages" id="cl-language-menu" hidden={!languageOpen}>
+            {locales.map((item) => <Link key={item} href={switchLocale(item)} onClick={() => { rememberLocale(item); setLanguageOpen(false); }}>{localeLabels[item]}</Link>)}
+          </div>
+        </div>
+        <Link className="cl-quote" href={base("request-a-quote")}>{copy.nav.quote}</Link>
+        <button className="cl-mobile-toggle" type="button" aria-controls="cl-site-nav" aria-expanded={mobileOpen} aria-label={t(locale, "Menú", "Menu", "Menu")} onClick={() => setMobileOpen((open) => !open)}><InteriorIcon name="menu-2" /></button>
+      </div>
+    </div></header>;
+  }
 
   return (
     <header className={`site-header site-header-compact ${mobileOpen ? "mobile-open" : ""}`} ref={headerRef}>

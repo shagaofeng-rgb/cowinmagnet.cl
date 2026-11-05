@@ -1,8 +1,6 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ContentCard } from "@/components/ContentCard";
-import { HeroBanner } from "@/components/HeroBanner";
+import { Interior, InteriorCard, InteriorHero, InteriorLink, InteriorRow, InteriorSection, mineIllustration, solutionIcon } from "@/components/Interior";
 import { products, solutions } from "@/data/catalog";
 import { Locale, localizedPath, t } from "@/data/site";
 import { localizedAlternates, localizedEntityCopy } from "@/lib/seo";
@@ -50,13 +48,15 @@ export default async function SolutionDetailPage({ params }: { params: Promise<{
     t(locale, "Altura disponible y carga de hierro", "Altura disponivel e carga de ferro", "Available height and tramp-iron load"),
     t(locale, "Ambiente, limpieza y ciclo de trabajo", "Ambiente, limpeza e ciclo de trabalho", "Environment, cleaning and duty cycle")
   ];
-  return (
-    <>
-      <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "solutions") }, { label: display.title }]} />
-      <HeroBanner eyebrow={display.label} title={display.title} summary={display.summary} image={solution.image} />
-      <section className="band"><div className="geo-grid"><article><h3>{t(locale, "Problema operativo", "Problema operacional", "Operating problem")}</h3><p>{problem}</p></article><article><h3>{t(locale, "Enfoque de solucion", "Abordagem da solucao", "Solution approach")}</h3><p>{method}</p></article><article><h3>{t(locale, "Datos de seleccion", "Dados para selecao", "Selection data")}</h3><ul>{selection.map((item) => <li key={item}>{item}</li>)}</ul></article></div></section>
-      <section className="band muted"><div className="section-heading"><p className="eyebrow">{t(locale, "Productos", "Produtos", "Products")}</p><h2>{t(locale, "Equipos que pueden evaluarse", "Equipamentos que podem ser avaliados", "Equipment to evaluate")}</h2></div><div className="page-grid">{recommended.map((product) => product ? <ContentCard key={product.slug} title={productPresentation(product, locale).title} summary={productPresentation(product, locale).summary} image={product.image} href={localizedPath(locale, `products/${product.category}/${product.slug}`)} /> : null)}</div></section>
-      <section className="band"><Link className="button primary" href={localizedPath(locale, "request-a-quote")}>{t(locale, "Solicitar cotizacion", "Solicitar cotacao", "Request a quote")}</Link></section>
-    </>
-  );
+  return <Interior locale={locale}>
+    <Breadcrumbs locale={locale} items={[{ label: display.label, href: localizedPath(locale, "solutions") }, { label: display.title }]} />
+    <InteriorHero title={display.title} summary={display.summary} image={slug === "proteccion-de-chancadores" ? mineIllustration : solution.image}
+      caption={slug === "proteccion-de-chancadores" ? t(locale, "Imagen ilustrativa", "Imagem ilustrativa", "Illustration") : undefined}
+      action={<InteriorLink href={localizedPath(locale, "request-a-quote")} variant="primary">{t(locale, "Evaluar mi instalación", "Avaliar minha instalação", "Review my installation")}</InteriorLink>} />
+    <InteriorSection tinted><div className="split"><div><h2>{t(locale, "Qué debe revisar", "O que revisar", "What to review")}</h2>
+      <InteriorRow icon="alert-circle" title={t(locale, "Identificar el riesgo", "Identificar o risco", "Identify the risk")} summary={problem} />
+      <InteriorRow icon={solutionIcon(slug)} title={t(locale, "Definir el punto de captura", "Definir o ponto de captura", "Choose the capture point")} summary={method} />
+      <InteriorRow icon="settings" title={t(locale, "Datos para seleccionar", "Dados para seleção", "Selection data")} summary={selection.join(" · ")} />
+    </div><div><h2>{t(locale, "Configuraciones a evaluar", "Configurações a avaliar", "Configurations to evaluate")}</h2><div className="grid">{recommended.slice(0, 3).map((product) => product ? <InteriorCard key={product.slug} equipment image={product.image} title={productPresentation(product, locale).title} summary={productPresentation(product, locale).applications[0]} href={localizedPath(locale, "products/" + product.category + "/" + product.slug)} label={t(locale, "Ver ficha", "Ver ficha", "View product")} /> : null)}</div></div></div></InteriorSection>
+  </Interior>;
 }

@@ -65,7 +65,9 @@ function renderInline(value: string, keyPrefix: string): ReactNode[] {
 }
 
 function visibleBlocks(body: string) {
-  const blocks = body.replace(/```[\s\S]*?```/g, "").split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
+  const blocks = body.replace(/```[\s\S]*?```/g, "")
+    .replace(/^(#{2,3} .+)$/gm, "\n\n$1\n\n")
+    .split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
   const visible: string[] = [];
   let hideSection = false;
 
@@ -87,7 +89,7 @@ function listItems(block: string, ordered: boolean) {
 export function ArticleContent({ body }: { body: string }) {
   return visibleBlocks(body).map((block, index) => {
     if (block.startsWith("### ")) return <h3 key={`heading-3-${index}`}>{renderInline(block.slice(4), `heading-3-${index}`)}</h3>;
-    if (block.startsWith("## ")) return <h2 key={`heading-2-${index}`}>{renderInline(block.slice(3), `heading-2-${index}`)}</h2>;
+    if (block.startsWith("## ")) return <h2 id={"section-" + index} key={`heading-2-${index}`}>{renderInline(block.slice(3), `heading-2-${index}`)}</h2>;
 
     const unorderedItems = listItems(block, false);
     if (unorderedItems.length) {
@@ -101,4 +103,11 @@ export function ArticleContent({ body }: { body: string }) {
 
     return <p key={`paragraph-${index}`}>{renderInline(block.replace(/\n+/g, " "), `paragraph-${index}`)}</p>;
   });
+}
+
+export function articleSections(body: string) {
+  return visibleBlocks(body).flatMap((block, index) => block.startsWith("## ") ? [{
+    id: "section-" + index,
+    label: block.slice(3).replace(/\*\*/g, "").replace(/\[([^\]]+)\]\(https?:\/\/[^\s)]+\)/g, "$1")
+  }] : []);
 }

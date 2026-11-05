@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Locale, uiText } from "@/data/site";
+import { Locale, t, uiText } from "@/data/site";
 
-export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
+export function QuoteForm({ locale = "es-cl", initialProduct = "", model = "" }: { locale?: Locale; initialProduct?: string; model?: string }) {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const copy = uiText[locale] ?? uiText["es-cl"];
 
   return (
     <form
-      className="quote-form"
+      className="quote-form panel"
       onSubmit={async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -20,9 +20,13 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
           return;
         }
 
+        const formData = new FormData(form);
+        if (!String(formData.get("email") || "").trim() && !String(formData.get("whatsapp") || "").trim()) {
+          setStatus(t(locale, "Indique un correo o teléfono de contacto.", "Informe um e-mail ou telefone.", "Enter a contact email or phone number."));
+          return;
+        }
         setLoading(true);
         setStatus(copy.quoteForm.sending);
-        const formData = new FormData(form);
         const payload = {
           name: String(formData.get("name") || ""),
           company: String(formData.get("company") || ""),
@@ -32,6 +36,7 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
           whatsapp: String(formData.get("whatsapp") || ""),
           language: String(formData.get("language") || ""),
           product: String(formData.get("product") || ""),
+          model: model && formData.get("product") === initialProduct ? model : "",
           industry: String(formData.get("industry") || ""),
           material: String(formData.get("material") || ""),
           maxSize: String(formData.get("maxSize") || ""),
@@ -65,7 +70,7 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
           });
           const result = await response.json();
           if (!response.ok || !result.success) {
-            setStatus(result.error || copy.quoteForm.failed);
+            setStatus(copy.quoteForm.failed);
             return;
           }
           setStatus(copy.quoteForm.success);
@@ -79,9 +84,9 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
     >
       <label>{copy.quoteForm.name}<input name="name" autoComplete="name" required /></label>
       <label>{copy.quoteForm.country}<select name="country" required><option value="">{copy.quoteForm.select}</option><option>Chile</option><option>Peru</option><option>Brazil</option><option>Argentina</option><option>Bolivia</option><option>Colombia</option><option>Ecuador</option><option>Other LATAM</option></select></label>
-      <label>{copy.quoteForm.phone}<input name="whatsapp" autoComplete="tel" placeholder="+56..." /></label>
       <label>{copy.quoteForm.email}<input type="email" name="email" autoComplete="email" placeholder="name@company.com" /></label>
-      <label>{copy.quoteForm.product}<input name="product" placeholder={copy.quoteForm.productPlaceholder} required /></label>
+      <label>{copy.quoteForm.phone}<input type="tel" name="whatsapp" autoComplete="tel" placeholder="+56..." /></label>
+      <label>{copy.quoteForm.product}<input name="product" defaultValue={initialProduct} placeholder={copy.quoteForm.productPlaceholder} required /></label>
       <label>{copy.quoteForm.material}<input name="material" placeholder={copy.quoteForm.materialPlaceholder} /></label>
       <label className="full">{copy.quoteForm.message}<textarea name="projectDescription" rows={4} placeholder={copy.quoteForm.messagePlaceholder} required /></label>
       <details className="optional-fields full">
@@ -101,7 +106,7 @@ export function QuoteForm({ locale = "es-cl" }: { locale?: Locale }) {
       </details>
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="honeypot" aria-hidden="true" />
       <label className="consent full"><input type="checkbox" required /> {copy.quoteForm.consent}</label>
-      <button className="button primary" type="submit" disabled={loading}>{loading ? copy.quoteForm.submitting : copy.quoteForm.submit}</button>
+      <button className="btn" type="submit" disabled={loading}>{loading ? copy.quoteForm.submitting : copy.quoteForm.submit}</button>
       <p className="form-status" role="status">{status}</p>
     </form>
   );

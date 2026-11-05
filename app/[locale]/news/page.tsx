@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
@@ -10,8 +11,6 @@ import { collectionIndexingMetadata } from "@/lib/localizedContent";
 import { PaginationNav } from "@/components/PaginationNav";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 function displayImage(src = "") {
   return src || "/assets/markets/chile-copper-ore.jpg";
@@ -31,6 +30,7 @@ function displayAuthor(value: string | undefined, locale: Locale) {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+  await connection();
   const { locale } = await params;
   const posts = await getPublishedNews(locale);
   const indexing = collectionIndexingMetadata(posts, locale, "news");
@@ -49,6 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 }
 
 export default async function NewsPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  await connection();
   const { locale } = await params;
   const query = await searchParams;
   const posts = await getPublishedNews(locale);

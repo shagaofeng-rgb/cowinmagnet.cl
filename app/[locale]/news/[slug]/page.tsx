@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { ArticleContent } from "@/components/ArticleContent";
@@ -7,10 +8,8 @@ import { getNewsBySlug, staticPosts } from "@/data/news";
 import { Locale, localizedPath, t } from "@/data/site";
 import { contentIndexingMetadata } from "@/lib/localizedContent";
 
-export const dynamic = "force-dynamic";
 // CMS news slugs can change without a rebuild, so published pages render on demand.
 export const dynamicParams = true;
-export const revalidate = 0;
 
 function displayImage(src = "") {
   return src || "/assets/markets/chile-copper-ore.jpg";
@@ -21,6 +20,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
+  await connection();
   const { locale, slug } = await params;
   const post = await getNewsBySlug(slug, locale);
   const indexing = post ? contentIndexingMetadata(post, locale, `news/${post.slug}`) : null;
@@ -39,6 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 }
 
 export default async function NewsPostPage({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
+  await connection();
   const { locale, slug } = await params;
   const post = await getNewsBySlug(slug, locale);
   if (!post) notFound();

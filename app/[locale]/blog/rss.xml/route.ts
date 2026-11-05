@@ -1,8 +1,8 @@
+import { connection } from "next/server";
 import { getPublishedBlogArticles } from "@/lib/blogContent";
 import { Locale } from "@/data/site";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 function escapeXml(value = "") {
   return String(value)
@@ -14,6 +14,7 @@ function escapeXml(value = "") {
 }
 
 export async function GET(_request: Request, { params }: { params: Promise<{ locale: Locale }> }) {
+  await connection();
   const { locale } = await params;
   const posts = (await getPublishedBlogArticles(locale)).slice(0, 40);
   const siteUrl = "https://cowinmagnet.cl";

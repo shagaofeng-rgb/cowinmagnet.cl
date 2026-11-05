@@ -6,11 +6,11 @@
     },
     {
       "path": "/api/cron/analytics-sync",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 */6 * * *"
     },
     {
       "path": "/api/cron/inquiry-notifications",
-      "schedule": "*/10 * * * *"
+      "schedule": "0 * * * *"
     },
     {
       "path": "/api/cron/search-console-sync",
@@ -26,7 +26,7 @@
     },
     {
       "path": "/api/cron/website-monitor",
-      "schedule": "7 */6 * * *"
+      "schedule": "0 */6 * * *"
     }
   ]
 }

@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -8,8 +9,6 @@ import { collectionIndexingMetadata } from "@/lib/localizedContent";
 import { PaginationNav } from "@/components/PaginationNav";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 function displayDate(value: string | undefined, locale: Locale) {
   if (!value) return "";
@@ -25,6 +24,7 @@ function displayAuthor(value: string | undefined, locale: Locale) {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+  await connection();
   const { locale } = await params;
   const posts = await getPublishedBlogArticles(locale);
   const indexing = collectionIndexingMetadata(posts, locale, "blog");
@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 }
 
 export default async function BlogPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  await connection();
   const { locale } = await params;
   const query = await searchParams;
   const posts = await getPublishedBlogArticles(locale);

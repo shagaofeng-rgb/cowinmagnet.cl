@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -7,10 +8,9 @@ import { getPublishedBlogArticle } from "@/lib/blogContent";
 import { Locale, localizedPath } from "@/data/site";
 import { contentIndexingMetadata } from "@/lib/localizedContent";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }): Promise<Metadata> {
+  await connection();
   const { locale, slug } = await params;
   const post = await getPublishedBlogArticle(slug, locale);
   const indexing = post ? contentIndexingMetadata(post, locale, `blog/${post.slug}`) : null;
@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {
+  await connection();
   const { locale, slug } = await params;
   const post = await getPublishedBlogArticle(slug, locale);
   if (!post) notFound();

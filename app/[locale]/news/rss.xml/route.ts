@@ -1,14 +1,15 @@
+import { connection } from "next/server";
 import { getPublishedNews } from "@/data/news";
 import { Locale } from "@/data/site";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 function escapeXml(value = "") {
   return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 
 export async function GET(_request: Request, { params }: { params: Promise<{ locale: Locale }> }) {
+  await connection();
   const { locale } = await params;
   const posts = (await getPublishedNews(locale)).slice(0, 40);
   const siteUrl = "https://cowinmagnet.cl";

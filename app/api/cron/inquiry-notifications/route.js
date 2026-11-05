@@ -1,5 +1,5 @@
 import { getPendingEnquiryNotifications, updateEnquiryNotification } from "@/lib/enquiryStore";
-import { deliverInquiryNotification } from "@/lib/inquiryEmail";
+import { deliverInquiryNotification, isInquiryEmailConfigured } from "@/lib/inquiryEmail";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,6 +12,9 @@ function isAuthorized(request) {
 
 export async function GET(request) {
   if (!isAuthorized(request)) return Response.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  if (!isInquiryEmailConfigured()) {
+    return Response.json({ success: false, processed: 0, failed: 0, status: "not_configured" });
+  }
   const pending = await getPendingEnquiryNotifications({ limit: 10 });
   const outcomes = [];
   for (const inquiry of pending) {

@@ -4,19 +4,12 @@ import Image from "next/image";
 import { ArticleContent } from "@/components/ArticleContent";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { HeroBanner } from "@/components/HeroBanner";
-import { getNewsBySlug, staticPosts } from "@/data/news";
+import { getNewsBySlug } from "@/data/news";
 import { Locale, localizedPath, t } from "@/data/site";
 import { contentIndexingMetadata } from "@/lib/localizedContent";
 
-// CMS news slugs can change without a rebuild, so published pages render on demand.
-export const dynamicParams = true;
-
 function displayImage(src = "") {
   return src || "/assets/markets/chile-copper-ore.jpg";
-}
-
-export function generateStaticParams() {
-  return staticPosts.flatMap((post) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, slug: post.slug })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; slug: string }> }) {

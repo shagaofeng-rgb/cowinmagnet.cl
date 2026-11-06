@@ -1,116 +1,89 @@
+import Link from "next/link";
 import { productCategories, products } from "@/data/catalog";
+import { getProductDetailContent } from "@/data/productDetailContent";
+import { productPresentation } from "@/data/productPresentation";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import { AdminListControls, AdminListPagination } from "@/components/admin/AdminListControls";
 import { getAdminDateRange } from "@/lib/adminDateRange";
 import { requireAdminSession } from "@/lib/adminAuth";
-import { getCmsItemsPage } from "@/lib/cmsStore";
+import { getCmsItem, getCmsItemsPage } from "@/lib/cmsStore";
+import { paginateList, parseListPagination } from "@/lib/listPagination";
+import { PRODUCT_LOCALIZATION_TYPE, productLocalizationKey, publicLocalization } from "@/lib/productLocalization";
 
-const t = {
-  eyebrow: "\u4ea7\u54c1\u7ba1\u7406",
-  title: "\u4ea7\u54c1\u4e0a\u4f20\u3001\u7f16\u8f91\u4e0e\u53d1\u5e03",
-  desc: "\u5f53\u524d\u540c\u6b65\u4e3b\u7ad9\u4ea7\u54c1",
-  cmsProducts: "\u540e\u53f0\u65b0\u589e\u4ea7\u54c1",
-  saved: "\u4ea7\u54c1\u5df2\u4fdd\u5b58\u3002",
-  error: "\u8bf7\u586b\u5199\u4ea7\u54c1\u540d\u79f0\u548c\u6709\u6548 Slug\u3002",
-  formTitle: "\u65b0\u589e\u6216\u66f4\u65b0\u4ea7\u54c1",
-  name: "\u4ea7\u54c1\u540d\u79f0",
-  slugPlaceholder: "\u7559\u7a7a\u5219\u81ea\u52a8\u751f\u6210",
-  shortTitle: "\u77ed\u6807\u9898",
-  category: "\u4ea7\u54c1\u5206\u7c7b",
-  newCategory: "\u65b0\u5206\u7c7b\u540d\u79f0",
-  newCategoryPlaceholder: "\u9700\u8981\u65b0\u589e\u5206\u7c7b\u65f6\u586b\u5199",
-  summary: "\u6458\u8981",
-  overview: "\u5b8c\u6574\u63cf\u8ff0",
-  application: "\u5e94\u7528\u573a\u666f",
-  features: "\u6838\u5fc3\u5356\u70b9",
-  featurePlaceholder: "\u6bcf\u884c\u4e00\u4e2a\u5356\u70b9",
-  specs: "\u6280\u672f\u53c2\u6570",
-  specPlaceholder: "\u53c2\u6570: \u6570\u503c",
-  mainImage: "\u4ea7\u54c1\u4e3b\u56fe",
-  imageAlt: "\u56fe\u7247 ALT",
-  save: "\u4fdd\u5b58\u4ea7\u54c1",
-  status: "\u72b6\u6001",
-  source: "\u6765\u6e90",
-  published: "\u5df2\u53d1\u5e03",
-  cms: "\u540e\u53f0 CMS",
-  mainSync: "\u4e3b\u7ad9\u4ea7\u54c1\u540c\u6b65"
-};
+const locales = { "es-cl": "智利西班牙语", en: "英语", "pt-br": "巴西葡萄牙语" };
+const statusMessages = { draft: "草稿已保存。", publish: "文案已发布。", restore: "已恢复目录默认文案。" };
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: `${t.eyebrow} | Cowinmagnet.cl` };
+export const metadata = { title: "产品管理 | Cowinmagnet.cl" };
 
 export default async function AdminProductsPage({ searchParams }) {
   await requireAdminSession();
   const params = await searchParams;
   const range = getAdminDateRange(params);
-  const uploaded = await getCmsItemsPage("product", {
-    includeInactive: true,
-    range,
-    page: params?.page,
-    pageSize: params?.pageSize,
-    query: params?.query,
-    status: params?.status
-  });
-  const catalogPageSize = [25, 50, 100].includes(Number(params?.catalogPageSize)) ? Number(params.catalogPageSize) : 25;
-  const catalogTotalPages = Math.max(1, Math.ceil(products.length / catalogPageSize));
-  const catalogPage = Math.min(Math.max(1, Number(params?.catalogPage || 1) || 1), catalogTotalPages);
-  const catalogProducts = products.slice((catalogPage - 1) * catalogPageSize, catalogPage * catalogPageSize);
+  const locale = Object.hasOwn(locales, params?.locale) ? params.locale : "es-cl";
+  const selected = products.find((item) => item.slug === params?.product);
+  const [legacy, draft, current] = await Promise.all([
+    getCmsItemsPage("product", { includeInactive: true, range, page: params?.page, pageSize: params?.pageSize, query: params?.query }),
+    selected ? getCmsItem(PRODUCT_LOCALIZATION_TYPE, productLocalizationKey(locale, selected.slug, "draft")) : null,
+    selected ? getCmsItem(PRODUCT_LOCALIZATION_TYPE, productLocalizationKey(locale, selected.slug)) : null
+  ]);
+  const live = selected ? publicLocalization(current, locale, selected.slug) : null;
+  const input = draft && (!live || draft.updatedAt > live.updatedAt) ? draft : current;
+  const base = selected ? getProductDetailContent(selected, locale) : null;
+  const catalogQuery = typeof params?.catalogQuery === "string" ? params.catalogQuery.trim().slice(0, 120) : "";
+  const items = products.filter((product) => (product.title + " " + product.slug).toLowerCase().includes(catalogQuery.toLowerCase()));
+  const catalog = paginateList(items, parseListPagination({ page: params?.catalogPage }, { defaultPageSize: 25 }));
+  const keep = { ...(catalogQuery ? { catalogQuery } : {}), ...(catalog.meta.page > 1 ? { catalogPage: String(catalog.meta.page) } : {}) };
+  const href = (product, language = locale) => ({ pathname: "/admin/products", query: { ...keep, product, locale: language } });
+  const category = (id) => productCategories.find((item) => item.slug === id)?.title || id;
 
-  return (
-    <section className="admin-panel">
-      <div className="admin-page-head">
-        <div>
-          <p className="eyebrow">{t.eyebrow}</p>
-          <h1>{t.title}</h1>
-          <p>{t.desc} {products.length} \u4e2a\uff0c{t.cmsProducts} {uploaded.meta.total} \u4e2a\u3002</p>
+  return <>
+    <section className="admin-page-head"><div><h1>产品目录</h1><p>管理智利站各语言的产品名称、摘要和使用说明。</p></div></section>
+    {params?.saved && statusMessages[params.saved] ? <p className="admin-alert good" role="status">{statusMessages[params.saved]}</p> : null}
+    {params?.error ? <p className="admin-alert" role="alert">无法保存。请检查产品、语言及必填文案。</p> : null}
+    {selected ? <section className="admin-panel admin-product-editor">
+      <div className="admin-panel-head"><div><p className="eyebrow">{category(selected.category)}</p><h2>{selected.title}</h2></div>
+        <a className="admin-detail-link" href={"/" + locale + "/products/" + selected.category + "/" + selected.slug} target="_blank" rel="noopener">查看前台</a></div>
+      <nav className="admin-language-nav" aria-label="文案语言">{Object.entries(locales).map(([value, label]) =>
+        <Link key={value} href={href(selected.slug, value)} aria-current={locale === value ? "page" : undefined}>{label}</Link>)}</nav>
+      <p className="admin-copy-state">当前：{live ? "使用已发布文案" : "使用目录文案"}{draft && (!live || draft.updatedAt > live.updatedAt) ? " · 有待发布草稿" : ""}</p>
+      <form className="admin-form admin-product-form" action="/api/admin/content/product-localizations" method="post" key={locale + selected.slug}>
+        <input type="hidden" name="product" value={selected.slug} /><input type="hidden" name="locale" value={locale} />
+        <label>产品名称<input name="title" required maxLength={140} defaultValue={input?.title || productPresentation(selected, locale).title} /></label>
+        <label>采购摘要<textarea name="summary" required maxLength={280} rows={3} defaultValue={input?.summary || base.summary.slice(0, 280)} /></label>
+        <label>工作原理或应用说明<textarea name="overview" maxLength={1600} rows={5} defaultValue={input?.overview ?? base.howItWorks} /></label>
+        <div className="admin-product-actions">
+          <button name="action" value="draft" type="submit">保存草稿</button>
+          <button name="action" value="publish" type="submit">发布到前台</button>
+          {live ? <button name="action" value="restore" type="submit" formNoValidate>恢复目录文案</button> : null}
         </div>
-        <AdminDateRangeFilter range={range} />
-      </div>
-      {params?.saved ? <div className="admin-alert good">{t.saved}</div> : null}
-      {params?.error ? <div className="admin-alert">{t.error}</div> : null}
-      <form className="admin-form" action="/api/admin/content/products" method="post" encType="multipart/form-data">
-        <h2>{t.formTitle}</h2>
-        <label>{t.name}<input name="title" required /></label>
-        <label>Slug<input name="slug" placeholder={t.slugPlaceholder} /></label>
-        <label>{t.shortTitle}<input name="shortTitle" /></label>
-        <label>{t.category}
-          <select name="categoryBundle">
-            {productCategories.map((category) => (
-              <option value={`${category.slug}|||${category.title}`} key={category.slug}>{category.title}</option>
-            ))}
-          </select>
-        </label>
-        <label>{t.newCategory}<input name="newCategoryTitle" placeholder={t.newCategoryPlaceholder} /></label>
-        <label>{t.summary}<textarea name="summary" rows="3" /></label>
-        <label>{t.overview}<textarea name="overview" rows="5" /></label>
-        <label>{t.application}<textarea name="application" rows="3" /></label>
-        <label>{t.features}<textarea name="features" rows="5" placeholder={t.featurePlaceholder} /></label>
-        <label>{t.specs}<textarea name="specifications" rows="5" placeholder={t.specPlaceholder} /></label>
-        <label>{t.mainImage}<input name="image" type="file" accept="image/png,image/jpeg,image/webp" /></label>
-        <label>{t.imageAlt}<input name="imageAlt" /></label>
-        <button type="submit">{t.save}</button>
       </form>
-      <section className="admin-list-section">
-        <div className="admin-panel-head"><div><p className="eyebrow">后台 CMS</p><h2>后台新增产品</h2></div></div>
-        <AdminListControls searchLabel="搜索产品名称、Slug 或分类" statusOptions={[{ value: "published", label: "已发布" }, { value: "draft", label: "草稿" }, { value: "offline", label: "已下线" }]} />
-      <div className="admin-table-wrap">
-        <table className="admin-table">
-          <thead><tr><th>{t.name}</th><th>{t.category}</th><th>{t.status}</th><th>{t.source}</th></tr></thead>
-          <tbody>
-            {uploaded.items.map((item) => <tr key={item.slug}><td>{item.title}</td><td>{item.categoryTitle}</td><td>{item.status}</td><td>{t.cms}</td></tr>)}
-            {!uploaded.items.length ? <tr><td colSpan="4"><div className="admin-empty">当前筛选范围内没有后台新增产品。</div></td></tr> : null}
-          </tbody>
-        </table>
-      </div>
-      <AdminListPagination meta={uploaded.meta} itemLabel="个后台产品" />
-      </section>
-      <section className="admin-list-section">
-        <div className="admin-panel-head"><div><p className="eyebrow">主站同步</p><h2>同步产品目录</h2></div></div>
-        <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>{t.name}</th><th>{t.category}</th><th>{t.status}</th><th>{t.source}</th></tr></thead><tbody>
-          {catalogProducts.map((item) => <tr key={item.slug}><td>{item.title}</td><td>{item.category}</td><td>{t.published}</td><td>{t.mainSync}</td></tr>)}
+      {draft && (!live || draft.updatedAt > live.updatedAt) ? <details className="admin-draft-preview">
+        <summary>预览已保存草稿</summary><h3>{draft.title}</h3><p>{draft.summary}</p><p>{draft.overview}</p>
+      </details> : null}
+    </section> : null}
+    <section className="admin-panel admin-list-section">
+      <div className="admin-panel-head"><div><h2>在站目录</h2><p>型号、图片与技术参数随产品目录更新。</p></div></div>
+      <form action="/admin/products" className="admin-list-controls">
+        <input type="hidden" name="locale" value={locale} />
+        <label className="admin-search-control">产品或型号<input name="catalogQuery" defaultValue={catalogQuery} maxLength={120} placeholder="如 RCYD" /></label>
+        <button type="submit">查询</button>
+      </form>
+      <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>产品名称</th><th>产品类别</th><th>操作</th></tr></thead>
+        <tbody>{catalog.items.map((item) => <tr key={item.slug}><td>{item.title}</td><td>{category(item.category)}</td>
+          <td><Link className="admin-detail-link" href={href(item.slug)} prefetch={false}>编辑文案</Link></td></tr>)}
+          {!catalog.items.length ? <tr><td colSpan="3" className="admin-empty">未找到匹配产品。</td></tr> : null}
         </tbody></table></div>
-        <AdminListPagination meta={{ page: catalogPage, pageSize: catalogPageSize, total: products.length, totalPages: catalogTotalPages }} itemLabel="个同步产品" pageParam="catalogPage" />
-      </section>
+      <AdminListPagination meta={catalog.meta} itemLabel="个产品" pageParam="catalogPage" />
     </section>
-  );
+    <section className="admin-panel admin-list-section">
+      <div className="admin-page-head compact"><div><h2>内部存档</h2><p>过去录入的产品记录，仅供查阅。</p></div><AdminDateRangeFilter range={range} /></div>
+      <AdminListControls searchLabel="搜索存档产品名称或分类" />
+      <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>产品名称</th><th>产品类别</th></tr></thead>
+        <tbody>{legacy.items.map((item) => <tr key={item.slug}><td>{item.title}</td><td>{item.categoryTitle}</td></tr>)}
+          {!legacy.items.length ? <tr><td colSpan="2" className="admin-empty">当前范围内没有存档。</td></tr> : null}
+        </tbody></table></div>
+      <AdminListPagination meta={legacy.meta} itemLabel="条存档" />
+    </section>
+  </>;
 }

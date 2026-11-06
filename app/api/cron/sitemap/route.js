@@ -1,4 +1,5 @@
 import { runSitemapJob } from "@/lib/sitemapManager";
+import { WEEKLY_SITEMAP_TRIGGER } from "@/lib/weeklySitemap";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,13 +16,14 @@ async function execute(request) {
   if (!isAuthorized(request)) return Response.json({ success: false, error: "Unauthorized" }, { status: 401 });
   const url = new URL(request.url);
   const result = await runSitemapJob({
-    trigger: url.searchParams.get("trigger") || "daily-cron",
-    force: url.searchParams.get("force") === "true",
+    trigger: WEEKLY_SITEMAP_TRIGGER,
     dryRun: url.searchParams.get("dryRun") === "true",
-    submit: url.searchParams.get("submit") !== "false",
-    submitWhenUnchanged: url.searchParams.get("submitWhenUnchanged") === "true"
+    submit: true
   });
-  return Response.json(result, { status: result.success ? 200 : result.locked ? 409 : 500 });
+  const submission = result.run?.submissionResult;
+  const expectedSkip = ["outside-weekly-window", "already-submitted-this-week"].includes(submission?.reason);
+  const status = !result.success ? (result.locked ? 409 : 500) : submission && !submission.success && !expectedSkip ? 502 : 200;
+  return Response.json(result, { status });
 }
 
 export async function GET(request) {

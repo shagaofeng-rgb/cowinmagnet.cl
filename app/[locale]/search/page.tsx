@@ -4,7 +4,7 @@ import { Interior, InteriorLink, InteriorRow, InteriorSection, Intro, queryValue
 import { InteriorIcon, type InteriorIconName } from "@/components/InteriorIcon";
 import { PaginationNav } from "@/components/PaginationNav";
 import { industries, solutions, markets, chileRegions, productCategories, getCategoryDisplay } from "@/data/catalog";
-import { getPublishedCatalogProducts } from "@/data/productCatalog.server";
+import { catalogLocalization, getCatalogLocalizations, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { productPresentation } from "@/data/productPresentation";
 import { technicalResources } from "@/data/technicalResources";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
@@ -34,10 +34,12 @@ async function findMatches(locale: Locale, value: string, kind: string) {
   const terms = [...new Set(normalized.split(" ").filter(Boolean))].slice(0, 12);
   if (!terms.length) return [];
   const catalog = !kind || kind === "product" ? await getPublishedCatalogProducts() : [];
+  const localizations = catalog.length ? await getCatalogLocalizations(locale) : new Map();
   const entries: SearchItem[] = catalog.map((product) => {
     const view = productPresentation(product, locale);
+    const editorial = catalogLocalization(localizations, locale, product.slug);
     const category = productCategories.find((item) => item.slug === product.category);
-    return { kind: "product", title: view.title, summary: view.applications.join(" · "), href: localizedPath(locale, "products/" + product.category + "/" + product.slug), extra: [product.slug, product.title, category ? getCategoryDisplay(category, locale).title : "", view.summary].join(" ") };
+    return { kind: "product", title: editorial?.title || view.title, summary: editorial?.summary || view.applications.join(" · "), href: localizedPath(locale, "products/" + product.category + "/" + product.slug), extra: [product.slug, product.title, category ? getCategoryDisplay(category, locale).title : "", view.summary].join(" ") };
   });
   for (const [type, route, items] of [["industry", "industries", industries], ["solution", "solutions", solutions], ["market", "markets", markets]] as const) {
     if (kind && kind !== type) continue;

@@ -5,15 +5,15 @@ import { technicalResources } from "@/data/technicalResources";
 import { PaginationNav } from "@/components/PaginationNav";
 import { Locale, localizedPath, t } from "@/data/site";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
-import { localizedAlternates } from "@/lib/seo";
+import { localizedListMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
-  const { locale } = await params;
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<PageQuery> }): Promise<Metadata> {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
   return {
-    title: t(locale, "Descargas tecnicas", "Downloads tecnicos", "Technical downloads"),
-    description: t(locale, "Catalogos, hojas tecnicas y cuestionarios para seleccion de equipos magneticos Cowinmagnet LATAM.", "Catalogos, folhas tecnicas e questionarios para selecao de equipamentos magneticos Cowinmagnet LATAM.", "Catalogs, technical sheets and questionnaires for Cowinmagnet LATAM magnetic equipment selection."),
-    alternates: localizedAlternates(locale, "downloads")
+    title: t(locale, "Descargas técnicas", "Downloads técnicos", "Technical downloads"),
+    description: t(locale, "Catálogos, fichas técnicas y cuestionarios para seleccionar equipos magnéticos.", "Catálogos, fichas técnicas e questionários para selecionar equipamentos magnéticos.", "Catalogs, technical sheets and questionnaires for magnetic equipment selection."),
+    ...localizedListMetadata(locale, "downloads", query, technicalResources(locale).length, 9)
   };
 }
 

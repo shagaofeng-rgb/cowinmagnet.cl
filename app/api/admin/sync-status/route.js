@@ -3,6 +3,7 @@ import { requireAdminApi } from "@/lib/adminApi";
 import { getAnalyticsStorageMode, getLatestSyncStatus, runAnalyticsSync } from "@/lib/analyticsStore";
 import { cmsStorageMode } from "@/lib/cmsStore";
 import { enquiryStorageMode } from "@/lib/enquiryStore";
+import { getOperationsStatus } from "@/lib/operationsStatus";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,18 +11,19 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const unauthorized = await requireAdminApi();
   if (unauthorized) return unauthorized;
-  const sync = await getLatestSyncStatus();
+  const [sync, systems] = await Promise.all([getLatestSyncStatus(), getOperationsStatus()]);
 
   return NextResponse.json({
     success: true,
     data: {
-      intervalMinutes: 30,
+      intervalMinutes: 360,
       ...sync,
       status: sync.status || "waiting",
       analytics: getAnalyticsStorageMode(),
       cms: cmsStorageMode(),
       enquiries: enquiryStorageMode(),
-      checkedAt: new Date().toISOString()
+      checkedAt: new Date().toISOString(),
+      systems
     }
   });
 }
@@ -34,7 +36,7 @@ export async function POST() {
   return NextResponse.json({
     success: result.success,
     data: {
-      intervalMinutes: 30,
+      intervalMinutes: 360,
       ...result.data,
       analytics: getAnalyticsStorageMode(),
       cms: cmsStorageMode(),

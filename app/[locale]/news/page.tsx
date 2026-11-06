@@ -5,25 +5,17 @@ import { EditorialList } from "@/components/EditorialList";
 import { getPublishedNews } from "@/data/news";
 import { Locale, t } from "@/data/site";
 import type { Metadata } from "next";
-import { collectionIndexingMetadata } from "@/lib/localizedContent";
+import { editorialIndexingMetadata } from "@/lib/localizedContent";
 
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<PageQuery> }): Promise<Metadata> {
   await connection();
-  const { locale } = await params;
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
   const posts = await getPublishedNews(locale, { includeBody: true });
-  const indexing = collectionIndexingMetadata(posts, locale, "news");
-  const title = locale === "en" ? "Industry News for Magnetic Separation in the Americas" : locale === "pt-br" ? "Noticias industriais de separacao magnetica nas Americas" : "Noticias industriales de separacion magnetica en Americas";
-  const description = locale === "en"
-    ? "Editorial briefs from cited external sources with Cowinmagnet technical analysis for mining, recycling, cement and magnetic separation buyers."
-    : locale === "pt-br"
-      ? "Resumos editoriais com fontes citadas e analise tecnica para mineracao, reciclagem, cimento e separacao magnetica."
-      : "Resumimos fuentes externas relevantes y agregamos una lectura tecnica para mineria, reciclaje, cemento y separacion magnetica.";
   return {
-    title,
-    description,
-    robots: indexing.indexable ? { index: true, follow: true } : { index: false, follow: true },
-    alternates: indexing.alternates
+    title: t(locale, "Noticias de minería, reciclaje y separación magnética", "Notícias de mineração, reciclagem e separação magnética", "Mining, Recycling and Magnetic Separation News"),
+    description: t(locale, "Actualidad de minería, reciclaje, cemento y separación magnética en Chile y las Américas.", "Notícias de mineração, reciclagem, cimento e separação magnética no Chile e nas Américas.", "Industry news on mining, recycling, cement and magnetic separation in Chile and the Americas."),
+    ...editorialIndexingMetadata(posts, locale, "news", query)
   };
 }
 

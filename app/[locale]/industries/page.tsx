@@ -3,16 +3,16 @@ import { Interior, InteriorCard, InteriorHero, InteriorLink, InteriorSection } f
 import { PaginationNav } from "@/components/PaginationNav";
 import { briefIndustryCards } from "@/data/brief";
 import { Locale, localizedPath, t } from "@/data/site";
-import { localizedAlternates } from "@/lib/seo";
+import { localizedListMetadata } from "@/lib/seo";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
 import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
-  const { locale } = await params;
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }): Promise<Metadata> {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
   return {
     title: t(locale, "Soluciones por industria", "Solucoes por industria", "Solutions by industry"),
     description: t(locale, "Soluciones de separacion magnetica para mineria, reciclaje, cemento, carbon, alimentos y procesamiento industrial en Sudamerica.", "Solucoes de separacao magnetica para mineracao, reciclagem, cimento, carvao, alimentos e processamento industrial na America do Sul.", "Magnetic separation solutions for mining, recycling, cement, coal, food and industrial processing in South America."),
-    alternates: localizedAlternates(locale, "industries")
+    ...localizedListMetadata(locale, "industries", query, briefIndustryCards.length, 9)
   };
 }
 

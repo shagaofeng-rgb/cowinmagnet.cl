@@ -6,13 +6,13 @@ import { PaginationNav } from "@/components/PaginationNav";
 import { categoryImages, getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
 import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath, t } from "@/data/site";
-import { localizedAlternates } from "@/lib/seo";
+import { localizedListMetadata } from "@/lib/seo";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
-  const { locale } = await params;
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }): Promise<Metadata> {
+  const [{ locale }, query, categories] = await Promise.all([params, searchParams, getPublishedCatalogCategories()]);
   const copy = productCopy[locale] ?? productCopy["es-cl"];
-  return { title: copy.productCenterTitle, description: copy.productCenterSummary, alternates: localizedAlternates(locale, "products") };
+  return { title: copy.productCenterTitle, description: copy.productCenterSummary, ...localizedListMetadata(locale, "products", query, categories.length, 8) };
 }
 
 export default async function ProductsPage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {

@@ -5,19 +5,17 @@ import { Interior, Intro, type PageQuery } from "@/components/Interior";
 import { EditorialList } from "@/components/EditorialList";
 import { getPublishedBlogArticles } from "@/lib/blogContent";
 import { Locale, t } from "@/data/site";
-import { collectionIndexingMetadata } from "@/lib/localizedContent";
+import { editorialIndexingMetadata } from "@/lib/localizedContent";
 
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<PageQuery> }): Promise<Metadata> {
   await connection();
-  const { locale } = await params;
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
   const posts = await getPublishedBlogArticles(locale, { includeBody: true });
-  const indexing = collectionIndexingMetadata(posts, locale, "blog");
   return {
-    title: locale === "en" ? "Blog | Magnetic Separation Knowledge" : locale === "pt-br" ? "Blog | Conhecimento em separacao magnetica" : "Blog | Conocimiento en separacion magnetica",
-    description: locale === "en" ? "Published technical articles for magnetic separation, mining, recycling and bulk handling." : "Articulos tecnicos publicados sobre separacion magnetica, mineria, reciclaje y manejo de graneles.",
-    robots: indexing.indexable ? { index: true, follow: true } : { index: false, follow: true },
-    alternates: indexing.alternates
+    title: t(locale, "Blog técnico de separación magnética", "Blog técnico de separação magnética", "Magnetic Separation Technical Blog"),
+    description: t(locale, "Guías técnicas sobre separación magnética, minería, reciclaje y manejo de materiales a granel.", "Guias técnicos sobre separação magnética, mineração, reciclagem e manuseio de materiais a granel.", "Technical guides on magnetic separation, mining, recycling and bulk material handling."),
+    ...editorialIndexingMetadata(posts, locale, "blog", query)
   };
 }
 

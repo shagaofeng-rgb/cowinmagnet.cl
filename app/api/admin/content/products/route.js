@@ -1,8 +1,5 @@
-import { redirect } from "next/navigation";
-import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdminApi } from "@/lib/adminApi";
 import { fileToDataUrl, parseLines, parseSpecifications, saveCmsItem, slugify } from "@/lib/cmsStore";
-import { queueSitemapRefresh } from "@/lib/sitemapHooks";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,7 +15,7 @@ export async function POST(request) {
   const formData = await request.formData();
   const title = value(formData, "title");
   const slug = slugify(value(formData, "slug") || title);
-  if (!title || !slug) redirect("/admin/products?error=product-required");
+  if (!title || !slug) return Response.redirect(new URL("/admin/products?error=product-required", request.url), 303);
 
   const [selectedCategoryId = "", selectedCategoryTitle = ""] = value(formData, "categoryBundle").split("|||");
   const categoryId = slugify(value(formData, "newCategoryTitle") || selectedCategoryId || "uploaded-products");
@@ -40,14 +37,8 @@ export async function POST(request) {
     features: parseLines(value(formData, "features")),
     specifications: parseSpecifications(value(formData, "specifications")),
     publishedAt: new Date().toISOString(),
-    status: "published",
-    href: `/products/${categoryId}/${slug}`
+    status: "draft"
   });
 
-  revalidatePath("/es-cl/products");
-  revalidatePath(`/es-cl/products/${categoryId}/${slug}`);
-  revalidatePath("/sitemap.xml");
-  revalidateTag("public-products", { expire: 0 });
-  queueSitemapRefresh("product-created");
-  redirect("/admin/products?saved=product");
+  return Response.redirect(new URL("/admin/products?saved=draft", request.url), 303);
 }

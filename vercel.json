@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/cron/sitemap?submit=true&submitWhenUnchanged=true",
+      "path": "/api/cron/sitemap",
       "schedule": "0 1 * * 1"
     },
     {

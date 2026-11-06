@@ -32,8 +32,8 @@ export default function AdminSitemapActions() {
   return (
     <div className="admin-actions sitemap-actions">
       <button type="button" disabled={running} onClick={() => run({ dryRun: true })}>仅检查</button>
-      <button type="button" disabled={running} onClick={() => run({ force: true })}>强制生成</button>
-      <button type="button" disabled={running} onClick={() => run({ force: true, submit: true })}>生成并提交 Google</button>
+      <button type="button" disabled={running} onClick={() => run({ force: true })}>更新站点地图</button>
+      <span>每周一 09:00（北京时间）自动提交 Google</span>
       {message ? <p role="status">{message}</p> : null}
     </div>
   );

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Locale } from "@/data/site";
+import { submitInquiry, type InquiryAttempt } from "@/lib/clientInquiry";
 
 type Props = {
   locale: Locale;
@@ -44,6 +45,8 @@ export function ProductInquiryForm({ locale, productName, model }: Props) {
   const [values, setValues] = useState<Values>(emptyValues);
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const pending = useRef(false);
+  const attempt = useRef<InquiryAttempt | null>(null);
   const productValue = model ? `${productName} (${model})` : productName;
   const language = locale === "pt-br" ? "Portuguese" : locale === "en" ? "English" : "Spanish";
   const setValue = (field: keyof Values, value: string | boolean) => setValues((current) => ({ ...current, [field]: value }));
@@ -60,6 +63,7 @@ export function ProductInquiryForm({ locale, productName, model }: Props) {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pending.current) return;
     if (step === 1) {
       continueToApplication();
       return;
@@ -68,8 +72,6 @@ export function ProductInquiryForm({ locale, productName, model }: Props) {
       setStatus(copy.failed);
       return;
     }
-    const query = new URLSearchParams(window.location.search);
-    const sourceMetadata = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].map((key) => query.get(key) ? `${key}=${query.get(key)}` : "").filter(Boolean).join("; ");
     const projectDescription = [
       values.message,
       `${copy.contaminant}: ${values.contaminant || "No informado"}`,
@@ -78,31 +80,27 @@ export function ProductInquiryForm({ locale, productName, model }: Props) {
       `${copy.particle}: ${values.particle || "No informado"}`,
       `${copy.space}: ${values.space || "No informado"}`,
       `${copy.power}: ${values.power || "No informado"}`,
-      `${copy.environment}: ${values.environment || "No informado"}`,
-      `sourceUrl: ${window.location.href}`,
-      sourceMetadata ? `UTM: ${sourceMetadata}` : ""
+      `${copy.environment}: ${values.environment || "No informado"}`
     ].filter(Boolean).join("\n");
     const payload = {
       name: values.name, company: values.company, country: values.country, region: "", email: values.email, whatsapp: values.whatsapp, language,
       product: productValue, model: model || "", industry: values.industry, material: values.material,
       beltWidth: values.geometry, capacity: values.flow, suspensionHeight: values.space, installation: "", cleaning: "", voltage: values.power,
-      projectDescription, sourcePage: window.location.pathname, sourceUrl: window.location.href, utm: sourceMetadata, website: "",
-      visitorId: window.localStorage.getItem("cowinmagnet_cl_visitor_id") || "",
-      sessionId: window.sessionStorage.getItem("cowinmagnet_cl_session_id") || "",
-      referrer: document.referrer || ""
+      projectDescription, sourcePage: window.location.pathname
     };
     try {
+      pending.current = true;
       setLoading(true);
       setStatus("");
-      const response = await fetch("/api/inquiry", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
-      const result = await response.json().catch(() => null);
-      if (!response.ok || !result?.success) throw new Error(result?.error || copy.failed);
+      const result = await submitInquiry(payload, attempt);
+      if (!result.ok) throw new Error(copy.failed);
       setStatus(copy.success);
       setValues(emptyValues);
       setStep(1);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : copy.failed);
     } finally {
+      pending.current = false;
       setLoading(false);
     }
   }

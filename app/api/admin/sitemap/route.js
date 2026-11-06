@@ -18,8 +18,7 @@ export async function POST(request) {
   const result = await runSitemapJob({
     trigger: "admin-manual",
     force: Boolean(body.force),
-    dryRun: Boolean(body.dryRun),
-    submit: Boolean(body.submit)
+    dryRun: Boolean(body.dryRun)
   });
   return Response.json(result, { status: result.success ? 200 : result.locked ? 409 : 500 });
 }

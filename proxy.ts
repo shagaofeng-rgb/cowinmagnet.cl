@@ -1,34 +1,33 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { preferredLocale } from "@/lib/preferredLocale";
+import { productRedirectPath } from "@/lib/productUrlAliases";
 
 const localeCookieName = "cowinmagnet_locale";
-const supportedLocales = new Set(["es-cl", "es", "pt-br", "en"]);
-const crawlerPattern = /bot|crawler|spider|slurp|bingpreview|facebookexternalhit|whatsapp/i;
-
-function preferredLocale(request: NextRequest) {
-  const cookieLocale = request.cookies.get(localeCookieName)?.value?.toLowerCase();
-  if (cookieLocale && supportedLocales.has(cookieLocale)) return cookieLocale;
-
-  // Search bots retain the Spanish Chile canonical entry point. This only uses
-  // request headers for routing and does not persist a visitor's IP or country.
-  if (crawlerPattern.test(request.headers.get("user-agent") || "")) return "es-cl";
-  if (request.headers.get("x-vercel-ip-country") === "BR") return "pt-br";
-
-  const languages = request.headers.get("accept-language") || "";
-  if (/\bpt(?:-|;|,|$)/i.test(languages)) return "pt-br";
-  if (/\ben(?:-|;|,|$)/i.test(languages)) return "en";
-  return "es-cl";
-}
 
 export function proxy(request: NextRequest) {
   if (request.method === "POST" && request.nextUrl.pathname === "/") {
     return NextResponse.rewrite(new URL("/api/webhook/send_article", request.url));
   }
   if (request.method === "GET" && request.nextUrl.pathname === "/") {
-    const response = NextResponse.redirect(new URL(`/${preferredLocale(request)}`, request.url), 307);
+    const locale = preferredLocale({
+      saved: request.cookies.get(localeCookieName)?.value,
+      userAgent: request.headers.get("user-agent") || "",
+      languages: request.headers.get("accept-language") || "",
+      country: request.headers.get("x-vercel-ip-country") || ""
+    });
+    const target = request.nextUrl.clone();
+    target.pathname = "/" + locale;
+    const response = NextResponse.redirect(target, 307);
     response.headers.set("cache-control", "private, no-store");
     response.headers.set("vary", "Cookie, Accept-Language, x-vercel-ip-country");
     return response;
+  }
+  const productTarget = productRedirectPath(request.nextUrl.pathname);
+  if (productTarget && (request.method === "GET" || request.method === "HEAD")) {
+    const target = request.nextUrl.clone();
+    target.pathname = productTarget;
+    return NextResponse.redirect(target, 308);
   }
   const locale = request.nextUrl.pathname.match(/^\/(es-cl|es|pt-br|en)(?:\/|$)/i)?.[1]?.toLowerCase();
   if (!locale) return NextResponse.next();

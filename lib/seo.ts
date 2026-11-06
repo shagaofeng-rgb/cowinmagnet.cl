@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { listIndexing } from "@/lib/listPagination";
 import { Locale } from "@/data/site";
 
 export const htmlLanguageByLocale: Record<Locale, string> = {
@@ -74,11 +75,12 @@ export function localizedEntityCopy(locale: Locale, kind: keyof typeof kindCopy,
   };
 }
 
-export function localizedProductSeo(locale: Locale, title: string) {
-  if (locale === "en") return `${title} magnetic separation equipment`;
-  if (locale === "pt-br") return `${title} para separacao magnetica`;
-  if (locale === "es-cl") return `${title} para separacion magnetica en Chile`;
-  return `${title} para separacion magnetica en LATAM`;
+export function localizedProductSeo(locale: Locale, title: string, model = "") {
+  const name = model && !title.toLowerCase().includes(model.toLowerCase()) ? title + " " + model : title;
+  if (locale === "en") return name;
+  if (locale === "pt-br") return name;
+  if (locale === "es-cl") return name + " en Chile";
+  return name;
 }
 
 const languageMap = {
@@ -103,4 +105,8 @@ export function localizedAlternates(locale: Locale, path = ""): Metadata["altern
       Object.entries(languageMap).map(([hreflang, targetLocale]) => [hreflang, `/${targetLocale}${cleanPath}`])
     )
   };
+}
+
+export function localizedListMetadata(locale: Locale, path: string, query: Record<string, string | string[] | undefined>, total: number, pageSize: number, filterKeys: string[] = []): Metadata {
+  return listIndexing({ query, total, pageSize, alternates: localizedAlternates(locale, path), filterKeys, indexable: locale !== "es" });
 }

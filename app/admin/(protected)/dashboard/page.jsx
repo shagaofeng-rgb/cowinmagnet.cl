@@ -1,4 +1,5 @@
 import { products, productCategories } from "@/data/catalog";
+import { staticPosts } from "@/data/news";
 import { requireAdminSession } from "@/lib/adminAuth";
 import { getAdminDateRange } from "@/lib/adminDateRange";
 import { getAnalyticsSnapshot } from "@/lib/analyticsStore";
@@ -20,7 +21,7 @@ export default async function AdminDashboardPage({ searchParams }) {
   const params = await searchParams;
   const range = getAdminDateRange(params);
   const [contentSummary, analytics] = await Promise.all([
-    getCmsContentSummary(),
+    getCmsContentSummary({ publishedOnly: true }),
     getAnalyticsSnapshot(range),
   ]);
 
@@ -39,9 +40,7 @@ export default async function AdminDashboardPage({ searchParams }) {
         contentStats={{
           products: products.length,
           categories: productCategories.length,
-          cmsProducts: contentSummary.product,
-          newsPosts: contentSummary.news,
-          cmsNews: contentSummary.news,
+          newsPosts: contentSummary.news + staticPosts.length,
           blogPosts: contentSummary.blog
         }}
       />

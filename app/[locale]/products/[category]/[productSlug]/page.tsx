@@ -4,8 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Interior } from "@/components/Interior";
 import { ProductInterior } from "@/components/ProductInterior";
 import { getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
-import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
-import { getProductDetailContent } from "@/data/productDetailContent";
+import { getCatalogProductPage, getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath, t } from "@/data/site";
 import { canonicalLocale, localizedAlternates, localizedProductSeo } from "@/lib/seo";
 
@@ -31,8 +30,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const { locale, category, productSlug } = await params;
   const catalogProducts = await getPublishedCatalogProducts();
   const product = catalogProducts.find((item) => item.category === category && item.slug === productSlug);
-  const content = product ? getProductDetailContent(product, locale) : null;
-  const title = product && content ? localizedProductSeo(locale, content.title) : "Product";
+  const content = product ? (await getCatalogProductPage(product, locale)).content : null;
+  const title = product && content ? localizedProductSeo(locale, content.title, content.series) : "Product";
   const description = content?.summary;
   const canonical = `/${canonicalLocale(locale)}/products/${category}/${productSlug}`;
   return {
@@ -53,7 +52,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   if (!product || !category) notFound();
 
   const copy = productCopy[locale] ?? productCopy["es-cl"];
-  const content = getProductDetailContent(product, locale);
+  const { content, editorial } = await getCatalogProductPage(product, locale);
   const categoryDisplay = productCategories.some((item) => item.slug === category.slug)
     ? getCategoryDisplay(category as (typeof productCategories)[number], locale)
     : { title: category.title, summary: category.summary };
@@ -65,6 +64,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     description: content.summary,
     image: product.image.startsWith("http") ? product.image : `https://cowinmagnet.cl${product.image}`,
     brand: { "@type": "Brand", name: "COWIN MAGNET" },
+    ...(content.series ? { model: content.series } : {}),
     category: categoryDisplay.title,
     url: `https://cowinmagnet.cl/${canonicalLocale(locale)}/products/${product.category}/${product.slug}`,
     additionalProperty: content.confirmedSpecifications.map((item) => ({ "@type": "PropertyValue", name: item.label, value: item.value }))
@@ -80,8 +80,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   return <Interior locale={locale}>
     <Breadcrumbs locale={locale} items={[{ label: copy.products, href: localizedPath(locale, "products") }, { label: category.key === "permanent" ? t(locale, "Separadores suspendidos", "Separadores suspensos", "Suspended separators") : categoryDisplay.title, href: localizedPath(locale, `products/${category.slug}`) }, { label: content.series || content.title }]} />
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-    <ProductInterior product={product} content={content} categoryTitle={categoryDisplay.title} related={relatedProducts} locale={locale} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema).replace(/</g, "\\u003c") }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} />
+    <ProductInterior product={product} content={content} editorialSummary={editorial?.summary} categoryTitle={categoryDisplay.title} related={relatedProducts} locale={locale} />
   </Interior>;
 }

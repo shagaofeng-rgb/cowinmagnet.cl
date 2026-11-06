@@ -6,25 +6,26 @@ import { InteriorIcon } from "@/components/InteriorIcon";
 import { getProductTruthCard } from "@/data/productTruth";
 import { getProductDetailContent } from "@/data/productDetailContent";
 import { getCategoryDisplay, productCategories, productCopy } from "@/data/catalog";
-import { getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
+import { catalogLocalization, getCatalogLocalizations, getPublishedCatalogCategories, getPublishedCatalogProducts } from "@/data/productCatalog.server";
 import { Locale, localizedPath, t } from "@/data/site";
 import type { Metadata } from "next";
-import { localizedAlternates, localizedProductSeo } from "@/lib/seo";
+import { localizedListMetadata, localizedProductSeo } from "@/lib/seo";
 import { productPresentation } from "@/data/productPresentation";
 import { PaginationNav } from "@/components/PaginationNav";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
 
 export const dynamic = "force-dynamic";
+const PAGE_SIZE = 12;
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; category: string }> }): Promise<Metadata> {
-  const { locale, category: categorySlug } = await params;
-  const categories = await getPublishedCatalogCategories();
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: Locale; category: string }>; searchParams: Promise<PageQuery> }): Promise<Metadata> {
+  const [{ locale, category: categorySlug }, query, catalog] = await Promise.all([params, searchParams, getPublishedCatalogProducts()]);
+  const categories = await getPublishedCatalogCategories(catalog);
   const category = categories.find((item) => item.slug === categorySlug);
   const display = category ? (productCategories.some((item) => item.slug === category.slug) ? getCategoryDisplay(category as (typeof productCategories)[number], locale) : { title: category.title, summary: category.summary }) : null;
   return {
     title: display ? localizedProductSeo(locale, display.title) : "Product Category",
     description: display?.summary,
-    alternates: localizedAlternates(locale, `products/${categorySlug}`)
+    ...localizedListMetadata(locale, "products/" + categorySlug, query, catalog.filter((item) => item.category === categorySlug).length, PAGE_SIZE, ["magnet", "cleaning", "application", "sort"])
   };
 }
 
@@ -64,7 +65,8 @@ export default async function ProductCategoryPage({ params, searchParams }: { pa
   const order = queryValue(query, "sort") === "model" ? "model" : "";
   const filtered = list.filter(({ facets: item }) => facets.every(({ key, value }) => !value || item[key] === value));
   if (order) filtered.sort((a, b) => a.product.title.localeCompare(b.product.title, locale, { numeric: true }));
-  const paged = paginateList(filtered, parseListPagination(query, { defaultPageSize: 12, allowedPageSizes: [12] }));
+  const paged = paginateList(filtered, parseListPagination(query, { defaultPageSize: PAGE_SIZE, allowedPageSizes: [PAGE_SIZE] }));
+  const localizations = await getCatalogLocalizations(locale);
   const display = getCategoryDisplay(category, locale);
   const heading = category.key === "permanent" ? l("Separadores magnéticos suspendidos", "Separadores magnéticos suspensos", "Suspended magnetic separators") : display.title;
   const productLabel = l("Ver ficha", "Ver ficha", "View product");
@@ -108,10 +110,11 @@ export default async function ProductCategoryPage({ params, searchParams }: { pa
           </div>
           {paged.items.length ? <div className="grid">{paged.items.map(({ product, facets: item }) => {
             const presentation = productPresentation(product, locale);
+            const editorial = catalogLocalization(localizations, locale, product.slug);
             const model = getProductDetailContent(product, locale).series;
             const attributes = facets.map(({ key, options }) => options.find(([value]) => value === item[key])?.[1]).filter(Boolean).slice(0, 2);
-            return <InteriorCard key={product.slug} title={presentation.title} image={product.image} meta={model}
-              summary={attributes.join(" · ") || presentation.applications[0]} href={pathname + "/" + product.slug} label={productLabel} equipment />;
+            return <InteriorCard key={product.slug} title={editorial?.title || presentation.title} image={product.image} meta={model}
+              summary={editorial?.summary || attributes.join(" · ") || presentation.applications[0]} href={pathname + "/" + product.slug} label={productLabel} equipment />;
           })}</div> : <div className="panel"><h3>{l("No hay modelos con estos filtros", "Nenhum modelo com estes filtros", "No models match these filters")}</h3>
             <InteriorLink href={localizedPath(locale, "technical-support")}>{l("Consultar soporte", "Consultar suporte", "Get technical support")}</InteriorLink></div>}
           <PaginationNav meta={paged.meta} pathname={pathname} params={query} locale={locale} />

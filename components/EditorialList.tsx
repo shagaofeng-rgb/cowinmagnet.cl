@@ -3,6 +3,7 @@ import { InteriorCard, InteriorImage, InteriorLink, InteriorRow, InteriorSection
 import { PaginationNav } from "@/components/PaginationNav";
 import { htmlLanguageByLocale } from "@/lib/seo";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
+import { EDITORIAL_PAGE_SIZE } from "@/lib/localizedContent";
 import { localizedPath, t, type Locale } from "@/data/site";
 
 type Entry = {
@@ -34,7 +35,7 @@ export function EditorialList({ locale, type, posts, query }: { locale: Locale; 
   const topics = [...new Set(posts.flatMap((item) => item.categoryTitle?.trim() ? [item.categoryTitle.trim()] : []))];
   const topic = topics.includes(queryValue(query, "topic")) ? queryValue(query, "topic") : "";
   const filtered = topic ? posts.filter((item) => item.categoryTitle?.trim() === topic) : posts;
-  const paged = paginateList(filtered, parseListPagination(query, { defaultPageSize: 9, allowedPageSizes: [9] }));
+  const paged = paginateList(filtered, parseListPagination(query, { defaultPageSize: EDITORIAL_PAGE_SIZE, allowedPageSizes: [EDITORIAL_PAGE_SIZE] }));
   const featured = paged.meta.page === 1 ? paged.items[0] : undefined;
   const rest = featured ? paged.items.slice(1) : paged.items;
   const read = blog ? t(locale, "Leer guía", "Ler guia", "Read guide") : t(locale, "Leer noticia", "Ler notícia", "Read news");
@@ -61,7 +62,7 @@ export function EditorialList({ locale, type, posts, query }: { locale: Locale; 
     </article> : null}
     {blog ? <div className="grid">{rest.map((item) => <div key={item.slug} lang={sourceLanguage(item, locale)} className="editorial-grid-item"><InteriorCard title={item.title} image={item.image} summary={item.summary} meta={format(item)} href={path + "/" + item.slug} label={read} /></div>)}</div> :
       <div>{rest.map((item) => <div key={item.slug} className="news-list-item" lang={sourceLanguage(item, locale)}><InteriorRow icon="calendar"
-        title={<Link href={path + "/" + item.slug}>{item.title}</Link>} summary={format(item)}
+        title={<Link href={path + "/" + item.slug}>{item.title}</Link>} summary={<><span className="meta">{format(item)}</span>{item.summary ? <span className="news-excerpt">{item.summary}</span> : null}</>}
         action={<InteriorLink href={path + "/" + item.slug}>{read}</InteriorLink>} /></div>)}</div>}
     {!paged.items.length ? <div className="panel cl-empty"><h2>{blog ? t(locale, "Aún no hay guías publicadas", "Ainda não há guias publicadas", "No published guides yet") : t(locale, "Aún no hay noticias publicadas", "Ainda não há notícias publicadas", "No published news yet")}</h2>
       <InteriorLink href={localizedPath(locale, "technical-support")}>{t(locale, "Consultar soporte técnico", "Consultar suporte técnico", "Get technical support")}</InteriorLink></div> : null}

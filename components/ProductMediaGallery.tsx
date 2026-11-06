@@ -25,6 +25,7 @@ export function ProductMediaGallery({ images, alt, locale }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLButtonElement>(null);
   const activeImage = validImages[activeIndex] ?? validImages[0];
   const move = (direction: number) => setActiveIndex((index) => (index + direction + validImages.length) % validImages.length);
 
@@ -33,19 +34,21 @@ export function ProductMediaGallery({ images, alt, locale }: Props) {
   }
 
   return <div>
-    <button className="product-figure" type="button" onClick={() => { setExpanded(true); dialog.current?.showModal(); }} aria-label={copy.enlarge + " " + alt}>
-      <Image src={activeImage} alt={alt} width={1200} height={900} preload={activeIndex === 0} sizes="(max-width: 760px) 100vw, 50vw" unoptimized={isRemoteImage(activeImage)} />
+    <button className="product-figure" type="button" ref={opener} onClick={() => { setExpanded(true); dialog.current?.showModal(); }} aria-label={copy.enlarge + " " + alt}>
+      <Image src={activeImage} alt={alt} width={1200} height={900} preload={activeIndex === 0} sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1280px) 48vw, 580px" unoptimized={isRemoteImage(activeImage)} />
     </button>
     {validImages.length > 1 ? <div className="thumbs" aria-label={copy.gallery}>
       {validImages.map((image, index) => <button type="button" onClick={() => setActiveIndex(index)} key={image} aria-label={alt + ", " + copy.viewNumber + " " + (index + 1)} aria-pressed={index === activeIndex}>
         <Image src={image} alt="" width={72} height={72} sizes="72px" unoptimized={isRemoteImage(image)} />
       </button>)}
     </div> : null}
-    <dialog ref={dialog} aria-label={copy.expanded + ": " + alt} onClose={() => setExpanded(false)} onKeyDown={(event) => {
-      if (event.key === "ArrowLeft") move(-1);
-      if (event.key === "ArrowRight") move(1);
+    <dialog ref={dialog} aria-label={copy.expanded + ": " + alt} onClose={() => { setExpanded(false); opener.current?.focus({ preventScroll: true }); }} onKeyDown={(event) => {
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        move(event.key === "ArrowLeft" ? -1 : 1);
+      }
     }}>
-        <button className="btn alt gallery-close" type="button" onClick={() => dialog.current?.close()} aria-label={copy.close}><InteriorIcon name="x" /></button>
+        <button className="btn alt gallery-close" autoFocus type="button" onClick={() => dialog.current?.close()} aria-label={copy.close}><InteriorIcon name="x" /></button>
         {expanded ? <Image src={activeImage} alt={alt} width={1600} height={1200} sizes="96vw" unoptimized={isRemoteImage(activeImage)} /> : null}
         {validImages.length > 1 ? <div className="gallery-controls" aria-label={copy.controls}>
           <button className="btn alt" type="button" onClick={() => move(-1)}>{copy.previous}</button>

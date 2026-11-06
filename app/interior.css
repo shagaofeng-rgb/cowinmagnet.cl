@@ -137,6 +137,9 @@
   .editorial-copy h2{margin:9px 0}
   .editorial-copy .quiet{display:inline-flex;margin-top:13px}
   .editorial-list{margin-top:18px}
+  .editorial-grid-item .card{height:100%}
+  .editorial-grid-item .card-body p,.news-excerpt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+  .news-excerpt{margin-top:4px}
   .article-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,235px);gap:34px;align-items:start}
   .article-copy{max-width:72ch}
   .article-copy h1{font-size:clamp(2rem,3.9cqw,3.5rem)}

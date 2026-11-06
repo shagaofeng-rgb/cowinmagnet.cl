@@ -1,4 +1,4 @@
-import { getLatestSyncStatus } from "@/lib/analyticsStore";
+import { getOperationsStatus } from "@/lib/operationsStatus";
 import { requireAdminSession } from "@/lib/adminAuth";
 import AdminSyncStatus from "@/components/admin/AdminSyncStatus";
 
@@ -7,9 +7,9 @@ export const metadata = { title: "数据状态 | Cowinmagnet.cl" };
 
 export default async function AdminSyncPage() {
   await requireAdminSession();
-  const syncStatus = await getLatestSyncStatus();
+  const syncStatus = await getOperationsStatus();
   return <>
-    <section className="admin-page-head"><div><p className="eyebrow">数据状态</p><h1>网站数据更新状态</h1><p>查看最近一次数据处理结果与更新时间。</p></div></section>
+    <section className="admin-page-head"><div><h1>数据与通知状态</h1><p>查看流量、Google、内容和询价邮件的更新时间。</p></div></section>
     <AdminSyncStatus initialStatus={syncStatus} />
   </>;
 }

@@ -2,26 +2,19 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { makeTrackingId, markTestSession, readSessionAttribution, saveSessionAttribution, trackedPage, visitorIdentity } from "@/lib/visitorIdentity";
 
-const VISITOR_KEY = "cowinmagnet_cl_visitor_id";
-const SESSION_KEY = "cowinmagnet_cl_session_id";
 const PREVIOUS_PAGE_KEY = "cowinmagnet_cl_previous_page";
 const PENDING_EVENTS_KEY = "cowinmagnet_cl_pending_analytics";
 const MAX_PENDING_EVENTS = 20;
 
-function makeId(prefix) {
-  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(16).slice(2)}`;
-}
-
-function getStoredId(storage, key, prefix) {
+function previousPage(page) {
   try {
-    const current = storage.getItem(key);
-    if (current) return current;
-    const next = makeId(prefix);
-    storage.setItem(key, next);
-    return next;
+    const current = window.sessionStorage.getItem(PREVIOUS_PAGE_KEY) || "";
+    window.sessionStorage.setItem(PREVIOUS_PAGE_KEY, page);
+    return current;
   } catch {
-    return makeId(prefix);
+    return "";
   }
 }
 
@@ -67,6 +60,20 @@ function readSource(params, referrer) {
     return { channel: "Social", sourcePlatform: host, sourceDetail: referrer, utmSource, utmMedium, utmCampaign, utmTerm, utmContent };
   }
   return { channel: "Referral", sourcePlatform: host || "Referral", sourceDetail: referrer, utmSource, utmMedium, utmCampaign, utmTerm, utmContent };
+}
+
+function attribution(params) {
+  let referrer = "";
+  try {
+    const url = new URL(document.referrer);
+    if (url.origin !== window.location.origin && /^https?:$/.test(url.protocol)) referrer = url.origin;
+  } catch { /* Direct session. */ }
+  const current = readSource(params, referrer);
+  const saved = readSessionAttribution();
+  if (!current.utmSource && !current.utmMedium && !current.utmCampaign && saved) return saved;
+  const next = { ...current, referrer };
+  saveSessionAttribution(next);
+  return next;
 }
 
 function pendingEvents() {
@@ -122,26 +129,22 @@ export default function AnalyticsTracker() {
   useEffect(() => {
     if (!pathname || pathname.startsWith("/admin") || pathname.startsWith("/api")) return;
 
-    const query = searchParams.toString();
-    const page = query ? `${pathname}?${query}` : pathname;
+    const params = new URLSearchParams(searchParams.toString());
+    const isTest = markTestSession(params);
+    const page = trackedPage(pathname, params);
     if (lastTracked.current === page) return;
     lastTracked.current = page;
 
-    const params = new URLSearchParams(query);
-    const visitorId = getStoredId(window.localStorage, VISITOR_KEY, "visitor");
-    const sessionId = getStoredId(window.sessionStorage, SESSION_KEY, "session");
-    const previousPage = window.sessionStorage.getItem(PREVIOUS_PAGE_KEY) || "";
-    const source = readSource(params, document.referrer);
+    const source = attribution(params);
 
     const event = {
-      id: makeId("event"),
+      id: makeTrackingId("event"),
       type: "page_view",
-      visitorId,
-      sessionId,
+      ...visitorIdentity(),
+      isTest,
       page,
-      previousPage,
+      previousPage: previousPage(page),
       pageTitle: document.title,
-      referrer: document.referrer,
       language: navigator.language || "",
       timestamp: new Date().toISOString(),
       ...source
@@ -154,8 +157,6 @@ export default function AnalyticsTracker() {
         queueEvent(event);
       }
     })();
-
-    window.sessionStorage.setItem(PREVIOUS_PAGE_KEY, page);
   }, [pathname, searchParams]);
 
   return null;

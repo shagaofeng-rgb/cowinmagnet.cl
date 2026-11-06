@@ -3,6 +3,7 @@ import { requireAdminSession } from "@/lib/adminAuth";
 import { getSearchConsoleSnapshot } from "@/lib/analyticsStore";
 import AdminDateRangeFilter from "@/components/admin/AdminDateRangeFilter";
 import AdminSearchConsoleLivePanel from "@/components/admin/AdminSearchConsoleLivePanel";
+import Link from "next/link";
 
 const t = {
   eyebrow: "SEO \u6570\u636e",
@@ -26,6 +27,7 @@ export default async function AdminSearchConsolePage({ searchParams }) {
           <p className="eyebrow">{t.eyebrow}</p>
           <h1>{t.title}</h1>
           <p>{t.desc}</p>
+          <Link className="admin-detail-link" href="/admin/search-console/inspect">批量检查规范页</Link>
         </div>
         <AdminDateRangeFilter range={range} />
       </section>

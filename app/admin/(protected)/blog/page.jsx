@@ -18,7 +18,7 @@ export default async function AdminBlogPage({ searchParams }) {
 
   return <section className="admin-panel">
     <div className="admin-page-head compact">
-      <div><p className="eyebrow">Blog 文章</p><h1>Blog 发布管理</h1><p>管理真实 CMS 数据库中的文章、分类、封面、状态和发布时间。</p></div>
+      <div><h1>博客发布</h1><p>管理文章、分类、封面与发布时间。</p></div>
       <AdminDateRangeFilter range={range} />
     </div>
     {params?.saved ? <div className="admin-alert good">文章已发布。</div> : null}

@@ -13,7 +13,12 @@ function selectTab(tab: string) {
 }
 
 export function ProductSpecButton({ children }: { children: ReactNode }) {
-  return <button type="button" className="btn alt" onClick={() => selectTab("specifications")}>{children}</button>;
+  return <button type="button" className="btn alt" onClick={() => {
+    selectTab("specifications");
+    const tab = document.querySelector<HTMLButtonElement>('[data-product-tab="specifications"]');
+    tab?.focus({ preventScroll: true });
+    tab?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }}>{children}</button>;
 }
 
 export function ProductContentTabs({ tabs, label }: { tabs: ProductTab[]; label: string }) {

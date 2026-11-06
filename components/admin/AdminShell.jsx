@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import AdminLiveStatus from "@/components/admin/AdminLiveStatus";
 
 const text = {
@@ -32,22 +33,31 @@ const navigationGroups = [
 
 export default function AdminShell({ children }) {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const current = navigationGroups.flatMap((group) => group.links).find((link) =>
+    pathname === link.href || (link.href !== "/admin" && pathname.startsWith(link.href + "/")));
 
   return (
     <div className="admin-dashboard">
       <aside className="admin-sidebar">
-        <Link className="admin-logo" href="/admin">
-          <Image src="/assets/cowinmagnet-logo.png" alt="Cowinmagnet.cl" width={42} height={42} priority />
-          <strong>{text.brand}</strong>
-        </Link>
-        <nav aria-label={text.navLabel}>
+        <div className="admin-sidebar-header">
+          <Link className="admin-logo" href="/admin" onClick={() => setMenuOpen(false)}>
+            <Image src="/assets/cowinmagnet-logo.png" alt="Cowinmagnet.cl" width={42} height={42} priority />
+            <strong>{text.brand}</strong>
+          </Link>
+          <button type="button" className="admin-menu-toggle" aria-expanded={menuOpen} aria-controls="admin-nav"
+            onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? "收起栏目" : current?.label || "栏目"}</button>
+        </div>
+        <nav id="admin-nav" aria-label={text.navLabel} className={menuOpen ? "is-open" : ""}>
           {navigationGroups.map((group) => <section className="admin-nav-group" key={group.label}>
             <p>{group.label}</p>
             {group.links.map((link) => {
-              const active = pathname === link.href || (link.href === "/admin" && pathname === "/admin/dashboard");
-              return <Link className={active ? "is-active" : ""} href={link.href} key={link.href}>{link.label}</Link>;
+              const active = current?.href === link.href || (link.href === "/admin" && pathname === "/admin/dashboard");
+              return <Link className={active ? "is-active" : ""} aria-current={active ? "page" : undefined}
+                href={link.href} onClick={() => setMenuOpen(false)} key={link.href}>{link.label}</Link>;
             })}
           </section>)}
+          <form className="admin-mobile-signout" action="/api/admin/logout" method="post"><button type="submit">{text.logout}</button></form>
         </nav>
         <div className="admin-sidebar-foot">
           <AdminLiveStatus />

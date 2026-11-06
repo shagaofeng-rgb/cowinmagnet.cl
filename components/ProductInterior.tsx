@@ -42,18 +42,18 @@ function localizedSelection(product: CatalogProduct, content: ProductDetailConte
   return content.selectionInputs;
 }
 
-export function ProductInterior({ product, content, categoryTitle, related, locale }: {
-  product: CatalogProduct; content: ProductDetailContent; categoryTitle: string; related: CatalogProduct[]; locale: Locale;
+export function ProductInterior({ product, content, editorialSummary, categoryTitle, related, locale }: {
+  product: CatalogProduct; content: ProductDetailContent; editorialSummary?: string; categoryTitle: string; related: CatalogProduct[]; locale: Locale;
 }) {
   const quote = quotePath(locale, product);
   const copy = (es: string, pt: string, en: string) => t(locale, es, pt, en);
   const presentation = productPresentation(product, locale);
   const series = content.series;
   const rcyd = series === "RCYD" && product.slug.startsWith("rcyd-type-permanent-magnet-self-dumping");
-  const title = rcyd && (locale === "es" || locale === "es-cl") ? content.title.replace(/ RCYD$/, "") : presentation.title;
-  const lead = rcyd
+  const title = content.title;
+  const lead = editorialSummary || (rcyd
     ? copy("Retira hierro trampa sobre correas de minerales, áridos y materiales reciclados.", "Remove ferro indesejado de correias de minérios, agregados e materiais reciclados.", "Removes tramp iron from conveyors handling minerals, aggregates and recycled materials.")
-    : presentation.applications.join(" · ") + ".";
+    : presentation.applications.join(" · ") + ".");
   const originalImages = product.imageGallery?.length ? product.imageGallery : [product.image];
   const images = rcyd ? originalImages.filter((path) => /-(01\.jpg|05\.png|06\.png)$/.test(path)) : originalImages;
   const confirmed = content.confirmedSpecifications;

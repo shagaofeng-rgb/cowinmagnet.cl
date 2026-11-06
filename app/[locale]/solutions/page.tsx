@@ -3,16 +3,16 @@ import { Interior, InteriorLink, InteriorRow, InteriorSection, Intro, solutionIc
 import { PaginationNav } from "@/components/PaginationNav";
 import { solutions } from "@/data/catalog";
 import { Locale, localizedPath, t } from "@/data/site";
-import { localizedAlternates, localizedEntityCopy } from "@/lib/seo";
+import { localizedListMetadata, localizedEntityCopy } from "@/lib/seo";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
 import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
-  const { locale } = await params;
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }): Promise<Metadata> {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
   return {
     title: t(locale, "Soluciones de separacion magnetica", "Solucoes de separacao magnetica", "Magnetic separation solutions"),
     description: t(locale, "Soluciones por problema industrial: hierro trampa, proteccion de chancadores, proteccion de cintas, reciclaje y ambientes exigentes.", "Solucoes por problema industrial: ferro tramp, protecao de britadores, protecao de correias, reciclagem e ambientes exigentes.", "Solutions by industrial problem: tramp iron, crusher protection, belt protection, recycling and demanding environments."),
-    alternates: localizedAlternates(locale, "solutions")
+    ...localizedListMetadata(locale, "solutions", query, solutions.length, 9)
   };
 }
 

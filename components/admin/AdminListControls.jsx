@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-export function AdminListControls({ searchLabel = "搜索标题、分类或编号", statusOptions = [] }) {
+export function AdminListControls({ searchLabel = "搜索标题、分类或编号", statusOptions = [], statusLabel = "状态", allStatusLabel = "全部状态" }) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -24,9 +24,9 @@ export function AdminListControls({ searchLabel = "搜索标题、分类或编�
       <label className="admin-search-control">搜索
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={searchLabel} />
       </label>
-      {statusOptions.length ? <label>状态
+      {statusOptions.length ? <label>{statusLabel}
         <select value={searchParams.get("status") || ""} onChange={(event) => update({ status: event.target.value })}>
-          <option value="">全部状态</option>
+          <option value="">{allStatusLabel}</option>
           {statusOptions.map((item) => <option value={item.value} key={item.value}>{item.label}</option>)}
         </select>
       </label> : null}

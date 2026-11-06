@@ -1,4 +1,4 @@
-import { Locale } from "@/data/site";
+import { Locale, t } from "@/data/site";
 import { getProductTruthCard } from "@/data/productTruth";
 
 type ProductIdentity = {
@@ -257,20 +257,52 @@ function genericContent(product: ProductIdentity, locale: Locale): ProductDetail
   const summary = portuguese
     ? `${title} para projetos industriais na América Latina. A configuração é revisada conforme material, processo, capacidade e condições de instalação antes da cotação.`
     : `${title} for industrial projects in Latin America. Configuration is reviewed against material, process, capacity and installation conditions before quotation.`;
+  const pair = (pt: string, en: string) => t(locale, en, pt, en);
+  const family = profile.family;
+  const localized: { principle: string; inputs: string[]; layout: string[] } = family.includes("proceso húmedo")
+    ? {
+      principle: pair("A alimentação em polpa passa por uma zona magnética. As partículas que respondem ao campo seguem para uma descarga separada; a configuração depende do minério e da meta de concentração.", "Slurry passes through a magnetic separation zone. Particles that respond to the field report to a separate discharge; the circuit depends on the ore and concentration target."),
+      inputs: [pair("Vazão de polpa e teor de sólidos", "Slurry flow and solids content"), pair("Mineralogia, granulometria e recuperação desejada", "Mineralogy, particle size and recovery target")],
+      layout: [pair("Verifique alimentação, água de processo e drenagem.", "Check feed, process water and drainage."), pair("Reserve espaço para inspeção e manutenção.", "Allow room for inspection and maintenance.")]
+    } : family.includes("proceso seco") ? {
+      principle: pair("O material seco é distribuído na zona magnética. Frações com respostas distintas ao campo seguem para descargas separadas.", "Dry feed is spread across the magnetic zone. Fractions with different responses to the field report to separate discharges."),
+      inputs: [pair("Granulometria, umidade e vazão", "Particle size, moisture and feed rate"), pair("Fração a recuperar ou remover", "Fraction to recover or remove")],
+      layout: [pair("Planeje uma alimentação uniforme, controle de pó e espaço para as descargas.", "Plan for even feed, dust control and clearance at the discharges.")]
+    } : family.includes("Detector") ? {
+      principle: pair("O detector monitora o fluxo de material na abertura útil. Um sinal pode acionar alarme ou parada da correia conforme a configuração.", "The detector monitors material passing through its opening. A signal can trigger an alarm or belt stop, depending on the selected controls."),
+      inputs: [pair("Largura e velocidade da correia", "Conveyor width and speed"), pair("Metal alvo, corpo de prova e altura da carga", "Target metal, test piece and bed depth")],
+      layout: [pair("Confirme a abertura, a lógica de controle e o acesso para testes.", "Confirm the opening, control logic and access for testing.")]
+    } : family.includes("Filtro") ? {
+      principle: pair("O material passa por um conjunto magnético que retém partículas ferrosas. A geometria e o método de limpeza são definidos para a linha.", "Material passes through a magnetic assembly that captures ferrous particles. Geometry and cleaning method depend on the process line."),
+      inputs: [pair("Material, vazão e tamanho da abertura", "Feed material, flow rate and opening size"), pair("Contaminante alvo e método de limpeza", "Target contaminant and cleaning method")],
+      layout: [pair("Verifique a interface de montagem e o espaço para retirar e limpar os elementos.", "Check the mounting interface and clearance for removing and cleaning elements.")]
+    } : family.includes("reciclaje") ? {
+      principle: pair("O material preparado passa por uma etapa de triagem. O elemento ativo e o ponto de separação dependem do metal que a linha precisa recuperar.", "Prepared feed passes through a sorting stage. The active element and separation point depend on the metal the line needs to recover."),
+      inputs: [pair("Composição da alimentação e metal alvo", "Feed composition and target metal"), pair("Granulometria, umidade e capacidade", "Particle size, moisture and throughput")],
+      layout: [pair("Revise a distribuição da alimentação e as saídas de cada fração.", "Review feed distribution and the discharge for each fraction.")]
+    } : family.includes("auxiliar") ? {
+      principle: pair("O equipamento é integrado ao processo de acordo com a função, o equipamento associado e as interfaces de controle ou montagem.", "This equipment is integrated with the process according to its role, associated equipment and control or mounting interfaces."),
+      inputs: [pair("Função, modelo associado e condições locais", "Required function, associated equipment and site conditions")],
+      layout: [pair("Envie o desenho do local, interfaces e requisitos de segurança.", "Provide the site layout, interfaces and safety requirements.")]
+    } : {
+      principle: pair("Instalado acima da correia ou transferência, o separador atrai ferro indesejado do fluxo. A altura de montagem e a espessura do material afetam a seleção.", "Installed above a conveyor or transfer point, the separator attracts tramp iron from the material stream. Mounting height and burden depth affect selection."),
+      inputs: [pair("Largura, velocidade e espessura da carga na correia", "Belt width, speed and burden depth"), pair("Altura de suspensão e tamanho do ferro indesejado", "Suspension height and tramp iron size")],
+      layout: [pair("Verifique a estrutura de apoio e a área de descarte do ferro.", "Check the supporting structure and tramp iron discharge area."), pair("Indique poeira, altitude e acesso para manutenção.", "Specify dust, elevation and maintenance access.")]
+    };
   return {
     ...profile,
     title,
     summary,
     series,
-    howItWorks: portuguese ? "O princípio de funcionamento e a configuração final são confirmados para o processo e o modelo selecionado." : "The operating principle and final configuration are confirmed for the selected process and model.",
+    howItWorks: localized.principle,
     features: portuguese ? ["Configuração por projeto", "Seleção com dados de processo", "Opções confirmadas antes da cotação"] : ["Project-based configuration", "Selection using process data", "Options confirmed before quotation"],
     applications: portuguese ? ["Projetos industriais", "Processamento de materiais", "Operações na América Latina"] : ["Industrial projects", "Material processing", "Latin America operations"],
     problems: portuguese ? ["Apoia a definição técnica do processo", "Ajuda a confirmar a configuração aplicável"] : ["Supports technical process definition", "Helps confirm the applicable configuration"],
-    installation: portuguese ? ["Validar layout e espaço", "Confirmar condições ambientais"] : ["Validate layout and available space", "Confirm environmental conditions"],
-    selectionInputs: portuguese ? ["Material", "Capacidade", "Condições do local"] : ["Material", "Capacity", "Site conditions"],
+    installation: localized.layout,
+    selectionInputs: localized.inputs,
     options: portuguese ? ["Disponível sob consulta"] : ["Available on request"],
     operation: portuguese ? ["Seguir a configuração final confirmada"] : ["Follow the confirmed final configuration"],
-    faqs: portuguese ? [{ question: "Quais dados são necessários?", answer: "Material, capacidade e condições de instalação." }] : [{ question: "What information is needed?", answer: "Material, capacity and installation conditions." }],
+    faqs: [{ question: pair("Quais dados são necessários para cotar?", "What information is needed for a quote?"), answer: localized.inputs.join("; ") + "." }],
     confirmedSpecifications: [],
     pendingSpecifications: profile.pendingSpecifications
   };

@@ -5,21 +5,21 @@ import { PaginationNav } from "@/components/PaginationNav";
 import { chileRegions, markets, products } from "@/data/catalog";
 import { productPresentation } from "@/data/productPresentation";
 import { Locale, localizedPath, t } from "@/data/site";
-import { localizedAlternates, localizedEntityCopy } from "@/lib/seo";
+import { localizedListMetadata, localizedEntityCopy } from "@/lib/seo";
 import { paginateList, parseListPagination } from "@/lib/listPagination";
 
 export function generateStaticParams() {
   return markets.flatMap((item) => ["es-cl", "es", "pt-br", "en"].map((locale) => ({ locale, country: item.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; country: string }> }) {
-  const { locale, country } = await params;
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ locale: Locale; country: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const [{ locale, country }, query] = await Promise.all([params, searchParams]);
   const market = markets.find((item) => item.slug === country);
   const display = market ? localizedEntityCopy(locale, "market", country, market.title, market.summary) : null;
   return {
     title: display?.seoTitle || "Market",
     description: display?.summary,
-    alternates: localizedAlternates(locale, `markets/${country}`)
+    ...localizedListMetadata(locale, "markets/" + country, query, country === "chile" ? chileRegions.length : 0, 6)
   };
 }
 

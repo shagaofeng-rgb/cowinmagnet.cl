@@ -1,4 +1,5 @@
 import mainProducts from "./mainProductCatalog.json";
+import { canonicalProductSlug } from "@/lib/productUrlAliases";
 import { Locale } from "./site";
 
 export const categoryImages = {
@@ -106,7 +107,7 @@ export const productCategories = [...new Set(mainProducts.map((product) => produ
   summary: categoryMeta[category]?.summaries.en ?? category
 }));
 
-export const products = mainProducts.map((product) => {
+export const products = mainProducts.filter((product) => canonicalProductSlug(categorySlug(product.category), product.slug) === product.slug).map((product) => {
   const category = categorySlug(product.category);
   return {
     slug: product.slug,

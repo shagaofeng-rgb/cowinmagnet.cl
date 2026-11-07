@@ -5,7 +5,7 @@ import { normalizeInquiry } from "../lib/inquiryInput.js";
 import { buildInquiryNotification } from "../lib/inquiryNotification.js";
 import { listIndexing } from "../lib/listPagination.js";
 import { preferredLocale } from "../lib/preferredLocale.js";
-import { productRedirectPath } from "../lib/productUrlAliases.js";
+import { canonicalQuoteModel, productRedirectPath } from "../lib/productUrlAliases.js";
 import { productLocalizationKey, publicLocalization } from "../lib/productLocalization.js";
 import { weeklySubmissionSkip } from "../lib/weeklySitemap.js";
 
@@ -55,6 +55,18 @@ test("an HJLH duplicate redirects to the same language, and draft copy cannot re
   assert.equal(publicLocalization(item, "es-cl", productSlug), item);
   assert.equal(publicLocalization({ ...item, status: "draft" }, "es-cl", productSlug), null);
   assert.equal(publicLocalization(item, "en", productSlug), null);
+});
+
+test("verified DCZ and CQZ duplicate routes preserve language and old quotation URLs", () => {
+  for (const model of ["dcz-type-dry-fully-automatic-magnetic", "cqz-type-fully-automatic-online-magnetic"]) {
+    const old = model + "-separation";
+    const current = model + "-separator";
+    const path = "/en/products/magnetic-separation-equipment/";
+    assert.equal(productRedirectPath(path + old), path + current);
+    assert.equal(canonicalQuoteModel(old), current);
+    assert.equal(productRedirectPath(path + current), null);
+  }
+  assert.equal(productRedirectPath("/es-cl/products/magnetic-separation-equipment/rcyz-type-vertical-pipeline-permanent-magnet-iron-remover"), null);
 });
 
 test("RCYD inquiry fields are normalized without letting a public caller set mail or record state", () => {

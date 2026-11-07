@@ -6,6 +6,7 @@ import { productPresentation } from "@/data/productPresentation";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Locale, localizedPath, t, uiText } from "@/data/site";
 import { localizedAlternates } from "@/lib/seo";
+import { canonicalQuoteModel } from "@/lib/productUrlAliases";
 import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 export default async function RequestQuotePage({ params, searchParams }: { params: Promise<{ locale: Locale }>; searchParams: Promise<PageQuery> }) {
   const [{ locale }, query] = await Promise.all([params, searchParams]);
   const copy = uiText[locale].quotePage;
-  const requested = queryValue(query, "model");
+  const requested = canonicalQuoteModel(queryValue(query, "model"));
   const products = requested ? await getPublishedCatalogProducts() : [];
   const exact = products.find((item) => item.slug === requested);
   const product = exact ?? (requested ? products.find((item) => getProductDetailContent(item, locale).series === requested.toUpperCase()) : undefined);
